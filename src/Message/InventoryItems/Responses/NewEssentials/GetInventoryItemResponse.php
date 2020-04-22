@@ -1,12 +1,12 @@
 <?php
-namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\AccountRight;
+namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\NewEssentials;
 
 use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
 /**
  * Get Inventory Item(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\AccountRight
+ * @package PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\NewEssentials
  */
 class GetInventoryItemResponse extends AbstractResponse
 {

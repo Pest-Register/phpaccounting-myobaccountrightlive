@@ -6,8 +6,8 @@ use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\AccountRight\GetInventoryItemResponse;
 
 /**
- * Get Contact(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests
+ * Get Inventory Item(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\AccountRight
  */
 class GetInventoryItemRequest extends AbstractRequest
 {

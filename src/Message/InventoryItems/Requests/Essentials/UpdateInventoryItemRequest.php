@@ -5,13 +5,12 @@ namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Ess
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\UpdateAccountRequest;
 use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\Essentials\UpdateInventoryItemResponse;
 
 
 /**
- * Create InventoryItem(s)
- * @package PHPAccounting\MyobEssentials\Message\InventoryItems\Requests
+ * Update InventoryItem(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Essentials
  */
 class UpdateInventoryItemRequest extends AbstractRequest
 {

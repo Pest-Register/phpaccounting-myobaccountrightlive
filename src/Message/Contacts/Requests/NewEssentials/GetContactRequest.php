@@ -1,12 +1,12 @@
 <?php
-namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight;
+namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\AccountRight\GetContactResponse;
+use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\NewEssentials\GetContactResponse;
 /**
  * Get Contact(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight
+ * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials
  */
 class GetContactRequest extends AbstractRequest
 {

@@ -1,19 +1,23 @@
 <?php
-namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight;
+
+namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\AccountRight\GetContactResponse;
+use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\NewEssentials\GetAccountResponse;
+
+
 /**
- * Get Contact(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight
+ * Get Account(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\NewEssentials\Requests
  */
-class GetContactRequest extends AbstractRequest
+class GetAccountRequest extends AbstractRequest
 {
+
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value
-     * @return GetContactRequest
+     * @return GetAccountRequest
      */
     public function setAccountingID($value) {
         return $this->setParameter('accounting_id', $value);
@@ -22,14 +26,14 @@ class GetContactRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetContactRequest
+     * @return GetAccountRequest
      */
     public function setPage($value) {
         return $this->setParameter('page', $value);
     }
 
     /**
-     * Return Accounting ID (UID)
+     * Return Accounting IDs (UID)
      * @return mixed comma-delimited-string
      */
     public function getAccountingID() {
@@ -54,7 +58,7 @@ class GetContactRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetContactRequest
+     * @return GetAccountRequest
      */
     public function setSkip($value) {
         return $this->setParameter('skip', $value);
@@ -75,7 +79,7 @@ class GetContactRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'Contact/';
+        $endpoint = 'GeneralLedger/Account/';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
@@ -98,7 +102,7 @@ class GetContactRequest extends AbstractRequest
 
     protected function createResponse($data, $headers = [])
     {
-        return $this->response = new GetContactResponse($this, $data);
+        return $this->response = new GetAccountResponse($this, $data);
     }
 
 }

@@ -2,16 +2,14 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\AccountRight;
 
-use Omnipay\Common\Helper;
 use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\AccountRight\GetAccountResponse;
 
 
 /**
  * Get Account(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\AccountRight\Requests
  */
 class GetAccountRequest extends AbstractRequest
 {

@@ -1,14 +1,14 @@
 <?php
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests;
+
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\Essentials\UpdateAccountResponse;
 
 /**
- * Create Account(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests
+ * Update Account(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\Essentials\Requests
  */
 class UpdateAccountRequest extends AbstractRequest
 {

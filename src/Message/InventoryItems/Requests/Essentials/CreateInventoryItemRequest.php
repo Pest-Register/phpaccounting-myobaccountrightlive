@@ -4,13 +4,12 @@ namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Ess
 
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\Essentials\CreateAccountResponse;
 use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\Essentials\CreateInventoryItemResponse;
 
 
 /**
  * Create InventoryItem(s)
- * @package PHPAccounting\MyobEssentials\Message\InventoryItems\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Essentials
  */
 class CreateInventoryItemRequest extends AbstractRequest
 {

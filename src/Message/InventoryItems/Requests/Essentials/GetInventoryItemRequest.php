@@ -3,15 +3,13 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Essentials;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\Essentials\GetAccountResponse;
 use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\Essentials\GetInventoryItemResponse;
 
 
 /**
- * Get Account(s)
- * @package PHPAccounting\MyobEssentials\Message\InventoryItems\Requests
+ * Get Inventory Item(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Essentials
  */
 class GetInventoryItemRequest extends AbstractRequest
 {

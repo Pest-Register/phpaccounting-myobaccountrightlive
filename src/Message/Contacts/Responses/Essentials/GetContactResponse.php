@@ -7,7 +7,7 @@ use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper
 
 /**
  * Get Contact(s) Response
- * @package PHPAccounting\MyobEssentials\Message\Contacts\Responses
+ * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials
  */
 class GetContactResponse extends AbstractResponse
 {

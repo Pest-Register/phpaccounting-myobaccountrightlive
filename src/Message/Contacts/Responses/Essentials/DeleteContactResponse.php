@@ -8,7 +8,7 @@ use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper
 
 /**
  * Delete Contact(s) Response
- * @package PHPAccounting\MyobEssentials\Message\Contacts\Responses
+ * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials
  */
 class DeleteContactResponse extends AbstractResponse
 {

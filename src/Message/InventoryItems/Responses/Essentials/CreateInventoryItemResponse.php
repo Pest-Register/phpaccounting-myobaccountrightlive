@@ -8,7 +8,7 @@ use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper
 
 /**
  * Create InventoryItems(s) Response
- * @package PHPAccounting\MyobEssentials\Message\InventoryItems\Responses
+ * @package PHPAccounting\MyobEssentials\Message\InventoryItems\Responses\Essentials
  */
 class CreateInventoryItemResponse extends AbstractResponse
 {

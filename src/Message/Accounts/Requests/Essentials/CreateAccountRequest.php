@@ -7,7 +7,7 @@ use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\Essentials\Cre
 
 /**
  * Create Account(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\Essentials\Requests
  */
 class CreateAccountRequest extends AbstractRequest
 {

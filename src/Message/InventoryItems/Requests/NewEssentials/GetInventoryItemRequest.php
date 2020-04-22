@@ -1,19 +1,20 @@
 <?php
-namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight;
+namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\AccountRight\GetContactResponse;
+use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\NewEssentials\GetInventoryItemResponse;
+
 /**
- * Get Contact(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight
+ * Get InventoryItem(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials
  */
-class GetContactRequest extends AbstractRequest
+class GetInventoryItemRequest extends AbstractRequest
 {
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value
-     * @return GetContactRequest
+     * @return GetInventoryItemRequest
      */
     public function setAccountingID($value) {
         return $this->setParameter('accounting_id', $value);
@@ -22,7 +23,7 @@ class GetContactRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetContactRequest
+     * @return GetInventoryItemRequest
      */
     public function setPage($value) {
         return $this->setParameter('page', $value);
@@ -54,7 +55,7 @@ class GetContactRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetContactRequest
+     * @return GetInventoryItemRequest
      */
     public function setSkip($value) {
         return $this->setParameter('skip', $value);
@@ -75,7 +76,7 @@ class GetContactRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'Contact/';
+        $endpoint = 'Inventory/Item/';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
@@ -98,7 +99,7 @@ class GetContactRequest extends AbstractRequest
 
     protected function createResponse($data, $headers = [])
     {
-        return $this->response = new GetContactResponse($this, $data);
+        return $this->response = new GetInventoryItemResponse($this, $data);
     }
 
 }

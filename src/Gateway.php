@@ -2,9 +2,12 @@
 
 namespace PHPAccounting\MyobAccountRightLive;
 
+use http\Message;
 use Omnipay\Common\AbstractGateway;
 use PHPAccounting\MyobAccountRightLive\Message\AccessFlag\Requests\GetAccessFlagRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\AccountRight\GetAccountRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\GetContactRequest;
+use PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Requests\AccountRight\GetCurrentUserRequest;
 
 /**
  * Created by IntelliJ IDEA.
@@ -114,13 +117,10 @@ class Gateway extends AbstractGateway
         $accessFlag = $this->getAccessFlag();
         $class = '';
         if ($accessFlag == 1) {
-            $class = Message\Contacts\Requests\AccountRight\GetContactRequest::class;
-        }
-        if ($accessFlag == 'Essentials') {
-            $class = Message\Contacts\Requests\Essentials\GetContactRequest::class;
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight\GetContactRequest::class;
         }
         if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\GetContactRequest::class;
         }
         return $this->createRequest($class, $parameters);
     }
@@ -152,17 +152,14 @@ class Gateway extends AbstractGateway
      * @return \Omnipay\Common\Message\AbstractRequest
      */
 
-    public function getAccount(array $parameters = []){
+    public function getAccount(array $parameters = []) {
         $accessFlag = $this->getAccessFlag();
         $class = '';
         if ($accessFlag == 1) {
-            $class = Message\Accounts\Requests\AccountRight\GetAccountRequest::class;
-        }
-        if ($accessFlag == 'Essentials') {
-            $class = Message\Accounts\Requests\Essentials\GetAccountRequest::class;
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\AccountRight\GetAccountRequest::class;
         }
         if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
+            $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\GetAccountRequest::class;
         }
         return $this->createRequest($class, $parameters);
     }
@@ -216,16 +213,7 @@ class Gateway extends AbstractGateway
      */
 
     public function getOrganisation(array $parameters = []){
-        $class = Message\Organisations\Requests\AccountRight\GetOrganisationRequest::class;
-//        if ($accessFlag == 1) {
-//
-//        }
-//        if ($accessFlag == 'Essentials') {
-//            $class = Message\Organisations\Requests\Essentials\GetOrganisationRequest::class;
-//        }
-//        if ($accessFlag == 2 || $accessFlag == 3) {
-//            // New Essentials and AccountRight
-//        }
+        $class = \PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\AccountRight\GetOrganisationRequest::class;
         return $this->createRequest($class, $parameters);
     }
 
@@ -236,7 +224,7 @@ class Gateway extends AbstractGateway
      */
 
     public function getCurrentUser(array $parameters = []){
-        $class = Message\CurrentUser\Requests\AccountRight\GetCurrentUserRequest::class;
+        $class = \PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Requests\AccountRight\GetCurrentUserRequest::class;
 
         return $this->createRequest($class, $parameters);
     }

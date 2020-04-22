@@ -5,8 +5,8 @@ use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Responses\AccountRight\GetCurrentUserResponse;
 
 /**
- * Get Contact(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests
+ * Get CurrentUser(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Requests\AccountRight
  */
 class GetCurrentUserRequest extends AbstractRequest
 {

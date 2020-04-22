@@ -7,7 +7,7 @@ use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials\Del
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials\GetContactResponse;
 /**
  * Delete Contact(s)
- * @package PHPAccounting\MyobEssentials\Message\Contacts\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials
  */
 class DeleteContactRequest extends AbstractRequest
 {

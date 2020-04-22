@@ -6,7 +6,7 @@ use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials\GetContactResponse;
 /**
  * Get Contact(s)
- * @package PHPAccounting\MyobEssentials\Message\Contacts\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials
  */
 class GetContactRequest extends AbstractRequest
 {

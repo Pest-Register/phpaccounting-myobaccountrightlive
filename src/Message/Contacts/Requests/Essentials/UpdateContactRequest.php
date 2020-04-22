@@ -9,7 +9,7 @@ use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials\Get
 
 /**
  * Update Contact(s)
- * @package PHPAccounting\MyobEssentials\Message\Contacts\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials
  */
 class UpdateContactRequest extends AbstractRequest
 {

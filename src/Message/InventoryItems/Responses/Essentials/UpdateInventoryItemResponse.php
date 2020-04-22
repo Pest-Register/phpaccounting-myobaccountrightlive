@@ -7,6 +7,10 @@ use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 
+/**
+ * Update InventoryItems(s) Response
+ * @package PHPAccounting\MyobEssentials\Message\InventoryItems\Responses\Essentials
+ */
 class UpdateInventoryItemResponse extends AbstractResponse
 {
     /**
