@@ -1,19 +1,22 @@
 <?php
 
+namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\NewEssentials;
 
-namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\AccountRight;
-
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight\GetInvoiceUIDsResponse;
+use PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\NewEssentials\GetPaymentResponse;
 
-class GetInvoiceUIDsRequest extends AbstractRequest
+/**
+ * Get Payment(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials
+ */
+class GetPaymentRequest extends AbstractRequest
 {
 
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value
-     * @return GetInvoiceUIDsRequest
+     * @return GetPaymentRequest
      */
     public function setAccountingID($value) {
         return $this->setParameter('accounting_id', $value);
@@ -22,7 +25,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetInvoiceUIDsRequest
+     * @return GetPaymentRequest
      */
     public function setPage($value) {
         return $this->setParameter('page', $value);
@@ -54,7 +57,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetInvoiceUIDsRequest
+     * @return GetPaymentRequest
      */
     public function setSkip($value) {
         return $this->setParameter('skip', $value);
@@ -75,7 +78,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'Sale/Invoice';
+        $endpoint = 'Sale/CustomerPayment/';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
@@ -98,6 +101,6 @@ class GetInvoiceUIDsRequest extends AbstractRequest
 
     protected function createResponse($data, $headers = [])
     {
-        return $this->response = new GetInvoiceUIDsResponse($this, $data);
+        return $this->response = new GetPaymentResponse($this, $data);
     }
 }

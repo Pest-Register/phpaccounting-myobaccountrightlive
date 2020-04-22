@@ -1,19 +1,23 @@
 <?php
 
+namespace PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\NewEssentials;
 
-namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\AccountRight;
-
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight\GetInvoiceUIDsResponse;
+use PHPAccounting\MyobAccountRightLive\Message\TaxRates\Responses\NewEssentials\GetTaxRateResponse;
 
-class GetInvoiceUIDsRequest extends AbstractRequest
+
+/**
+ * Get Tax Rate(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\NewEssentials
+ */
+class GetTaxRateRequest extends AbstractRequest
 {
 
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value
-     * @return GetInvoiceUIDsRequest
+     * @return GetTaxRateRequest
      */
     public function setAccountingID($value) {
         return $this->setParameter('accounting_id', $value);
@@ -22,14 +26,14 @@ class GetInvoiceUIDsRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetInvoiceUIDsRequest
+     * @return GetTaxRateRequest
      */
     public function setPage($value) {
         return $this->setParameter('page', $value);
     }
 
     /**
-     * Return Accounting ID (UID)
+     * Return Accounting IDs (UID)
      * @return mixed comma-delimited-string
      */
     public function getAccountingID() {
@@ -54,7 +58,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetInvoiceUIDsRequest
+     * @return GetTaxRateRequest
      */
     public function setSkip($value) {
         return $this->setParameter('skip', $value);
@@ -75,7 +79,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'Sale/Invoice';
+        $endpoint = 'GeneralLedger/TaxCode/';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
@@ -98,6 +102,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
 
     protected function createResponse($data, $headers = [])
     {
-        return $this->response = new GetInvoiceUIDsResponse($this, $data);
+        return $this->response = new GetTaxRateResponse($this, $data);
     }
+
 }

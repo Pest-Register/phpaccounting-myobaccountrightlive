@@ -1,14 +1,14 @@
 <?php
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\AccountRight;
+
 use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight\GetInvoiceResponse;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\AccountRight\GetPaymentResponse;
 
 /**
- * Get Invoice(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests
+ * Get Payment(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\AccountRight
  */
 class GetPaymentRequest extends AbstractRequest
 {

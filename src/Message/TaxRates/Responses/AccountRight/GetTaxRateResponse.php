@@ -6,8 +6,8 @@ use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
 
 /**
- * Get ContactGroup(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\ContactGroups\Responses
+ * Get TaxRate(s) Response
+ * @package PHPAccounting\MyobAccountRightLive\Message\TaxRates\Responses\AccountRight
  */
 class GetTaxRateResponse extends AbstractResponse
 {

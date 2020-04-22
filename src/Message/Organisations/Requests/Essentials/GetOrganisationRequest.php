@@ -4,8 +4,8 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\Esse
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\Essentials\GetOrganisationResponse;
 /**
- * Get Contact(s)
- * @package PHPAccounting\MyobEssentials\Message\Contacts\Requests
+ * Get Organisation(s)
+ * @package PHPAccounting\MyobEssentials\Message\Contacts\Requests\Essentials
  */
 class GetOrganisationRequest extends AbstractRequest
 {

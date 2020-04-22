@@ -1,19 +1,37 @@
 <?php
 
-
-namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\AccountRight;
-
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
+namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight\GetInvoiceUIDsResponse;
+use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials\GetInvoiceResponse;
 
-class GetInvoiceUIDsRequest extends AbstractRequest
+/**
+ * Get Invoice(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials
+ */
+class GetInvoiceRequest extends AbstractRequest
 {
+
+    /**
+     * Set Invoice Type from Parameter Bag
+     * @param $value
+     * @return GetInvoiceRequest
+     */
+    public function setInvoiceType($value) {
+        return $this->setParameter('invoice_type', $value);
+    }
+
+    /**
+     * Get Invoice Type from Parameter Bag
+     */
+    public function getInvoiceType() {
+        return $this->getParameter('invoice_type');
+    }
 
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value
-     * @return GetInvoiceUIDsRequest
+     * @return GetInvoiceRequest
      */
     public function setAccountingID($value) {
         return $this->setParameter('accounting_id', $value);
@@ -22,7 +40,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetInvoiceUIDsRequest
+     * @return GetInvoiceRequest
      */
     public function setPage($value) {
         return $this->setParameter('page', $value);
@@ -54,7 +72,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
     /**
      * Set Page Value for Pagination from Parameter Bag
      * @param $value
-     * @return GetInvoiceUIDsRequest
+     * @return GetInvoiceRequest
      */
     public function setSkip($value) {
         return $this->setParameter('skip', $value);
@@ -75,7 +93,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'Sale/Invoice';
+        $endpoint = 'Sale/Invoice/'.$this->getInvoiceType().'/';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
@@ -98,6 +116,6 @@ class GetInvoiceUIDsRequest extends AbstractRequest
 
     protected function createResponse($data, $headers = [])
     {
-        return $this->response = new GetInvoiceUIDsResponse($this, $data);
+        return $this->response = new GetInvoiceResponse($this, $data);
     }
 }

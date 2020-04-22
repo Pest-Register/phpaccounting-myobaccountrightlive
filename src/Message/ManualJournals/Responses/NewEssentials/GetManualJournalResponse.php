@@ -1,13 +1,13 @@
 <?php
 
-namespace PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Responses\AccountRight;
+namespace PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Responses\NewEssentials;
 
 use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
 /**
  * Get Manual Journal(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\AccountRight
+ * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\NewEssentials
  */
 class GetManualJournalResponse extends AbstractResponse
 {

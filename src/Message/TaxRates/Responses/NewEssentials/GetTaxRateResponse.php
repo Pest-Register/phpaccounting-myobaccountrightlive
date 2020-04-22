@@ -1,18 +1,17 @@
 <?php
 
-
-namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight;
-
+namespace PHPAccounting\MyobAccountRightLive\Message\TaxRates\Responses\NewEssentials;
 
 use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
 /**
- * Get Invoice UIDs Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight
+ * Get Tax Rate(s) Response
+ * @package PHPAccounting\MyobAccountRightLive\Message\TaxRates\Responses\NewEssentials
  */
-class GetInvoiceUIDsResponse extends AbstractResponse
+class GetTaxRateResponse extends AbstractResponse
 {
+
     /**
      * Check Response for Error or Success
      * @return boolean
@@ -54,27 +53,26 @@ class GetInvoiceUIDsResponse extends AbstractResponse
     }
 
     /**
-     * Return all Invoices with Generic Schema Variable Assignment
+     * Return all Accounts with Generic Schema Variable Assignment
      * @return array
      */
-    public function getInvoiceUIDs(){
-        $invoices = [];
-        foreach ($this->data['Items'] as $invoice) {
-            $newInvoice = [];
-            $newInvoice['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $invoice);
-            $newInvoice['URI'] = IndexSanityCheckHelper::indexSanityCheck('URI', $invoice);
-            if (array_key_exists('URI', $invoice)) {
-                $splitURI = explode('/', $invoice['URI']);
-                array_pop($splitURI);
-                $newInvoice['URI'] = implode('/', $splitURI);
-                $newInvoice['URI'] = strstr($newInvoice['URI'], '/Sale');
-            }
+    public function getTaxRates(){
+        $taxRates = [];
 
-
-            array_push($invoices, $newInvoice);
+        foreach ($this->data['Items'] as $taxRate) {
+            $newTaxRate = [];
+            $newTaxRate['accounting_id'] =  IndexSanityCheckHelper::indexSanityCheck('UID', $taxRate);
+            $newTaxRate['name'] = IndexSanityCheckHelper::indexSanityCheck('Description', $taxRate);
+            $newTaxRate['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $taxRate);
+            $newTaxRate['rate'] = IndexSanityCheckHelper::indexSanityCheck('Rate', $taxRate);
+            $newTaxRate['is_asset'] = true;
+            $newTaxRate['is_equity'] = true;
+            $newTaxRate['is_expense'] = true;
+            $newTaxRate['is_liability'] = true;
+            $newTaxRate['is_revenue'] = true;
+            array_push($taxRates, $newTaxRate);
         }
 
-        return $invoices;
+        return $taxRates;
     }
-    
 }

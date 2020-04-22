@@ -1,15 +1,15 @@
 <?php
 
 
-namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight;
+namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials;
 
 
 use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
 /**
- * Get Invoice UIDs Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight
+ * Get Invoice UIDs
+ * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials
  */
 class GetInvoiceUIDsResponse extends AbstractResponse
 {

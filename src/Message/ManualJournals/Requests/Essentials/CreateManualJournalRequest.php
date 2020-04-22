@@ -12,6 +12,10 @@ use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\GetA
 use PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\Essentials\GetJournalResponse;
 use PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Responses\Essentials\CreateManualJournalResponse;
 
+/**
+ * Get Manual Journal(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\Essentials
+ */
 class CreateManualJournalRequest extends AbstractRequest
 {
     /**

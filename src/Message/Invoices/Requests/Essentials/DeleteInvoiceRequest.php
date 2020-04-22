@@ -9,7 +9,7 @@ use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\Essentials\Del
 
 /**
  * Delete Invoice
- * @package PHPAccounting\MyobEssentials\Message\Invoices\Requests
+ * @package PHPAccounting\MyobEssentials\Message\Invoices\Requests\Essentials
  */
 class DeleteInvoiceRequest extends AbstractRequest
 {

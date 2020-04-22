@@ -1,14 +1,13 @@
 <?php
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\Essentials;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
+
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\Essentials\CreatePaymentResponse;
 
 /**
- * Create Account(s)
- * @package PHPAccounting\MyobEssentials\Message\Accounts\Requests
+ * Create Payment(s)
+ * @package PHPAccounting\MyobEssentials\Message\Accounts\Requests\Essentials
  */
 class CreatePaymentRequest extends AbstractRequest
 {

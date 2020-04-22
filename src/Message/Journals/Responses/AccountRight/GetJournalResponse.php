@@ -7,7 +7,7 @@ use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelp
 
 /**
  * Get Journal(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Responses
+ * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\AccountRight
  */
 class GetJournalResponse extends AbstractResponse
 {

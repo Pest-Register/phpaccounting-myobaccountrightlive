@@ -3,15 +3,13 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\AccountRight;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\AccountRight\GetAccountResponse;
 use PHPAccounting\MyobAccountRightLive\Message\TaxRates\Responses\AccountRight\GetTaxRateResponse;
 
 
 /**
  * Get Tax Rate(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\AccountRight
  */
 class GetTaxRateRequest extends AbstractRequest
 {

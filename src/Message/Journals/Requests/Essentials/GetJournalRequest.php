@@ -9,6 +9,10 @@ use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\GetAccountRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\Essentials\GetJournalResponse;
 
+/**
+ * Get Journal(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\Essentials
+ */
 class GetJournalRequest extends AbstractRequest
 {
     /**

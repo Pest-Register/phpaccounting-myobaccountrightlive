@@ -6,7 +6,7 @@ use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\AccountRight\GetOrganisationResponse;
 /**
  * Get Organisation(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight
  */
 class GetOrganisationRequest extends AbstractRequest
 {

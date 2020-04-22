@@ -8,7 +8,7 @@ use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper
 
 /**
  * Create Invoice(s) Response
- * @package PHPAccounting\MyobEssentials\Message\Invoices\Responses
+ * @package PHPAccounting\MyobEssentials\Message\Invoices\Responses\Essentials
  */
 class CreateInvoiceResponse extends AbstractResponse
 {

@@ -1,15 +1,15 @@
 <?php
 
-namespace PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Responses\AccountRight;
+namespace PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\NewEssentials;
 
 use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
 /**
- * Get Manual Journal(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\AccountRight
+ * Get Journal(s) Response
+ * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\NewEssentials
  */
-class GetManualJournalResponse extends AbstractResponse
+class GetJournalResponse extends AbstractResponse
 {
 
     /**
@@ -61,7 +61,6 @@ class GetManualJournalResponse extends AbstractResponse
                 $newJournalItem['gross_amount'] = 0;
                 $newJournalItem['net_amount'] = 0;
                 $newJournalItem['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('RowID', $journalItem);
-                $newJournalItem['description'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $journalItem);
                 $newJournalItem['is_credit'] = IndexSanityCheckHelper::indexSanityCheck('IsCredit', $journalItem);
                 if (array_key_exists('Account', $journalItem)) {
                     $newJournalItem['account_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journalItem['Account']);
@@ -74,12 +73,12 @@ class GetManualJournalResponse extends AbstractResponse
                 }
                 $newJournalItem['tax_amount'] = IndexSanityCheckHelper::indexSanityCheck('TaxAmount', $journalItem);
                 $newJournalItem['gross_amount'] = IndexSanityCheckHelper::indexSanityCheck('Amount', $journalItem);
-
                 if (array_key_exists('tax_amount', $journalItem)) {
                     $newJournalItem['net_amount'] = (float) $newJournalItem['tax_amount'] + (float) $newJournalItem['gross_amount'];
                 } else {
                     $newJournalItem['net_amount'] = (float) $newJournalItem['gross_amount'];
                 }
+
                 array_push($journalItems, $newJournalItem);
             }
 
@@ -92,14 +91,21 @@ class GetManualJournalResponse extends AbstractResponse
      * Return all Accounts with Generic Schema Variable Assignment
      * @return array
      */
-    public function getManualJournals(){
+    public function getJournals(){
         $journals = [];
         foreach ($this->data['Items'] as $journal) {
             $newJournal = [];
             $newJournal['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journal);
             $newJournal['date'] = IndexSanityCheckHelper::indexSanityCheck('DateOccurred', $journal);
             $newJournal['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $journal);
-            $newJournal['narration'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $journal);
+
+            if (array_key_exists('SourceTransaction', $journal)) {
+                if ($journal['SourceTransaction']) {
+                    $newJournal['source_type'] = IndexSanityCheckHelper::indexSanityCheck('TransactionType', $journal['SourceTransaction']);
+                    $newJournal['source_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journal['SourceTransaction']);
+                }
+
+            }
 
             if (array_key_exists('Lines', $journal)) {
                 if ($journal['Lines']) {

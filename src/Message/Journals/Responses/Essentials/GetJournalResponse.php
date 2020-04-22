@@ -8,6 +8,10 @@ use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 
+/**
+ * Get Journal(s) Response
+ * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\Essentials
+ */
 class GetJournalResponse extends AbstractResponse
 {
 

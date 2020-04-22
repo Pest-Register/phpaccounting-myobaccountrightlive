@@ -7,7 +7,7 @@ use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper
 
 /**
  * Get Organisation(s) Response
- * @package PHPAccounting\MyobEssentials\Message\Organisations\Responses
+ * @package PHPAccounting\MyobEssentials\Message\Organisations\Responses\Essentials
  */
 class GetOrganisationResponse extends AbstractResponse
 {

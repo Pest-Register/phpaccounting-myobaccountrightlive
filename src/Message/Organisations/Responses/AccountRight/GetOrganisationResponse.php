@@ -5,8 +5,8 @@ use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
 
 /**
- * Get Contact(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses
+ * Get Organisation(s) Response
+ * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\AccountRight
  */
 class GetOrganisationResponse extends AbstractResponse
 {

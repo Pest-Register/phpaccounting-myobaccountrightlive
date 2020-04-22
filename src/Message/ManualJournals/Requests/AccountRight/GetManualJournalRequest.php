@@ -8,8 +8,8 @@ use PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Responses\AccountR
 
 
 /**
- * Get Account(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Requests
+ * Get Manual Journal(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\AccountRight
  */
 class GetManualJournalRequest extends AbstractRequest
 {

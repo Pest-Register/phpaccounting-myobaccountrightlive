@@ -1,13 +1,13 @@
 <?php
 
-namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\AccountRight;
+namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\NewEssentials;
 
 use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
 /**
  * Get Payment(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight
+ * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials
  */
 class GetPaymentResponse extends AbstractResponse
 {

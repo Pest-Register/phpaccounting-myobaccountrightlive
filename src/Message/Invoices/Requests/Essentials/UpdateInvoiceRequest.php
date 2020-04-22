@@ -11,7 +11,7 @@ use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\Essentials\Cre
 
 /**
  * Create Invoice
- * @package PHPAccounting\MyobEssentials\Message\Invoices\Requests
+ * @package PHPAccounting\MyobEssentials\Message\Invoices\Requests\Essentials
  */
 class UpdateInvoiceRequest extends AbstractRequest
 {

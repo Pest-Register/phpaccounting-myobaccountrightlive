@@ -1,12 +1,17 @@
 <?php
 
 
-namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\AccountRight;
+namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
+
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight\GetInvoiceUIDsResponse;
+use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials\GetInvoiceUIDsResponse;
 
+/**
+ * Get Invoice UIDs
+ * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials
+ */
 class GetInvoiceUIDsRequest extends AbstractRequest
 {
 

@@ -10,8 +10,8 @@ use PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\AccountRight\G
 
 
 /**
- * Get Account(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Requests
+ * Get Journal(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\AccountRight
  */
 class GetJournalRequest extends AbstractRequest
 {

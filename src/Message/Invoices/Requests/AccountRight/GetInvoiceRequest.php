@@ -7,7 +7,7 @@ use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight\G
 
 /**
  * Get Invoice(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\AccountRight
  */
 class GetInvoiceRequest extends AbstractRequest
 {

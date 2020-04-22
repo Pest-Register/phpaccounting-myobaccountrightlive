@@ -7,8 +7,8 @@ use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 
 /**
- * Get ContactGroup(s) Response
- * @package PHPAccounting\MyobEssentials\Message\ContactGroups\Responses
+ * Get TaxRate(s) Response
+ * @package PHPAccounting\MyobEssentials\Message\TaxRates\Responses\Essentials
  */
 class GetTaxRateResponse extends AbstractResponse
 {
