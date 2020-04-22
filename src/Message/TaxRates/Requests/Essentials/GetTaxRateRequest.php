@@ -3,9 +3,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\Essentials;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\Essentials\GetAccountResponse;
 use PHPAccounting\MyobAccountRightLive\Message\TaxRates\Responses\Essentials\GetTaxRateResponse;
 
 

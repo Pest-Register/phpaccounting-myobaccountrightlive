@@ -4,7 +4,6 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\Essentia
 
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\ErrorResponseHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 
 /**
  * Create Payment(s) Response

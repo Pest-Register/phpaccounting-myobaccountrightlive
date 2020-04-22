@@ -3,13 +3,11 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityInsertionHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\Essentials\CreateInventoryItemResponse;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\Essentials\CreateInvoiceResponse;
 
 /**
- * Create Invoice
+ * Create Invoice(s)
  * @package PHPAccounting\MyobEssentials\Message\Invoices\Requests\Essentials
  */
 class CreateInvoiceRequest extends AbstractRequest

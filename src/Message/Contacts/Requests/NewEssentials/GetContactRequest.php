@@ -4,6 +4,7 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssent
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\NewEssentials\GetContactResponse;
+
 /**
  * Get Contact(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials

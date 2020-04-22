@@ -7,6 +7,10 @@ use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 
+/**
+ * Update Account(s) Response
+ * @package PHPAccounting\MyobEssentials\Message\Accounts\Responses\Essentials
+ */
 class UpdateAccountResponse extends AbstractResponse
 {
     /**

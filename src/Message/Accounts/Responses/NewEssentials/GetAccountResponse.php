@@ -7,7 +7,7 @@ use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHel
 
 /**
  * Get Accounts(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\NewEssentials\Responses
+ * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\NewEssentials
  */
 class GetAccountResponse extends AbstractResponse
 {

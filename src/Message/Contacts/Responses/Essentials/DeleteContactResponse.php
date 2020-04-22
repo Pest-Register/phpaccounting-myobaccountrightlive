@@ -4,7 +4,6 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentia
 
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\ErrorResponseHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 
 /**
  * Delete Contact(s) Response

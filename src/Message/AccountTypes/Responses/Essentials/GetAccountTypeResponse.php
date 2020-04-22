@@ -8,7 +8,7 @@ use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper
 
 /**
  * Get AccountType(s) Response
- * @package PHPAccounting\MyobEssentials\Message\AccountTypes\Responses
+ * @package PHPAccounting\MyobEssentials\Message\AccountTypes\Responses\Essentials
  */
 class GetAccountTypeResponse extends AbstractResponse
 {

@@ -7,6 +7,10 @@ use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\AccountRight\GetInvoiceUIDsResponse;
 
+/**
+ * Get Invoice UID(s)
+ * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\AccountRight
+ */
 class GetInvoiceUIDsRequest extends AbstractRequest
 {
 

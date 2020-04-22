@@ -4,7 +4,7 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essential
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials\DeleteContactResponse;
-use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials\GetContactResponse;
+
 /**
  * Delete Contact(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials

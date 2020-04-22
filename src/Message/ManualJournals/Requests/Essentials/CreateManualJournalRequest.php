@@ -3,13 +3,8 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Requests\Essentials;
 
-
-use Carbon\Carbon;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\GetAccountRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\Essentials\GetJournalResponse;
 use PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Responses\Essentials\CreateManualJournalResponse;
 
 /**

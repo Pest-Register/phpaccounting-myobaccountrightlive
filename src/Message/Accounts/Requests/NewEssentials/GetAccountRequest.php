@@ -9,7 +9,7 @@ use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\NewEssentials\
 
 /**
  * Get Account(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\NewEssentials\Requests
+ * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials
  */
 class GetAccountRequest extends AbstractRequest
 {

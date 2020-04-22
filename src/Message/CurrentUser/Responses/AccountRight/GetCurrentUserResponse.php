@@ -2,11 +2,10 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Responses\AccountRight;
 
 use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
 
 /**
  * Get Contact(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses
+ * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\AccountRight
  */
 class GetCurrentUserResponse extends AbstractResponse
 {

@@ -3,9 +3,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\AccountRight;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\AccountRight\GetAccountResponse;
 use PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\AccountRight\GetJournalResponse;
 
 

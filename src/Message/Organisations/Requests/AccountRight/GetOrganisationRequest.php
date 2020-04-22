@@ -1,7 +1,6 @@
 <?php
 namespace PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\AccountRight;
 
-use Omnipay\Common\Message\ResponseInterface;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\AccountRight\GetOrganisationResponse;
 /**

@@ -6,7 +6,6 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\Essential
 
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\GetAccountRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\Essentials\GetJournalResponse;
 
 /**

@@ -4,9 +4,7 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityInsertionHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\Essentials\CreateInventoryItemResponse;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\Essentials\CreateInvoiceResponse;
 
 /**

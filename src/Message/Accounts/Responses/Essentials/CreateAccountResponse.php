@@ -7,7 +7,7 @@ use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\ErrorResponseHelper;
 /**
  * Create Account(s) Response
- * @package PHPAccounting\MyobEssentials\Message\ContactGroups\Responses
+ * @package PHPAccounting\MyobEssentials\Message\Accounts\Responses\Essentials
  */
 class CreateAccountResponse extends AbstractResponse
 {

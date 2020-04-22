@@ -1,17 +1,15 @@
 <?php
 
-namespace PHPAccounting\MyobAccountRightLive\Message\AccountTypes\Requests;
+namespace PHPAccounting\MyobAccountRightLive\Message\AccountTypes\Requests\Essentials;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\Essentials\GetAccountResponse;
 use PHPAccounting\MyobAccountRightLive\Message\AccountTypes\Responses\Essentials\GetAccountTypeResponse;
 
 
 /**
  * Get AccountType(s)
- * @package PHPAccounting\MyobEssentials\Message\Accounts\Requests
+ * @package PHPAccounting\MyobEssentials\Message\Accounts\Requests\Essentials
  */
 class GetAccountTypeRequest extends AbstractRequest
 {

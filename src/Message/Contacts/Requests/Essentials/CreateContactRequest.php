@@ -5,7 +5,6 @@ use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials\CreateContactResponse;
-use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials\GetContactResponse;
 
 /**
  * Create Contact(s)
