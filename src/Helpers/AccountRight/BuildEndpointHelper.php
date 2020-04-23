@@ -16,7 +16,6 @@ class BuildEndpointHelper
         $prefix = '?$';
         $skipPrefix = '&$';
         $endpoint = $endpoint . $prefix."top=".$page.$skipPrefix.'skip='.$skip;
-        var_dump($endpoint);
         return $endpoint;
     }
 

@@ -99,7 +99,6 @@ class GetContactRequest extends AbstractRequest
 
     protected function createResponse($data, $headers = [])
     {
-        var_dump($data);
         return $this->response = new GetContactResponse($this, $data);
     }
 
