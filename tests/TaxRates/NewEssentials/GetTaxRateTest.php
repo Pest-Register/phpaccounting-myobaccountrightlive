@@ -15,7 +15,8 @@ class GetTaxRateTest extends BaseTest
         try {
             $params = [
                 'accounting_id' => "",
-                'page' => 1000
+                'page' => 1000,
+                'skip' => 0
             ];
 
             $response = $this->gateway->getTaxRate($params)->send();

@@ -70,7 +70,7 @@ class GetContactRequest extends AbstractRequest
             return $this->getParameter('skip');
         }
 
-        return 1;
+        return 0;
     }
 
     public function getEndpoint()
@@ -99,6 +99,7 @@ class GetContactRequest extends AbstractRequest
 
     protected function createResponse($data, $headers = [])
     {
+        var_dump($data);
         return $this->response = new GetContactResponse($this, $data);
     }
 

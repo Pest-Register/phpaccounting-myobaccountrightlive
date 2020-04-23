@@ -18,7 +18,8 @@ class GetContactTest extends BaseTest
         $this->setUp();
         $params = [
             'accounting_id' => "",
-            'page' => 2000
+            'page' => 1000,
+            'skip' => 0
         ];
 
         try {

@@ -74,7 +74,7 @@ class GetInvoiceUIDsRequest extends AbstractRequest
             return $this->getParameter('skip');
         }
 
-        return 1;
+        return 0;
     }
 
     public function getEndpoint()

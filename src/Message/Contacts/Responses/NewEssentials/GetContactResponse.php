@@ -209,6 +209,7 @@ class GetContactResponse extends AbstractResponse
      * @return array
      */
     public function getContacts(){
+        var_dump($this->data);
         $contacts = [];
         foreach ($this->data['Items'] as $contact) {
             $newContact = [];
