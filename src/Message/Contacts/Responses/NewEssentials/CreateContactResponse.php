@@ -34,14 +34,15 @@ class CreateContactResponse extends AbstractResponse
      */
     public function getErrorMessage()
     {
-        if ($this->data) {
-            if (array_key_exists('errors', $this->data)) {
-                return ErrorResponseHelper::parseErrorResponse($this->data['errors'][0]['message'], 'Contact');
-            }
+        if (array_key_exists('Errors', $this->data)) {
+            return ErrorResponseHelper::parseErrorResponse($this->data['Errors'][0]['Message'], 'Contact');
         } else {
-            return 'NULL returned from API';
+            if (array_key_exists('Items', $this->data)) {
+                if (count($this->data['Items']) == 0) {
+                    return 'NULL Returned from API or End of Pagination';
+                }
+            }
         }
-
         return null;
     }
 

@@ -126,6 +126,26 @@ class Gateway extends AbstractGateway
     }
 
     /**
+     * Create Contact
+     * @param array $parameters
+     * @bodyParam array $parameters
+     * @bodyParam parameters.page int optional Page Index for Pagination
+     * @bodyParam parameters.accountingIDs array optional Array of GUIDs for Contact Retrieval / Filtration
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function createContact(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight\CreateContactRequest::class;
+        }
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\CreateContactRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    /**
      * Invoice Requests
      * @param array $parameters
      * @return \Omnipay\Common\Message\AbstractRequest
@@ -162,12 +182,6 @@ class Gateway extends AbstractGateway
         return $this->createRequest($class, $parameters);
     }
 
-    /**
-     * Account Requests
-     * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
-     */
-
     public function createAccount(array $parameters = []) {
         $accessFlag = $this->getAccessFlag();
         $class = '';
@@ -176,6 +190,18 @@ class Gateway extends AbstractGateway
         }
         if ($accessFlag == 2 || $accessFlag == 3) {
             $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\CreateAccountRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    public function updateAccount(array $parameters = []) {
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($accessFlag == 1) {
+//            $class = \PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\AccountRight\UpdateAccountRequest::class;
+        }
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\UpdateAccountRequest::class;
         }
         return $this->createRequest($class, $parameters);
     }

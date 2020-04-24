@@ -3,6 +3,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\NewEssentials;
 
 use Omnipay\Common\Message\AbstractResponse;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
 /**
@@ -36,21 +37,17 @@ class GetAccountResponse extends AbstractResponse
     public function getErrorMessage()
     {
         if (array_key_exists('Errors', $this->data)) {
-            if ($this->data['Errors'][0]['Message'] === 'The supplied OAuth token (Bearer) is not valid') {
-                return 'The access token has expired';
-            }
-            else {
-                return $this->data['Errors'][0]['Message'];
-            }
-        }
-        if (array_key_exists('Items', $this->data)) {
-            if (count($this->data['Items']) === 0) {
-                return 'NULL Returned from API or End of Pagination';
+            return ErrorResponseHelper::parseErrorResponse($this->data['Errors'][0]['Message'], 'Account');
+        } else {
+            if (array_key_exists('Items', $this->data)) {
+                if (count($this->data['Items']) == 0) {
+                    return 'NULL Returned from API or End of Pagination';
+                }
             }
         }
-
         return null;
     }
+
     /**
      * Return all Accounts with Generic Schema Variable Assignment
      * @return array
@@ -64,6 +61,8 @@ class GetAccountResponse extends AbstractResponse
             $newAccount['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $account);
             $newAccount['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $account);
             $newAccount['type'] = IndexSanityCheckHelper::indexSanityCheck('Type', $account);
+            $newAccount['is_header'] = IndexSanityCheckHelper::indexSanityCheck('IsHeader', $account);
+            $newAccount['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $account);
 
             if (array_key_exists('Type', $account)) {
                 if ($account['Type']) {
@@ -80,6 +79,12 @@ class GetAccountResponse extends AbstractResponse
             if (array_key_exists('TaxCode', $account)) {
                 if ($account['TaxCode']) {
                     $newAccount['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $account['TaxCode']);
+                }
+            }
+
+            if (array_key_exists('ParentAccount', $account)) {
+                if ($account['ParentAccount']) {
+                    $newAccount['accounting_parent_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $account['ParentAccount']);
                 }
             }
             array_push($accounts, $newAccount);

@@ -1,15 +1,19 @@
 <?php
 
-namespace Tests;
-use Faker;
 
-class CreateAccountTest extends BaseTest
+namespace Tests\Accounts\NewEssentials;
+
+
+use Tests\BaseTest;
+
+class UpdateAccountTest extends BaseTest
 {
-    public function testCreateAccount(){
+    public function testUpdateAccount(){
         $this->setUp();
         try {
 
             $params = [
+                'accounting_id' => '77d77139-e1cf-46d6-8a22-2392d5c24579',
                 'code' => 002,
                 'name' => 'PESTREGISTER_Sales',
                 'type' => 'Bank',
@@ -22,7 +26,7 @@ class CreateAccountTest extends BaseTest
                 'is_header' => false
             ];
 
-            $response = $this->gateway->createAccount($params)->send();
+            $response = $this->gateway->updateAccount($params)->send();
             if ($response->isSuccessful()) {
                 $this->assertIsArray($response->getData());
                 var_dump($response->getAccounts());

@@ -2,6 +2,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\NewEssentials;
 
 use Omnipay\Common\Message\AbstractResponse;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
 /**
@@ -35,19 +36,14 @@ class GetContactResponse extends AbstractResponse
     public function getErrorMessage()
     {
         if (array_key_exists('Errors', $this->data)) {
-            if ($this->data['Errors'][0]['Message'] === 'The supplied OAuth token (Bearer) is not valid') {
-                return 'The access token has expired';
-            }
-            else {
-                return $this->data['Errors'][0]['Message'];
-            }
-        }
-        if (array_key_exists('Items', $this->data)) {
-            if (count($this->data['Items']) === 0) {
-                return 'NULL Returned from API or End of Pagination';
+            return ErrorResponseHelper::parseErrorResponse($this->data['Errors'][0]['Message'], 'Contact');
+        } else {
+            if (array_key_exists('Items', $this->data)) {
+                if (count($this->data['Items']) == 0) {
+                    return 'NULL Returned from API or End of Pagination';
+                }
             }
         }
-
         return null;
     }
 
@@ -209,6 +205,7 @@ class GetContactResponse extends AbstractResponse
      * @return array
      */
     public function getContacts(){
+        var_dump($this->data);
         $contacts = [];
         foreach ($this->data['Items'] as $contact) {
             $newContact = [];

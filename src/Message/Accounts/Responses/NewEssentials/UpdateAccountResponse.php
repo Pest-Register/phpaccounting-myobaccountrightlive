@@ -3,13 +3,13 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\NewEssentials;
 
+
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
-class CreateAccountResponse extends AbstractResponse
+class UpdateAccountResponse extends AbstractResponse
 {
-
     /**
      * Check Response for Error or Success
      * @return boolean
@@ -42,6 +42,7 @@ class CreateAccountResponse extends AbstractResponse
                 }
             }
         }
+
         return null;
     }
 

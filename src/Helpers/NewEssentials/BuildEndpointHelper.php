@@ -12,6 +12,11 @@ class BuildEndpointHelper
         return $endpoint;
     }
 
+    public static function createForGUID($endpoint, $guid) {
+        $endpoint = $endpoint.'/'.$guid;
+        return $endpoint;
+    }
+
     public static function paginate($endpoint, $page, $skip) {
         $prefix = '?$';
         $skipPrefix = '&$';

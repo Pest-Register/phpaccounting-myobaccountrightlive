@@ -182,27 +182,44 @@ class CreateContactRequest extends AbstractRequest
 
     /**
      * @param $addresses
+     * @param $phones
+     * @param $data
+     */
+    public function parsePhonesAndAddresses($addresses, $phones, $data) {
+        // Check addresses and phones length
+        $addressCount = count($addresses);
+        $phoneCount = count($phones);
+
+
+
+    }
+
+    /**
+     * @param $addresses
      * @return
      */
     private function parseAddresses($addresses,$data) {
+        $data['Addresses'] = [];
         foreach($addresses as $address) {
             $newAddress = [];
-            $newAddress['addressLine1'] = IndexSanityCheckHelper::indexSanityCheck('address_line_1', $address);
-            $newAddress['addressLine2'] = IndexSanityCheckHelper::indexSanityCheck('address_line_2', $address);
-            $newAddress['suburb'] = IndexSanityCheckHelper::indexSanityCheck('city', $address);
-            $newAddress['state'] = IndexSanityCheckHelper::indexSanityCheck('state', $address);
-            $newAddress['country'] = IndexSanityCheckHelper::indexSanityCheck('country', $address);
-            $newAddress['postCode'] = IndexSanityCheckHelper::indexSanityCheck('postal_code', $address);
-            if ($newAddress !== []) {
-                switch($address['type']) {
-                    case 'PRIMARY':
-                        $data['shippingAddress'] = $newAddress;
-                        break;
-                    case 'BILLING':
-                        $data['billingAddress'] = $newAddress;
-                        break;
-                }
-            }
+//            $newAddress['addressLine1'] = IndexSanityCheckHelper::indexSanityCheck('address_line_1', $address);
+//            $newAddress['addressLine2'] = IndexSanityCheckHelper::indexSanityCheck('address_line_2', $address);
+//            $newAddress['suburb'] = IndexSanityCheckHelper::indexSanityCheck('city', $address);
+//            $newAddress['state'] = IndexSanityCheckHelper::indexSanityCheck('state', $address);
+//            $newAddress['country'] = IndexSanityCheckHelper::indexSanityCheck('country', $address);
+//            $newAddress['postCode'] = IndexSanityCheckHelper::indexSanityCheck('postal_code', $address);
+            $newAddress['Phone1'] = '0435567535';
+            array_push($newAddress, $data['Addresses']);
+//            if ($newAddress !== []) {
+//                switch($address['type']) {
+//                    case 'PRIMARY':
+//                        $data['shippingAddress'] = $newAddress;
+//                        break;
+//                    case 'BILLING':
+//                        $data['billingAddress'] = $newAddress;
+//                        break;
+//                }
+//            }
         }
 
         return $data;
@@ -254,23 +271,22 @@ class CreateContactRequest extends AbstractRequest
     public function getData()
     {
         $this->validate('name');
-        $this->issetParam('name', 'name');
-        $this->issetParam('firstName', 'first_name');
-        $this->issetParam('lastName', 'last_name');
-        $this->issetParam('email', 'email_address');
-        $this->issetParam('website', 'website');
-        $this->issetParam('indvidiual', 'is_individual');
+        $this->issetParam('DisplayID', 'name');
+        $this->issetParam('FirstName', 'first_name');
+        $this->issetParam('LastName', 'last_name');
+//        $this->issetParam('email', 'email_address');
+        $this->issetParam('IsIndividual', 'is_individual');
 
         if ($this->getStatus() !== null) {
-            $this->data['active'] = ($this->getStatus() === 'ACTIVE' ? true : false);
+            $this->data['IsActive'] = ($this->getStatus() === 'ACTIVE' ? true : false);
         }
-        if ($this->getType() !== null) {
-            $this->data = $this->parseTypes($this->getType(), $this->data);
-        }
+//        if ($this->getType() !== null) {
+//            $this->data = $this->parseTypes($this->getType(), $this->data);
+//        }
 
-        if ($this->getPhones() !== null) {
-            $this->data = $this->parsePhones($this->getPhones(), $this->data);
-        }
+//        if ($this->getPhones() !== null) {
+//            $this->data = $this->parsePhones($this->getPhones(), $this->data);
+//        }
 
         if ($this->getAddresses() !== null) {
             $this->data = $this->parseAddresses($this->getAddresses(), $this->data);
@@ -281,7 +297,7 @@ class CreateContactRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'contacts';
+        $endpoint = 'Contact/Customer';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
