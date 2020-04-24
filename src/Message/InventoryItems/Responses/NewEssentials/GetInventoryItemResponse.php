@@ -127,6 +127,7 @@ class GetInventoryItemResponse extends AbstractResponse
             $newItem['selling_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
             $newItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('QuantityAvailable', $item);
             $newItem['cost_pool'] = IndexSanityCheckHelper::indexSanityCheck('AverageCost', $item);
+            $newItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $item);
             $newItem = $this->parsePurchaseDetails($item, $newItem);
             $newItem = $this->parseSellingDetails($item, $newItem);
             $newItem = $this->parseAssetDetails($item, $newItem);

@@ -83,6 +83,7 @@ class GetInvoiceResponse extends AbstractResponse
                 $newLineItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('ShipQuantity', $lineItem);
                 $newLineItem['discount_rate'] = IndexSanityCheckHelper::indexSanityCheck('DiscountPercent', $lineItem);;
                 $newLineItem['amount'] = IndexSanityCheckHelper::indexSanityCheck('Total', $lineItem);
+                $newLineItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $lineItem);
 
                 if (array_key_exists('TaxCode', $lineItem)) {
                     if ($lineItem['TaxCode']) {

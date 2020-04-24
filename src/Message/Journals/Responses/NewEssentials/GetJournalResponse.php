@@ -94,6 +94,7 @@ class GetJournalResponse extends AbstractResponse
             $newJournal['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journal);
             $newJournal['date'] = IndexSanityCheckHelper::indexSanityCheck('DateOccurred', $journal);
             $newJournal['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $journal);
+            $newJournal['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $journal);
 
             if (array_key_exists('SourceTransaction', $journal)) {
                 if ($journal['SourceTransaction']) {

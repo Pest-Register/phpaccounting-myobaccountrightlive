@@ -53,7 +53,8 @@ class CreateContactResponse extends AbstractResponse
      */
     public function getContacts(){
         $contacts = [];
-        $contact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('uid', $this->data);
+        $contact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $this->data);
+        $contact['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $this->data);
         array_push($contacts, $contact);
         return $contacts;
     }

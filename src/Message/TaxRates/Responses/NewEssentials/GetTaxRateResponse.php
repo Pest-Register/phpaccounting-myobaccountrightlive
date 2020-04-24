@@ -61,11 +61,13 @@ class GetTaxRateResponse extends AbstractResponse
             $newTaxRate['name'] = IndexSanityCheckHelper::indexSanityCheck('Description', $taxRate);
             $newTaxRate['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $taxRate);
             $newTaxRate['rate'] = IndexSanityCheckHelper::indexSanityCheck('Rate', $taxRate);
+            $newTaxRate['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $taxRate);
             $newTaxRate['is_asset'] = true;
             $newTaxRate['is_equity'] = true;
             $newTaxRate['is_expense'] = true;
             $newTaxRate['is_liability'] = true;
             $newTaxRate['is_revenue'] = true;
+
             array_push($taxRates, $newTaxRate);
         }
 

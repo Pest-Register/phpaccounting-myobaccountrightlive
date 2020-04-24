@@ -1,6 +1,7 @@
 <?php
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\NewEssentials;
 
+use Cassandra\Index;
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
@@ -213,6 +214,8 @@ class GetContactResponse extends AbstractResponse
             $newContact['first_name'] = IndexSanityCheckHelper::indexSanityCheck('FirstName', $contact);
             $newContact['last_name'] = IndexSanityCheckHelper::indexSanityCheck('LastName', $contact);
             $newContact['is_individual'] = IndexSanityCheckHelper::indexSanityCheck('IsIndividual', $contact);
+            $newContact['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $contact);
+
             if ($newContact['is_individual']) {
                 $newContact['display_name'] = $newContact['first_name']. ' '.$newContact['last_name'];
             } else {

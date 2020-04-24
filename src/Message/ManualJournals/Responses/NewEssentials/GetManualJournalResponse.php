@@ -96,6 +96,7 @@ class GetManualJournalResponse extends AbstractResponse
             $newJournal['date'] = IndexSanityCheckHelper::indexSanityCheck('DateOccurred', $journal);
             $newJournal['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $journal);
             $newJournal['narration'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $journal);
+            $newJournal['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $journal);
 
             if (array_key_exists('Lines', $journal)) {
                 if ($journal['Lines']) {

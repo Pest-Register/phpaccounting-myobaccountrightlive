@@ -95,6 +95,7 @@ class GetPaymentResponse extends AbstractResponse
             $newPayment['amount'] = IndexSanityCheckHelper::indexSanityCheck('AmountReceived', $payment);
             $newPayment['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $payment);
             $newPayment['type'] = IndexSanityCheckHelper::indexSanityCheck('PaymentMethod', $payment);
+            $newPayment['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $payment);
 
             if (array_key_exists('Account', $payment)) {
                 if ($payment['Account']) {

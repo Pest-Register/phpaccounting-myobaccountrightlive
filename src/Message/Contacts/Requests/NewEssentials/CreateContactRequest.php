@@ -181,6 +181,22 @@ class CreateContactRequest extends AbstractRequest
     }
 
     /**
+     * Set Sync Token Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function setSyncToken($value) {
+        return $this->setParameter('sync_token', $value);
+    }
+
+    /**
+     * Get IsHeader Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function getSyncToken(){
+        return $this->getParameter('sync_token');
+    }
+
+    /**
      * @param $addresses
      * @param $phones
      * @param $data
@@ -276,6 +292,7 @@ class CreateContactRequest extends AbstractRequest
         $this->issetParam('LastName', 'last_name');
 //        $this->issetParam('email', 'email_address');
         $this->issetParam('IsIndividual', 'is_individual');
+        $this->issetParam('RowVersion', 'sync_token');
 
         if ($this->getStatus() !== null) {
             $this->data['IsActive'] = ($this->getStatus() === 'ACTIVE' ? true : false);
