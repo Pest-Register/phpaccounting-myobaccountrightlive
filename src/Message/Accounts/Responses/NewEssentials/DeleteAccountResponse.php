@@ -8,7 +8,7 @@ use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
-class UpdateAccountResponse extends AbstractResponse
+class DeleteAccountResponse extends AbstractResponse
 {
     /**
      * Check Response for Error or Success

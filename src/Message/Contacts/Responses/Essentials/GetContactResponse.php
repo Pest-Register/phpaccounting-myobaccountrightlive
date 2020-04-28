@@ -19,12 +19,18 @@ class GetContactResponse extends AbstractResponse
     public function isSuccessful()
     {
         if ($this->data) {
-            if(array_key_exists('errors', $this->data)){
-                return false;
+            if(array_key_exists('Errors', $this->data)){
+                return !$this->data['Errors'][0]['Severity'] == 'Error';
+            }
+            if (array_key_exists('Items', $this->data)) {
+                if (count($this->data['Items']) === 0) {
+                    return false;
+                }
             }
         } else {
             return false;
         }
+
         return true;
     }
 
@@ -35,11 +41,15 @@ class GetContactResponse extends AbstractResponse
     public function getErrorMessage()
     {
         if ($this->data) {
-            if (array_key_exists('errors', $this->data)) {
-                return ErrorResponseHelper::parseErrorResponse($this->data['errors'][0]['message'], 'Contact');
+            if (array_key_exists('Errors', $this->data)) {
+                return ErrorResponseHelper::parseErrorResponse($this->data['Errors'][0]['Message'], 'Contact');
+            } else {
+                if (array_key_exists('Items', $this->data)) {
+                    if (count($this->data['Items']) == 0) {
+                        return 'NULL Returned from API or End of Pagination';
+                    }
+                }
             }
-        } else {
-            return 'NULL returned from API';
         }
 
         return null;
