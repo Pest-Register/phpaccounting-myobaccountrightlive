@@ -11,15 +11,18 @@ class CreateContactTest extends BaseTest
         try {
 
             $params = [
-                'name' => $faker->name,
+                'reference' => 'CUS0004',
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
                 'email_address' => $faker->email,
                 'status' => 'ACTIVE',
                 'type' => ['CUSTOMER'],
+                'is_individual' => true,
+                'tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
+                'freight_tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
                 'addresses' => [
                     [
-                        'type' => 'PRIMARY',
+                        'type' => 'BILLING',
                         'address_line_1' => $faker->streetAddress,
                         'city' => $faker->city,
                         'postal_code' => $faker->postcode,
@@ -31,7 +34,41 @@ class CreateContactTest extends BaseTest
                         'country_code' => '',
                         'area_code' => '',
                         'phone_number' => '0435567535',
-                        'type' => 'MOBILE'
+                        'type' => 'MOBILE',
+                        'accounting_id' => 0,
+                        'accounting_slot_id' => 0
+                    ],
+                    [
+                        'country_code' => '',
+                        'area_code' => '',
+                        'phone_number' => '0435567535',
+                        'type' => 'FAX',
+                        'accounting_id' => 0,
+                        'accounting_slot_id' => 'Fax'
+                    ],
+                    [
+                        'country_code' => '',
+                        'area_code' => '',
+                        'phone_number' => '0435567535',
+                        'type' => 'FAX',
+                        'accounting_id' => 1,
+                        'accounting_slot_id' => 'Fax'
+                    ],
+                    [
+                        'country_code' => '',
+                        'area_code' => '',
+                        'phone_number' => '0435567535',
+                        'type' => 'MOBILE',
+                        'accounting_id' => null,
+                        'accounting_slot_id' => null
+                    ],
+                    [
+                        'country_code' => '',
+                        'area_code' => '',
+                        'phone_number' => '0435567535',
+                        'type' => 'MOBILE',
+                        'accounting_id' => null,
+                        'accounting_slot_id' => null
                     ]
                 ]
             ];

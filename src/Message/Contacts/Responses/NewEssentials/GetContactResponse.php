@@ -48,7 +48,7 @@ class GetContactResponse extends AbstractResponse
         return null;
     }
 
-    public function addPhone($contact, $data, $type = '') {
+    public function addPhone($contact, $data, $locationID, $slotID, $type = '') {
         $newPhone = [];
         switch ($type) {
             case 'Default':
@@ -73,11 +73,14 @@ class GetContactResponse extends AbstractResponse
         }
         if ($data !== '') {
             $newPhone['phone_number'] = $data;
+            $newPhone['accounting_id'] = $locationID;
+            $newPhone['accounting_slot_id'] = $slotID;
             array_push($contact['phones'], $newPhone);
         }
         return $contact;
 
     }
+
     private function createNoteForAddress($data, $address) {
         $note = '';
         if (array_key_exists('Phone1', $data)) {
@@ -160,10 +163,10 @@ class GetContactResponse extends AbstractResponse
             $default = true;
             foreach($data as $address) {
                 $newAddress = [];
-                if ($default) {
-                    $newAddress['address_type'] = 'PRIMARY';
+                if ($address['Location'] == 1) {
+                    $newAddress['address_type'] = 'BILLING';
                 } else {
-                    $newAddress['address_type'] = 'EXTRA';
+                    $newAddress['address_type'] = 'PRIMARY';
                 }
 
                 $newAddress['address_line_1'] = IndexSanityCheckHelper::indexSanityCheck('Street', $address);
@@ -173,24 +176,24 @@ class GetContactResponse extends AbstractResponse
 
                 if (array_key_exists('Phone1', $address)) {
                     if ($default) {
-                        $contact = $this->addPhone($contact, $address['Phone1'], 'Default');
+                        $contact = $this->addPhone($contact, $address['Phone1'], $address['Location'], 0, 'Default');
                     }
                     else {
-                        $contact = $this->addPhone($contact, $address['Phone1'], 'Phone1');
+                        $contact = $this->addPhone($contact, $address['Phone1'], $address['Location'], 0,  'Phone1');
                     }
                 }
                 if (array_key_exists('Phone2', $address)) {
-                    $contact = $this->addPhone($contact, $address['Phone2'], 'Phone2');
+                    $contact = $this->addPhone($contact, $address['Phone2'], $address['Location'], 1,  'Phone2');
                 }
                 if (array_key_exists('Phone3', $address)) {
-                    $contact = $this->addPhone($contact, $address['Phone3'], 'Phone3');
+                    $contact = $this->addPhone($contact, $address['Phone3'], $address['Location'], 2,  'Phone3');
                 }
                 if (array_key_exists('Fax', $address)) {
                     if ($default) {
-                        $contact = $this->addPhone($contact, $address['Fax'], 'Fax');
+                        $contact = $this->addPhone($contact, $address['Fax'], $address['Location'], 'Fax', 'Fax');
                     }
                     else {
-                        $contact = $this->addPhone($contact, $address['Fax']);
+                        $contact = $this->addPhone($contact, $address['Fax'], $address['Location'], 'Fax','Fax' );
                     }
                 }
                 $newAddress = $this->createNoteForAddress($address, $newAddress);
@@ -206,7 +209,6 @@ class GetContactResponse extends AbstractResponse
      * @return array
      */
     public function getContacts(){
-        var_dump($this->data);
         $contacts = [];
         foreach ($this->data['Items'] as $contact) {
             $newContact = [];
@@ -215,6 +217,7 @@ class GetContactResponse extends AbstractResponse
             $newContact['last_name'] = IndexSanityCheckHelper::indexSanityCheck('LastName', $contact);
             $newContact['is_individual'] = IndexSanityCheckHelper::indexSanityCheck('IsIndividual', $contact);
             $newContact['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $contact);
+            $newContact['raw_addresses'] = IndexSanityCheckHelper::indexSanityCheck('Addresses', $contact);
 
             if ($newContact['is_individual']) {
                 $newContact['display_name'] = $newContact['first_name']. ' '.$newContact['last_name'];
@@ -229,6 +232,17 @@ class GetContactResponse extends AbstractResponse
 
             if (array_key_exists('Addresses', $contact)) {
                 $newContact = $this->parseAddressesAndPhones($newContact, $contact['Addresses']);
+            }
+
+            if (array_key_exists('SellingDetails', $contact)) {
+                if ($contact['SellingDetails']) {
+                    if (array_key_exists('TaxCode', $contact['SellingDetails'])) {
+                        $newContact['tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact['SellingDetails']['TaxCode']);
+                    }
+                    if (array_key_exists('FreightTaxCode', $contact['SellingDetails'])) {
+                        $newContact['freight_tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact['SellingDetails']['FreightTaxCode']);
+                    }
+                }
             }
 
             array_push($contacts, $newContact);

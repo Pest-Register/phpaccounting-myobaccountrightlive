@@ -2,6 +2,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials;
 
+use Faker\Provider\Payment;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
@@ -55,6 +56,16 @@ class CreateContactRequest extends AbstractRequest
     }
 
     /**
+     * gET Is Individual Boolean Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
+     * @param string $value Contact Individual Status
+     * @return CreateContactRequest
+     */
+    public function getIsIndividual() {
+        return $this->getParameter('is_individual');
+    }
+
+    /**
      * Set Email Address Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param string $value Contact Email Address
@@ -62,6 +73,16 @@ class CreateContactRequest extends AbstractRequest
      */
     public function setEmailAddress($value){
         return $this->setParameter('email_address', $value);
+    }
+
+    /**
+     * Get Email Address Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
+     * @param string $value Contact Email Address
+     * @return CreateContactRequest
+     */
+    public function getEmailAddress(){
+        return $this->getParameter('email_address');
     }
 
     /**
@@ -181,6 +202,70 @@ class CreateContactRequest extends AbstractRequest
     }
 
     /**
+     * Set Freight Tax Type ID Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function setFreightTaxTypeID($value) {
+        return $this->setParameter('freight_tax_type_id', $value);
+    }
+
+    /**
+     * Get Freight Tax Type ID Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function getFreightTaxTypeID(){
+        return $this->getParameter('freight_tax_type_id');
+    }
+
+    /**
+     * Set Website Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function setWebsite($value) {
+        return $this->setParameter('website', $value);
+    }
+
+    /**
+     * Get Website Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function getWebsite(){
+        return $this->getParameter('website');
+    }
+
+    /**
+     * Set Tax Type ID Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function setTaxTypeID($value) {
+        return $this->setParameter('tax_type_id', $value);
+    }
+
+    /**
+     * Get Tax Type ID Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function getTaxTypeID(){
+        return $this->getParameter('tax_type_id');
+    }
+
+    /**
+     * Set Referece Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function setReference($value) {
+        return $this->setParameter('reference', $value);
+    }
+
+    /**
+     * Get Reference Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function getReference(){
+        return $this->getParameter('reference');
+    }
+
+    /**
      * Set Sync Token Parameter from Parameter Bag
      * @return mixed
      */
@@ -189,7 +274,7 @@ class CreateContactRequest extends AbstractRequest
     }
 
     /**
-     * Get IsHeader Parameter from Parameter Bag
+     * Get Sync Token Parameter from Parameter Bag
      * @return mixed
      */
     public function getSyncToken(){
@@ -198,44 +283,57 @@ class CreateContactRequest extends AbstractRequest
 
     /**
      * @param $addresses
-     * @param $phones
-     * @param $data
-     */
-    public function parsePhonesAndAddresses($addresses, $phones, $data) {
-        // Check addresses and phones length
-        $addressCount = count($addresses);
-        $phoneCount = count($phones);
-
-
-
-    }
-
-    /**
-     * @param $addresses
      * @return
      */
     private function parseAddresses($addresses,$data) {
-        $data['Addresses'] = [];
         foreach($addresses as $address) {
-            $newAddress = [];
-//            $newAddress['addressLine1'] = IndexSanityCheckHelper::indexSanityCheck('address_line_1', $address);
-//            $newAddress['addressLine2'] = IndexSanityCheckHelper::indexSanityCheck('address_line_2', $address);
-//            $newAddress['suburb'] = IndexSanityCheckHelper::indexSanityCheck('city', $address);
-//            $newAddress['state'] = IndexSanityCheckHelper::indexSanityCheck('state', $address);
-//            $newAddress['country'] = IndexSanityCheckHelper::indexSanityCheck('country', $address);
-//            $newAddress['postCode'] = IndexSanityCheckHelper::indexSanityCheck('postal_code', $address);
-            $newAddress['Phone1'] = '0435567535';
-            array_push($newAddress, $data['Addresses']);
-//            if ($newAddress !== []) {
-//                switch($address['type']) {
-//                    case 'PRIMARY':
-//                        $data['shippingAddress'] = $newAddress;
-//                        break;
-//                    case 'BILLING':
-//                        $data['billingAddress'] = $newAddress;
-//                        break;
-//                }
-//            }
+            $location = null;
+            switch($address['type']) {
+                case 'BILLING':
+                    $location = 0;
+                    break;
+                case 'PRIMARY':
+                    $location = 1;
+                    break;
+                default:
+                    continue;
+            }
+            $data['Addresses'][$location]['Street'] = IndexSanityCheckHelper::indexSanityCheck('address_line_1', $address);
+            $data['Addresses'][$location]['City'] = IndexSanityCheckHelper::indexSanityCheck('suburb', $address);
+            $data['Addresses'][$location]['State'] = IndexSanityCheckHelper::indexSanityCheck('state', $address);
+            $data['Addresses'][$location]['PostCode'] = IndexSanityCheckHelper::indexSanityCheck('postal_code', $address);
+            $data['Addresses'][$location]['Country'] = IndexSanityCheckHelper::indexSanityCheck('country', $address);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Assign phones to relative addresses
+     * @param $data
+     * @param $phone
+     * @return
+     */
+    private function assignPhonesToSlot($data, $phones, $addressIndex) {
+        $address = $data['Addresses'][$addressIndex];
+
+        foreach ($phones as $phone) {
+            $phoneNumber = $phone['country_code'] . $phone['area_code'].$phone['phone_number'];
+            switch ($phone['accounting_slot_id']) {
+                case 0:
+                    $address['Phone1'] = $phoneNumber;
+                    break;
+                case 1:
+                    $address['Phone2'] = $phoneNumber;
+                    break;
+                case 2:
+                    $address['Phone3'] = $phoneNumber;
+                    break;
+                case 'Fax':
+                    $address['Fax'] = $phoneNumber;
+                    break;
+            }
+            $data['Addresses'][$addressIndex] = $address;
         }
 
         return $data;
@@ -247,74 +345,132 @@ class CreateContactRequest extends AbstractRequest
      * @return
      */
     private function parsePhones($phones, $data) {
-        foreach($phones as $phone) {
-            $number = $phone['country_code'] . $phone['area_code'].$phone['phone_number'];
-            if ($number !== '') {
-                switch($phone['type']) {
-                    case 'MOBILE':
-                        $data['mobile'] = $number;
-                        break;
-                    case 'DEFAULT':
-                        $data['phone'] = $number;
-                        break;
-                    case 'FAX':
-                        $data['fax'] = $number;
-                        break;
-                }
-            }
-        }
-        return $data;
-    }
-    private function parseTypes($types, $data) {
-        $newTypes = [];
-        foreach($types as $type) {
-            switch($type) {
-                case 'CUSTOMER':
-                    array_push($newTypes, 'Customer');
-                    break;
-                case 'SUPPLIER':
-                    array_push($newTypes, 'Supplier');
-                    break;
-                default:
-                    array_push($newTypes, 'Other');
-                    break;
-            }
-        }
+        $billingPhones = array_filter($phones, function ($item) {
+            return $item['accounting_id'] == 1;
+        });
 
-        $data['types'] = $newTypes;
+        $shippingPhones = array_filter($phones, function ($item) {
+            return $item['accounting_id'] == 2;
+        });
+
+        $unassignedPhones = array_filter($phones, function ($item) {
+           return $item['accounting_id'] == null;
+        });
+
+        $data = $this->assignPhonesToSlot($data, $billingPhones, 0);
+        $data = $this->assignPhonesToSlot($data, $shippingPhones, 1);
+
+        // Assign unassigned phones
+        if (count($unassignedPhones) > 0) {
+            // No more slots to add phones
+            if (count($billingPhones) == 4 && count($shippingPhones) == 4) {
+                return $data;
+            }
+            // Try to add unassigned phones
+            foreach ($unassignedPhones as $phone) {
+                $phoneNumber = $phone['country_code'] . $phone['area_code'].$phone['phone_number'];
+                if ($data['Addresses'][0]['Phone1'] == '') {
+                    $data['Addresses'][0]['Phone1'] = $phoneNumber;
+                    continue;
+                }
+                elseif ($data['Addresses'][0]['Phone2'] == '') {
+                    $data['Addresses'][0]['Phone2'] = $phoneNumber;
+                    continue;
+                }
+                elseif ($data['Addresses'][0]['Phone3'] == '') {
+                    $data['Addresses'][0]['Phone3'] = $phoneNumber;
+                    continue;
+                }
+                elseif ($data['Addresses'][1]['Phone1'] == '') {
+                    $data['Addresses'][1]['Phone1'] = $phoneNumber;
+                    continue;
+                }
+                elseif ($data['Addresses'][1]['Phone2'] == '') {
+                    $data['Addresses'][1]['Phone2'] = $phoneNumber;
+                    continue;
+                }
+                elseif ($data['Addresses'][1]['Phone3'] == '') {
+                    $data['Addresses'][1]['Phone3'] = $phoneNumber;
+                    continue;
+                }
+                break;
+            }
+        }
         return $data;
     }
+
     public function getData()
     {
-        $this->validate('name');
-        $this->issetParam('DisplayID', 'name');
+        $this->validate('first_name', 'last_name', 'is_individual');
+        $this->issetParam('DisplayID', 'reference');
         $this->issetParam('FirstName', 'first_name');
         $this->issetParam('LastName', 'last_name');
-//        $this->issetParam('email', 'email_address');
         $this->issetParam('IsIndividual', 'is_individual');
         $this->issetParam('RowVersion', 'sync_token');
+        $this->data['Addresses'] = [
+            [
+                "Location" => 1,
+                "Street" => '',
+                "City" => '',
+                "State" => '',
+                "PostCode" => '',
+                "Country" => '',
+                "Phone1" => '',
+                "Phone2" => '',
+                "Phone3" => '',
+                "Fax" => '',
+                "Email" => $this->getEmailAddress() ?: '',
+                "Website" => $this->getWebsite() ?: '',
+            ],
+            [
+                "Location" => 2,
+                "Street" => '',
+                "City" => '',
+                "State" => '',
+                "PostCode" => '',
+                "Country" => '',
+                "Phone1" => '',
+                "Phone2" => '',
+                "Phone3" => '',
+                "Fax" => '',
+            ]
+        ];
 
         if ($this->getStatus() !== null) {
             $this->data['IsActive'] = ($this->getStatus() === 'ACTIVE' ? true : false);
         }
-//        if ($this->getType() !== null) {
-//            $this->data = $this->parseTypes($this->getType(), $this->data);
-//        }
 
-//        if ($this->getPhones() !== null) {
-//            $this->data = $this->parsePhones($this->getPhones(), $this->data);
-//        }
-
-        if ($this->getAddresses() !== null) {
+        if ($this->getAddresses()) {
             $this->data = $this->parseAddresses($this->getAddresses(), $this->data);
         }
+
+        if ($this->getPhones()) {
+            $this->data = $this->parsePhones($this->getPhones(), $this->data);
+        }
+
+        $this->data['SellingDetails'] = [];
+        if ($this->getTaxTypeID()) {
+            $this->data['SellingDetails']['TaxCode'] = [
+                'UID' => $this->getTaxTypeID()
+            ];
+        }
+        if ($this->getFreightTaxTypeID()) {
+            $this->data['SellingDetails']['FreightTaxCode'] = [
+                'UID' => $this->getFreightTaxTypeID()
+            ];
+        }
+
         return $this->data;
     }
 
     public function getEndpoint()
     {
-
         $endpoint = 'Contact/Customer';
+        if ($this->getType()) {
+            if (in_array('SUPPLIER', $this->getType())) {
+                $endpoint = 'Contact/Supplier';
+            }
+        }
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
