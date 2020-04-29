@@ -1,16 +1,20 @@
 <?php
 
-namespace Tests;
+
+namespace Tests\Contacts\NewEssentials;
+
+use Tests\BaseTest;
 use Faker;
-class CreateContactTest extends BaseTest
+class UpdateContactTest extends BaseTest
 {
-    public function testCreateContacts()
+    public function testUpdateContacts()
     {
         $this->setUp();
         $faker = Faker\Factory::create();
         try {
 
             $params = [
+                'accounting_id' => 'c66ae46d-d3ca-4283-a2ea-f9cfff0ee177',
                 'reference' => 'CUS0004',
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
@@ -20,6 +24,7 @@ class CreateContactTest extends BaseTest
                 'is_individual' => true,
                 'tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
                 'freight_tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
+                'sync_token' => '-2656842305171881984',
                 'addresses' => [
                     [
                         'type' => 'BILLING',
@@ -86,7 +91,7 @@ class CreateContactTest extends BaseTest
                 ]
             ];
 
-            $response = $this->gateway->createContact($params)->send();
+            $response = $this->gateway->updateContact($params)->send();
             if ($response->isSuccessful()) {
                 $contacts = $response->getContacts();
                 $this->assertIsArray($contacts);

@@ -7,10 +7,10 @@ use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
 /**
- * Create Contact(s) Response
+ * Update Contact(s) Response
  * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\Essentials
  */
-class CreateContactResponse extends AbstractResponse
+class UpdateContactResponse extends AbstractResponse
 {
     /**
      * Check Response for Error or Success

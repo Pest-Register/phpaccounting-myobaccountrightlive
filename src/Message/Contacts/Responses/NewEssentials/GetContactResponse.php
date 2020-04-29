@@ -19,14 +19,19 @@ class GetContactResponse extends AbstractResponse
      */
     public function isSuccessful()
     {
-        if(array_key_exists('Errors', $this->data)){
-            return !$this->data['Errors'][0]['Severity'] == 'Error';
-        }
-        if (array_key_exists('Items', $this->data)) {
-            if (count($this->data['Items']) === 0) {
-                return false;
+        if ($this->data) {
+            if(array_key_exists('Errors', $this->data)){
+                return !$this->data['Errors'][0]['Severity'] == 'Error';
             }
+            if (array_key_exists('Items', $this->data)) {
+                if (count($this->data['Items']) === 0) {
+                    return false;
+                }
+            }
+        } else {
+            return false;
         }
+
         return true;
     }
 
@@ -36,15 +41,18 @@ class GetContactResponse extends AbstractResponse
      */
     public function getErrorMessage()
     {
-        if (array_key_exists('Errors', $this->data)) {
-            return ErrorResponseHelper::parseErrorResponse($this->data['Errors'][0]['Message'], 'Contact');
-        } else {
-            if (array_key_exists('Items', $this->data)) {
-                if (count($this->data['Items']) == 0) {
-                    return 'NULL Returned from API or End of Pagination';
+        if ($this->data) {
+            if (array_key_exists('Errors', $this->data)) {
+                return ErrorResponseHelper::parseErrorResponse($this->data['Errors'][0]['Message'], 'Contact');
+            } else {
+                if (array_key_exists('Items', $this->data)) {
+                    if (count($this->data['Items']) == 0) {
+                        return 'NULL Returned from API or End of Pagination';
+                    }
                 }
             }
         }
+
         return null;
     }
 

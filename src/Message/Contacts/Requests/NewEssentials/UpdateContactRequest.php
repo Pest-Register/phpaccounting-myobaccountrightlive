@@ -1,25 +1,22 @@
 <?php
 
+
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials;
 
-use Faker\Provider\Payment;
+
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\NewEssentials\CreateContactResponse;
+use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\NewEssentials\UpdateContactResponse;
 
-/**
- * Create Contact(s)
- * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials
- */
-class CreateContactRequest extends AbstractRequest
+class UpdateContactRequest extends AbstractRequest
 {
 
     /**
      * Set Name Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param string $value Contact Name
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setName($value){
         return $this->setParameter('name', $value);
@@ -29,7 +26,7 @@ class CreateContactRequest extends AbstractRequest
      * Set First Name Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param string $value Contact First Name
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setFirstName($value) {
         return $this->setParameter('first_name', $value);
@@ -39,7 +36,7 @@ class CreateContactRequest extends AbstractRequest
      * Set Last Name Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param string $value Contact Last Name
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setLastName($value) {
         return $this->setParameter('last_name', $value);
@@ -49,7 +46,7 @@ class CreateContactRequest extends AbstractRequest
      * Set Is Individual Boolean Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param string $value Contact Individual Status
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setIsIndividual($value) {
         return $this->setParameter('is_individual', $value);
@@ -59,7 +56,7 @@ class CreateContactRequest extends AbstractRequest
      * gET Is Individual Boolean Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param string $value Contact Individual Status
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function getIsIndividual() {
         return $this->getParameter('is_individual');
@@ -69,7 +66,7 @@ class CreateContactRequest extends AbstractRequest
      * Set Email Address Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param string $value Contact Email Address
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setEmailAddress($value){
         return $this->setParameter('email_address', $value);
@@ -79,7 +76,7 @@ class CreateContactRequest extends AbstractRequest
      * Get Email Address Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param string $value Contact Email Address
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function getEmailAddress(){
         return $this->getParameter('email_address');
@@ -89,7 +86,7 @@ class CreateContactRequest extends AbstractRequest
      * Set Phones Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param array $value Array of Contact Phone Numbers
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setPhones($value){
         return $this->setParameter('phones', $value);
@@ -108,7 +105,7 @@ class CreateContactRequest extends AbstractRequest
      * Set Type Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param array $value Array of Contact Phone Numbers
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setType($value){
         return $this->setParameter('type', $value);
@@ -127,7 +124,7 @@ class CreateContactRequest extends AbstractRequest
      * Set Addresses Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param array $value Array of Contact Addresses
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setAddresses($value){
         return $this->setParameter('addresses', $value);
@@ -137,7 +134,7 @@ class CreateContactRequest extends AbstractRequest
      * Set Contact Groups Parameter from Parameter Bag
      * @see https://developer.myob.com/api/essentials-accounting/endpoints/contacts
      * @param array $value Array of Contact Groups
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setContactGroups($value) {
         return $this->setParameter('contact_groups', $value);
@@ -184,7 +181,7 @@ class CreateContactRequest extends AbstractRequest
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value
-     * @return CreateContactRequest
+     * @return UpdateContactRequest
      */
     public function setAccountingID($value) {
         return $this->setParameter('accounting_id', $value);
@@ -358,7 +355,7 @@ class CreateContactRequest extends AbstractRequest
         });
 
         $unassignedPhones = array_filter($phones, function ($item) {
-           return $item['accounting_id'] == null;
+            return $item['accounting_id'] == null;
         });
 
         $data = $this->assignPhonesToSlot($data, $billingPhones, 0);
@@ -405,7 +402,8 @@ class CreateContactRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('first_name', 'last_name', 'is_individual');
+        $this->validate('first_name', 'last_name', 'is_individual', 'accounting_id');
+        $this->issetParam('UID', 'accounting_id');
         $this->issetParam('DisplayID', 'reference');
         $this->issetParam('FirstName', 'first_name');
         $this->issetParam('LastName', 'last_name');
@@ -486,11 +484,11 @@ class CreateContactRequest extends AbstractRequest
 
     public function getHttpMethod()
     {
-        return 'POST';
+        return 'PUT';
     }
 
     protected function createResponse($data, $headers = [])
     {
-        return $this->response = new CreateContactResponse($this, $data);
+        return $this->response = new UpdateContactResponse($this, $data);
     }
 }

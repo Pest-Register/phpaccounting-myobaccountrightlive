@@ -105,14 +105,6 @@ class Gateway extends AbstractGateway
      * @return \Omnipay\Common\Message\AbstractRequest
      */
 
-    /**
-     * Get One or Multiple Contacts
-     * @param array $parameters
-     * @bodyParam array $parameters
-     * @bodyParam parameters.page int optional Page Index for Pagination
-     * @bodyParam parameters.accountingIDs array optional Array of GUIDs for Contact Retrieval / Filtration
-     * @return \Omnipay\Common\Message\AbstractRequest
-     */
     public function getContact(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
@@ -122,19 +114,29 @@ class Gateway extends AbstractGateway
         return $this->createRequest($class, $parameters);
     }
 
-    /**
-     * Create Contact
-     * @param array $parameters
-     * @bodyParam array $parameters
-     * @bodyParam parameters.page int optional Page Index for Pagination
-     * @bodyParam parameters.accountingIDs array optional Array of GUIDs for Contact Retrieval / Filtration
-     * @return \Omnipay\Common\Message\AbstractRequest
-     */
     public function createContact(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
         if ($accessFlag == 2 || $accessFlag == 3) {
             $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\CreateContactRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    public function updateContact(array $parameters = []) {
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            $class =\PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\UpdateContactRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    public function deleteContact(array $parameters = []) {
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            $class =\PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\DeleteContactRequest::class;
         }
         return $this->createRequest($class, $parameters);
     }
