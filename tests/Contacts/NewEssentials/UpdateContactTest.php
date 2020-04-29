@@ -14,7 +14,7 @@ class UpdateContactTest extends BaseTest
         try {
 
             $params = [
-                'accounting_id' => 'c66ae46d-d3ca-4283-a2ea-f9cfff0ee177',
+                'accounting_id' => '3bc6cc02-f00f-4d39-9c6b-b56c61f159ef',
                 'reference' => 'CUS0004',
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
@@ -24,7 +24,7 @@ class UpdateContactTest extends BaseTest
                 'is_individual' => true,
                 'tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
                 'freight_tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
-                'sync_token' => '-2656842305171881984',
+                'sync_token' => '3612449851104559104',
                 'addresses' => [
                     [
                         'type' => 'BILLING',
@@ -33,7 +33,7 @@ class UpdateContactTest extends BaseTest
                         'postal_code' => $faker->postcode,
                         'country' => $faker->country,
                         'contact_name' => $faker->name,
-                        'salutation' => $faker->name
+                        'salutation' => 'test'
                     ],
                     [
                         'type' => 'PRIMARY',
@@ -42,7 +42,7 @@ class UpdateContactTest extends BaseTest
                         'postal_code' => $faker->postcode,
                         'country' => $faker->country,
                         'contact_name' => $faker->name,
-                        'salutation' => $faker->name,
+                        'salutation' => 'test',
                         'email' => $faker->email,
                         'website' => $faker->url
                     ]

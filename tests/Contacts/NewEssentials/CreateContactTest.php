@@ -28,7 +28,7 @@ class CreateContactTest extends BaseTest
                         'postal_code' => $faker->postcode,
                         'country' => $faker->country,
                         'contact_name' => $faker->name,
-                        'salutation' => $faker->name
+                        'salutation' => 'test'
                     ],
                     [
                         'type' => 'PRIMARY',
@@ -37,7 +37,7 @@ class CreateContactTest extends BaseTest
                         'postal_code' => $faker->postcode,
                         'country' => $faker->country,
                         'contact_name' => $faker->name,
-                        'salutation' => $faker->name,
+                        'salutation' => 'test',
                         'email' => $faker->email,
                         'website' => $faker->url
                     ]
