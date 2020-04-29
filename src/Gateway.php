@@ -301,4 +301,14 @@ class Gateway extends AbstractGateway
         }
         return $this->createRequest($class, $parameters);
     }
+
+    public function createInventoryItem(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            // New Essentials and AccountRight
+            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials\CreateInventoryItemRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
 }

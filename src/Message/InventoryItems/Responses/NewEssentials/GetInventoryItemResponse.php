@@ -57,7 +57,12 @@ class GetInventoryItemResponse extends AbstractResponse
 
     public function parsePurchaseDetails($data, $item) {
         if ($data) {
-            if (array_key_exists('CostOfSalesAccount', $data)) {
+            if (array_key_exists('ExpenseAccount', $data)) {
+                if ($data['ExpenseAccount']) {
+                    $item['buying_account_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $data['ExpenseAccount']);
+                    $item['buying_account_code'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $data['ExpenseAccount']);
+                }
+            } else if (array_key_exists('CostOfSalesAccount', $data)) {
                 if ($data['CostOfSalesAccount']) {
                     $item['buying_account_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $data['CostOfSalesAccount']);
                     $item['buying_account_code'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $data['CostOfSalesAccount']);
@@ -71,7 +76,7 @@ class GetInventoryItemResponse extends AbstractResponse
                             $item['buying_tax_type_code'] = IndexSanityCheckHelper::indexSanityCheck('Code', $data['BuyingDetails']['TaxCode']);
                         }
                     }
-                    $item['buying_unit_price'] = IndexSanityCheckHelper::indexSanityCheck('LastPurchasePrice', $data['BuyingDetails']);
+                    $item['buying_unit_price'] = IndexSanityCheckHelper::indexSanityCheck('StandardCost', $data['BuyingDetails']);
                 }
             }
         }
