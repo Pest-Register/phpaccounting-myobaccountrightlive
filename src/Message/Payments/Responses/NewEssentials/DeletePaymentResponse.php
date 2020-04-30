@@ -1,16 +1,14 @@
 <?php
 
+
 namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\NewEssentials;
+
 
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
-/**
- * Get Payment(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials
- */
-class GetPaymentResponse extends AbstractResponse
+class DeletePaymentResponse extends AbstractResponse
 {
     /**
      * Check Response for Error or Success
@@ -53,23 +51,6 @@ class GetPaymentResponse extends AbstractResponse
         }
 
         return null;
-    }
-
-    /**
-     * Add Customer to Payment
-     * @param $data Array of single Contact
-     * @param array $payment Xero Invoice Object Mapping
-     * @return mixed
-     */
-    private function parseContact($payment, $data) {
-        if ($data) {
-            $newContact = [];
-            $newContact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $data);
-            $newContact['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $data);
-            $payment['contact'] = $newContact;
-        }
-
-        return $payment;
     }
 
     /**
@@ -125,12 +106,6 @@ class GetPaymentResponse extends AbstractResponse
             if (array_key_exists('Account', $payment)) {
                 if ($payment['Account']) {
                     $newPayment = $this->parseAccount($newPayment, $payment['Account']);
-                }
-            }
-
-            if (array_key_exists('Customer', $payment)) {
-                if ($payment['Customer']) {
-                    $newPayment = $this->parseContact($newPayment, $payment['Customer']);
                 }
             }
 
