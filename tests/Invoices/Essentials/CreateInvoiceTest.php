@@ -14,9 +14,9 @@ class CreateInvoiceTest extends BaseTest
             $params = [
                 'invoice_reference' => '20190806_0001',
                 'type' => 'ACCREC',
-                'date' => '2019-01-27',
-                'due_date' => '2019-01-28',
-                'contact' => '29140824',
+                'date' => '2020-04-30',
+                'due_date' => '2020-01-28',
+                'contact' => '5a225a1e-994f-4f9a-81ae-d94daa31b3ec',
                 'total' => 6400,
                 'status' => 'Open',
                 'gst_inclusive' => true,

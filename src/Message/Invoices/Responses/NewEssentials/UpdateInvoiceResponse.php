@@ -1,17 +1,14 @@
 <?php
 
+
 namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials;
 
-use Cassandra\Index;
+
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
-/**
- * Get Invoice(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials
- */
-class GetInvoiceResponse extends AbstractResponse
+class UpdateInvoiceResponse extends AbstractResponse
 {
     /**
      * Check Response for Error or Success
@@ -89,28 +86,20 @@ class GetInvoiceResponse extends AbstractResponse
                 $newLineItem['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $lineItem);
                 $newLineItem['unit_amount'] = IndexSanityCheckHelper::indexSanityCheck('UnitPrice', $lineItem);
                 $newLineItem['line_amount'] = IndexSanityCheckHelper::indexSanityCheck('Total', $lineItem);
-                $newLineItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('UnitCount', $lineItem);
+                $newLineItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('ShipQuantity', $lineItem);
                 $newLineItem['discount_rate'] = IndexSanityCheckHelper::indexSanityCheck('DiscountPercent', $lineItem);;
                 $newLineItem['amount'] = IndexSanityCheckHelper::indexSanityCheck('Total', $lineItem);
                 $newLineItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $lineItem);
 
-                if (array_key_exists('Account', $lineItem)) {
-                    if ($lineItem['Account']) {
-                        $newLineItem['account_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['Account']);
-                        $newLineItem['account_code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $lineItem['Account']);
-                    }
-                }
                 if (array_key_exists('TaxCode', $lineItem)) {
                     if ($lineItem['TaxCode']) {
                         $newLineItem['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $lineItem['TaxCode']);
-                        $newLineItem['tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['TaxCode']);
                     }
                 }
 
                 if (array_key_exists('Item', $lineItem)) {
                     if ($lineItem['Item']) {
                         $newLineItem['item_code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $lineItem['Item']);
-                        $newLineItem['item_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['UID']);
                     }
                 }
 
@@ -141,7 +130,6 @@ class GetInvoiceResponse extends AbstractResponse
             $newInvoice['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $invoice);
             $newInvoice['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $invoice);
             $newInvoice['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice);
-            $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
 
             if (array_key_exists('Customer', $invoice)) {
                 if ($invoice['Customer']) {

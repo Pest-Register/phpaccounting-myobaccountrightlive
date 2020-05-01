@@ -1,17 +1,14 @@
 <?php
 
+
 namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials;
 
-use Cassandra\Index;
+
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 
-/**
- * Get Invoice(s) Response
- * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials
- */
-class GetInvoiceResponse extends AbstractResponse
+class DeleteInvoiceResponse extends AbstractResponse
 {
     /**
      * Check Response for Error or Success
@@ -141,7 +138,6 @@ class GetInvoiceResponse extends AbstractResponse
             $newInvoice['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $invoice);
             $newInvoice['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $invoice);
             $newInvoice['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice);
-            $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
 
             if (array_key_exists('Customer', $invoice)) {
                 if ($invoice['Customer']) {

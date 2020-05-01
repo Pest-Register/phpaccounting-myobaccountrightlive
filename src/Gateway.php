@@ -157,6 +157,36 @@ class Gateway extends AbstractGateway
         return $this->createRequest($class, $parameters);
     }
 
+    public function createInvoice(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            // New Essentials and AccountRight
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\CreateInvoiceRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    public function updateInvoice(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            // New Essentials and AccountRight
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\UpdateInvoiceRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    public function deleteInvoice(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            // New Essentials and AccountRight
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\DeleteInvoiceRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
     /**
      * Account Requests
      * @param array $parameters
