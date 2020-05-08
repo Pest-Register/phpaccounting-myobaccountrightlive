@@ -34,8 +34,8 @@ class CreateInventoryItemTest extends BaseTest
                     'selling_account_id' => '527d8f24-0175-4e98-addb-faae929b98bf',
                     'selling_unit_price' => 150,
                     'selling_account_code' => '4-1000',
-                    'selling_tax_type_id' => '527d8f24-0175-4e98-addb-faae929b98bf',
-                    'selling_tax_type_code' => 'GST'
+                    'selling_tax_type_id' => '8d9cfae6-0f23-4c3e-904e-3e212cf67156',
+                    'selling_tax_type_code' => 'N-T'
                 ]
             ];
 

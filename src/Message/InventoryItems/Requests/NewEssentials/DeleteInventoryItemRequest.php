@@ -6,6 +6,7 @@ namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\New
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\NewEssentials\DeleteInventoryItemResponse;
 
 class DeleteInventoryItemRequest extends AbstractRequest
 {

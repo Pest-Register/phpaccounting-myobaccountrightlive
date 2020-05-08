@@ -14,7 +14,7 @@ class GetJournalTest extends BaseTest
         $this->setUp();
         try {
             $params = [
-                'accounting_id' => "",
+                'accounting_id' => "3767661b-3d80-42b2-86e2-44128e155123",
                 'page' => 1000
             ];
 

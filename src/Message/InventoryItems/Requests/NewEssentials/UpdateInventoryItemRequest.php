@@ -3,12 +3,32 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials;
 
+
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\NewEssentials\CreateInventoryItemResponse;
+use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\NewEssentials\UpdateInventoryItemResponse;
 
-class CreateInventoryItemRequest extends AbstractRequest
+class UpdateInventoryItemRequest extends AbstractRequest
 {
+    /**
+     * Get Accounting ID Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/inventory/item/
+     * @return mixed
+     */
+    public function getAccountingID() {
+        return $this->getParameter('accounting_id');
+    }
+
+    /**
+     * Set Accounting ID Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/inventory/item/
+     * @param $value
+     * @return mixed
+     */
+    public function setAccountingID($value) {
+        return $this->setParameter('accounting_id', $value);
+    }
 
     /**
      * Get Code Parameter from Parameter Bag
@@ -23,7 +43,7 @@ class CreateInventoryItemRequest extends AbstractRequest
      * Set Code Parameter from Parameter Bag
      * @see https://developer.myob.com/api/accountright/essentials-new-v2/inventory/item/
      * @param string $value Account Code
-     * @return CreateInventoryItemRequest
+     * @return UpdateInventoryItemRequest
      */
     public function setCode($value){
         return $this->setParameter('code', $value);
@@ -307,16 +327,22 @@ class CreateInventoryItemRequest extends AbstractRequest
     public function getEndpoint()
     {
         $endpoint = 'Inventory/Item';
+
+        if ($this->getAccountingID()) {
+            if ($this->getAccountingID() !== "") {
+                $endpoint = BuildEndpointHelper::createForGUID($endpoint, $this->getAccountingID());
+            }
+        }
         return $endpoint;
     }
 
     public function getHttpMethod()
     {
-        return 'POST';
+        return 'PUT';
     }
 
     protected function createResponse($data, $headers = [])
     {
-        return $this->response = new CreateInventoryItemResponse($this, $data);
+        return $this->response = new UpdateInventoryItemResponse($this, $data);
     }
 }
