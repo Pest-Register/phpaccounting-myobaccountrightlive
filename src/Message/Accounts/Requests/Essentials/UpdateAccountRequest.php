@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests;
+namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;

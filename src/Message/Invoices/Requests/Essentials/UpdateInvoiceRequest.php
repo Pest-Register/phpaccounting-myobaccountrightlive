@@ -1,6 +1,6 @@
 <?php
 
-namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
+namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;

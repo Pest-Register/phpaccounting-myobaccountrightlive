@@ -108,7 +108,10 @@ class Gateway extends AbstractGateway
     public function getContact(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials\GetContactRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\GetContactRequest::class;
         }
         return $this->createRequest($class, $parameters);
@@ -117,7 +120,10 @@ class Gateway extends AbstractGateway
     public function createContact(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials\CreateContactRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\CreateContactRequest::class;
         }
         return $this->createRequest($class, $parameters);
@@ -126,7 +132,10 @@ class Gateway extends AbstractGateway
     public function updateContact(array $parameters = []) {
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials\UpdateContactRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             $class =\PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\UpdateContactRequest::class;
         }
         return $this->createRequest($class, $parameters);
@@ -135,7 +144,10 @@ class Gateway extends AbstractGateway
     public function deleteContact(array $parameters = []) {
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials\DeleteContactRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             $class =\PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\DeleteContactRequest::class;
         }
         return $this->createRequest($class, $parameters);
@@ -150,6 +162,9 @@ class Gateway extends AbstractGateway
     public function getInvoice(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials\GetInvoiceRequest::class;
+        }
         if ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\GetInvoiceRequest::class;
@@ -160,6 +175,9 @@ class Gateway extends AbstractGateway
     public function createInvoice(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials\CreateInvoiceRequest::class;
+        }
         if ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\CreateInvoiceRequest::class;
@@ -170,6 +188,9 @@ class Gateway extends AbstractGateway
     public function updateInvoice(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials\UpdateInvoiceRequest::class;
+        }
         if ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\UpdateInvoiceRequest::class;
@@ -180,6 +201,9 @@ class Gateway extends AbstractGateway
     public function deleteInvoice(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials\DeleteInvoiceRequest::class;
+        }
         if ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\DeleteInvoiceRequest::class;
@@ -196,7 +220,10 @@ class Gateway extends AbstractGateway
     public function getAccount(array $parameters = []) {
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\GetAccountRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\GetAccountRequest::class;
         }
         return $this->createRequest($class, $parameters);
@@ -205,7 +232,10 @@ class Gateway extends AbstractGateway
     public function createAccount(array $parameters = []) {
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\CreateAccountRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\CreateAccountRequest::class;
         }
         return $this->createRequest($class, $parameters);
@@ -214,7 +244,10 @@ class Gateway extends AbstractGateway
     public function updateAccount(array $parameters = []) {
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\UpdateAccountRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\UpdateAccountRequest::class;
         }
         return $this->createRequest($class, $parameters);
@@ -223,7 +256,10 @@ class Gateway extends AbstractGateway
     public function deleteAccount(array $parameters = []) {
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            return;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\DeleteAccountRequest::class;
         }
         return $this->createRequest($class, $parameters);
@@ -238,6 +274,9 @@ class Gateway extends AbstractGateway
     public function getTaxRate(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\Essentials\GetTaxRateRequest::class;
+        }
         if ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\NewEssentials\GetTaxRateRequest::class;
@@ -254,7 +293,10 @@ class Gateway extends AbstractGateway
     public function getPayment(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            return;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\NewEssentials\GetPaymentRequest::class;
         }
@@ -264,7 +306,10 @@ class Gateway extends AbstractGateway
     public function createPayment(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\Essentials\CreatePaymentRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\NewEssentials\CreatePaymentRequest::class;
         }
@@ -274,6 +319,9 @@ class Gateway extends AbstractGateway
     public function deletePayment(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
+        if ($accessFlag == 1) {
+            return;
+        }
         if ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\NewEssentials\DeletePaymentRequest::class;
@@ -313,7 +361,10 @@ class Gateway extends AbstractGateway
     public function getJournal(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\Essentials\GetJournalRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\NewEssentials\GetJournalRequest::class;
         }
@@ -329,9 +380,24 @@ class Gateway extends AbstractGateway
     public function getManualJournal(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
+        if ($accessFlag == 1) {
+            return;
+        }
         if ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\NewEssentials\GetJournalRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    public function createManualJournal(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($accessFlag == 1) {
+            return;
+        }
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            return;
         }
         return $this->createRequest($class, $parameters);
     }
@@ -345,7 +411,10 @@ class Gateway extends AbstractGateway
     public function getInventoryItem(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Essentials\GetInventoryItemRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials\GetInventoryItemRequest::class;
         }
@@ -355,7 +424,10 @@ class Gateway extends AbstractGateway
     public function createInventoryItem(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Essentials\CreateInventoryItemRequest::class;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials\CreateInventoryItemRequest::class;
         }
@@ -365,7 +437,10 @@ class Gateway extends AbstractGateway
     public function deleteInventoryItem(array $parameters = []){
         $accessFlag = $this->getAccessFlag();
         $class = '';
-        if ($accessFlag == 2 || $accessFlag == 3) {
+        if ($accessFlag == 1) {
+            return;
+        }
+        elseif ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials\DeleteInventoryItemRequest::class;
         }
