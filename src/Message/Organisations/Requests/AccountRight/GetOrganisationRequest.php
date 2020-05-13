@@ -10,6 +10,11 @@ use PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\AccountRi
 class GetOrganisationRequest extends AbstractRequest
 {
 
+    public function setBusinessID($value)
+    {
+        return parent::setBusinessID('');
+    }
+
     public function getHttpMethod()
     {
         return 'GET';
@@ -22,6 +27,11 @@ class GetOrganisationRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        return '';
+        if (parent::getProduct() == 'old_essentials') {
+            return 'businesses';
+        } else {
+            return '';
+        }
+
     }
 }

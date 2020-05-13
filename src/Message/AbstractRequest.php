@@ -10,7 +10,8 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      * @var string URL
      */
     protected $data = [];
-    protected $version = 'v2';
+    protected $accountRightVersion = 'v2';
+    protected $essentialsVersion = 'v0';
 
     /**
      * Get Access Token
@@ -59,6 +60,10 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->getParameter('apiKey');
     }
 
+    public function setProduct($value) {
+        return $this->setParameter('product', $value);
+    }
+
     public function getProduct() {
         return $this->getParameter('product');
     }
@@ -105,7 +110,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             $headers['Authorization'] = 'Bearer '.$this->getAccessToken();
         }
 
-        $headers['x-myobapi-version'] = $this->version;
+        $headers['x-myobapi-version'] = $this->essentialsVersion;
         $headers['Accept-Encoding'] = 'gzip,deflate';
 
         if ($httpMethod === 'POST' || $httpMethod === 'PUT') {
@@ -133,7 +138,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             $headers['Authorization'] = 'Bearer '.$this->getAccessToken();
         }
 
-        $headers['x-myobapi-version'] = $this->version;
+        $headers['x-myobapi-version'] = $this->accountRightVersion;
         $headers['Accept-Encoding'] = 'gzip,deflate';
 
         return $headers;
