@@ -15,6 +15,21 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     /**
      * Get Access Token
      */
+    public function getBusinessID() {
+        return $this->getParameter('businessID');
+    }
+
+    public function setBusinessID($value) {
+        return $this->setParameter('businessID', $value);
+    }
+
+    public function getCountryCode() {
+        return $this->getParameter('countryCode');
+    }
+
+    public function setCountryCode($value) {
+        return $this->setParameter('countryCode', $value);
+    }
 
     public function getAccessToken(){
         return $this->getParameter('accessToken');
@@ -42,6 +57,10 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
     public function getAPIKey() {
         return $this->getParameter('apiKey');
+    }
+
+    public function getProduct() {
+        return $this->getParameter('product');
     }
 
     public function setAPIKey($value) {
@@ -75,10 +94,32 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     /**
      * @return array
      */
+
+    public function getOldEssentialsHeaders($httpMethod) {
+        $headers = array();
+        if ($this->getAPIKey()) {
+            $headers['x-myobapi-key'] = $this->getAPIKey();
+        }
+
+        if ($this->getAccessToken()) {
+            $headers['Authorization'] = 'Bearer '.$this->getAccessToken();
+        }
+
+        $headers['x-myobapi-version'] = $this->version;
+        $headers['Accept-Encoding'] = 'gzip,deflate';
+
+        if ($httpMethod === 'POST' || $httpMethod === 'PUT') {
+            $headers['Content-Type'] = 'application/json';
+        }
+
+
+        return $headers;
+    }
+
     /**
      * @return array
      */
-    public function getHeaders()
+    public function getAccountRightLiveHeaders()
     {
         $headers = array();
         if ($this->getCompanyFile()) {
@@ -117,12 +158,23 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      */
     public function sendData($data)
     {
-        $endpoint = 'https://api.myob.com/accountright/'. $this->getCompanyEndpoint();
-        $headers = $this->getHeaders();
+        $endpoint = '';
+        if ($this->getProduct() == 'accountright_live') {
+            $endpoint = 'https://api.myob.com/accountright/' . $this->getCompanyEndpoint();
+            $headers = $this->getAccountRightLiveHeaders();
+            $body = json_encode($data);
+        }
+        elseif ($this->getProduct() == 'old_essentials') {
+            if ($this->getBusinessID() !== '') {
+                $endpoint = 'https://api.myob.com/'. $this->getCountryCode().'/essentials/'. $this->getBusinessID().'/';
+            } else {
+                $endpoint = 'https://api.myob.com/'. $this->getCountryCode().'/essentials/';
+            }
+            $headers = $this->getOldEssentialsHeaders($this->getHttpMethod());
+            $body = json_encode($data);
+        }
 
-        $body = json_encode($data);
         $httpResponse = $this->httpClient->request($this->getHttpMethod(), $endpoint . $this->getEndpoint(), $headers, $body);
-
         $this->createResponse(json_decode($httpResponse->getBody()->getContents(), true), $httpResponse->getHeaders());
         return $this->response;
     }
