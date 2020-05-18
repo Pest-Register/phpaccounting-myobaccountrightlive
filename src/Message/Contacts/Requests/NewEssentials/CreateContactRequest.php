@@ -469,10 +469,10 @@ class CreateContactRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        $endpoint = 'Contact/Customer';
+        $endpoint = 'Contact/Customer?returnBody=true';
         if ($this->getType()) {
             if (in_array('SUPPLIER', $this->getType())) {
-                $endpoint = 'Contact/Supplier';
+                $endpoint = 'Contact/Supplier?returnBody=true';
             }
         }
 

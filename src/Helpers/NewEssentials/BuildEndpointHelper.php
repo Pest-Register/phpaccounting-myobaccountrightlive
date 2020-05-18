@@ -13,12 +13,12 @@ class BuildEndpointHelper
     }
 
     public static function createForGUID($endpoint, $guid) {
-        $endpoint = $endpoint.'/'.$guid;
+        $endpoint = $endpoint.'/'.$guid.'?returnBody=true';
         return $endpoint;
     }
 
     public static function deleteForGUID($endpoint, $guid) {
-        $endpoint = $endpoint.'/'.$guid;
+        $endpoint = $endpoint.'/'.$guid.'?returnBody=true';;
         return $endpoint;
     }
 

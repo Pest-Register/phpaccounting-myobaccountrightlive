@@ -97,7 +97,8 @@ class GetJournalResponse extends AbstractResponse
      */
     public function getJournals(){
         $journals = [];
-        foreach ($this->data['Items'] as $journal) {
+        if (!array_key_exists('Items', $this->data)) {
+            $journal = $this->data;
             $newJournal = [];
             $newJournal['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journal);
             $newJournal['date'] = IndexSanityCheckHelper::indexSanityCheck('DateOccurred', $journal);
@@ -118,7 +119,31 @@ class GetJournalResponse extends AbstractResponse
                 }
             }
             array_push($journals, $newJournal);
+        } else {
+            foreach ($this->data['Items'] as $journal) {
+                $newJournal = [];
+                $newJournal['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journal);
+                $newJournal['date'] = IndexSanityCheckHelper::indexSanityCheck('DateOccurred', $journal);
+                $newJournal['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $journal);
+                $newJournal['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $journal);
+
+                if (array_key_exists('SourceTransaction', $journal)) {
+                    if ($journal['SourceTransaction']) {
+                        $newJournal['source_type'] = IndexSanityCheckHelper::indexSanityCheck('TransactionType', $journal['SourceTransaction']);
+                        $newJournal['source_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journal['SourceTransaction']);
+                    }
+
+                }
+
+                if (array_key_exists('Lines', $journal)) {
+                    if ($journal['Lines']) {
+                        $newJournal = $this->parseJournalItems($journal['Lines'],$newJournal);
+                    }
+                }
+                array_push($journals, $newJournal);
+            }
         }
+
 
         return $journals;
     }

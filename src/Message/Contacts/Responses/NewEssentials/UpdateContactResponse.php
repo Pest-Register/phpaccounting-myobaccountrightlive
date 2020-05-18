@@ -217,7 +217,8 @@ class UpdateContactResponse extends AbstractResponse
      */
     public function getContacts(){
         $contacts = [];
-        foreach ($this->data['Items'] as $contact) {
+        if (!array_key_exists('Items', $this->data)) {
+            $contact = $this->data;
             $newContact = [];
             $newContact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact);
             $newContact['first_name'] = IndexSanityCheckHelper::indexSanityCheck('FirstName', $contact);
@@ -251,8 +252,45 @@ class UpdateContactResponse extends AbstractResponse
                     }
                 }
             }
-
             array_push($contacts, $newContact);
+        } else {
+            foreach ($this->data['Items'] as $contact) {
+                $newContact = [];
+                $newContact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact);
+                $newContact['first_name'] = IndexSanityCheckHelper::indexSanityCheck('FirstName', $contact);
+                $newContact['last_name'] = IndexSanityCheckHelper::indexSanityCheck('LastName', $contact);
+                $newContact['is_individual'] = IndexSanityCheckHelper::indexSanityCheck('IsIndividual', $contact);
+                $newContact['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $contact);
+                $newContact['raw_addresses'] = IndexSanityCheckHelper::indexSanityCheck('Addresses', $contact);
+
+                if ($newContact['is_individual']) {
+                    $newContact['display_name'] = $newContact['first_name']. ' '.$newContact['last_name'];
+                } else {
+                    $newContact['display_name'] = IndexSanityCheckHelper::indexSanityCheck('CompanyName', $contact);
+                }
+                $newContact['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $contact);
+
+                if (array_key_exists('Type', $contact)) {
+                    $newContact = $this->parseType($newContact, $contact['Type']);
+                }
+
+                if (array_key_exists('Addresses', $contact)) {
+                    $newContact = $this->parseAddressesAndPhones($newContact, $contact['Addresses']);
+                }
+
+                if (array_key_exists('SellingDetails', $contact)) {
+                    if ($contact['SellingDetails']) {
+                        if (array_key_exists('TaxCode', $contact['SellingDetails'])) {
+                            $newContact['tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact['SellingDetails']['TaxCode']);
+                        }
+                        if (array_key_exists('FreightTaxCode', $contact['SellingDetails'])) {
+                            $newContact['freight_tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact['SellingDetails']['FreightTaxCode']);
+                        }
+                    }
+                }
+
+                array_push($contacts, $newContact);
+            }
         }
 
         return $contacts;

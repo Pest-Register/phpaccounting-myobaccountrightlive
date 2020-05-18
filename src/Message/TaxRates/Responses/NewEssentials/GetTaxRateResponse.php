@@ -62,8 +62,8 @@ class GetTaxRateResponse extends AbstractResponse
      */
     public function getTaxRates(){
         $taxRates = [];
-
-        foreach ($this->data['Items'] as $taxRate) {
+        if (!array_key_exists('Items', $this->data)) {
+            $taxRate = $this->data;
             $newTaxRate = [];
             $newTaxRate['accounting_id'] =  IndexSanityCheckHelper::indexSanityCheck('UID', $taxRate);
             $newTaxRate['name'] = IndexSanityCheckHelper::indexSanityCheck('Description', $taxRate);
@@ -77,7 +77,24 @@ class GetTaxRateResponse extends AbstractResponse
             $newTaxRate['is_revenue'] = true;
 
             array_push($taxRates, $newTaxRate);
+        } else {
+            foreach ($this->data['Items'] as $taxRate) {
+                $newTaxRate = [];
+                $newTaxRate['accounting_id'] =  IndexSanityCheckHelper::indexSanityCheck('UID', $taxRate);
+                $newTaxRate['name'] = IndexSanityCheckHelper::indexSanityCheck('Description', $taxRate);
+                $newTaxRate['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $taxRate);
+                $newTaxRate['rate'] = IndexSanityCheckHelper::indexSanityCheck('Rate', $taxRate);
+                $newTaxRate['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $taxRate);
+                $newTaxRate['is_asset'] = true;
+                $newTaxRate['is_equity'] = true;
+                $newTaxRate['is_expense'] = true;
+                $newTaxRate['is_liability'] = true;
+                $newTaxRate['is_revenue'] = true;
+
+                array_push($taxRates, $newTaxRate);
+            }
         }
+
 
         return $taxRates;
     }

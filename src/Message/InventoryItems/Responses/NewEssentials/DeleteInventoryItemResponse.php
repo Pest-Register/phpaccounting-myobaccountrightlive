@@ -123,9 +123,14 @@ class DeleteInventoryItemResponse extends AbstractResponse
      * Return all Contacts with Generic Schema Variable Assignment
      * @return array
      */
+    /**
+     * Return all Contacts with Generic Schema Variable Assignment
+     * @return array
+     */
     public function getInventoryItems(){
         $items = [];
-        foreach ($this->data['Items'] as $item) {
+        if (!array_key_exists('Items', $this->data)) {
+            $item = $this->data;
             $newItem = [];
             $newItem['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $item);
             $newItem['code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $item);
@@ -143,7 +148,28 @@ class DeleteInventoryItemResponse extends AbstractResponse
             $newItem = $this->parseSellingDetails($item, $newItem);
             $newItem = $this->parseAssetDetails($item, $newItem);
             array_push($items, $newItem);
+        } else {
+            foreach ($this->data['Items'] as $item) {
+                $newItem = [];
+                $newItem['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $item);
+                $newItem['code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $item);
+                $newItem['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $item);
+                $newItem['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
+                $newItem['type'] = 'UNSPECIFIED';
+                $newItem['is_buying'] = IndexSanityCheckHelper::indexSanityCheck('IsBought', $item);
+                $newItem['is_selling'] = IndexSanityCheckHelper::indexSanityCheck('IsSold', $item);
+                $newItem['buying_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
+                $newItem['selling_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
+                $newItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('QuantityAvailable', $item);
+                $newItem['cost_pool'] = IndexSanityCheckHelper::indexSanityCheck('AverageCost', $item);
+                $newItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $item);
+                $newItem = $this->parsePurchaseDetails($item, $newItem);
+                $newItem = $this->parseSellingDetails($item, $newItem);
+                $newItem = $this->parseAssetDetails($item, $newItem);
+                array_push($items, $newItem);
+            }
         }
+
 
         return $items;
     }

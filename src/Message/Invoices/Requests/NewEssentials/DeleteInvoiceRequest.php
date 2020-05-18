@@ -37,7 +37,7 @@ class DeleteInvoiceRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        $endpoint = 'Sale/Invoice/Item';
+        $endpoint = 'Sale/Invoice/Item?returnBody=true';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {

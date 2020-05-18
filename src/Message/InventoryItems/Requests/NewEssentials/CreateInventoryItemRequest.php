@@ -306,7 +306,7 @@ class CreateInventoryItemRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        $endpoint = 'Inventory/Item';
+        $endpoint = 'Inventory/Item?returnBody=true';
         return $endpoint;
     }
 

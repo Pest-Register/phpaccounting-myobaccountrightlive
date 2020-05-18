@@ -245,7 +245,7 @@ class CreateAccountRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'GeneralLedger/Account';
+        $endpoint = 'GeneralLedger/Account?returnBody=true';
         return $endpoint;
     }
 

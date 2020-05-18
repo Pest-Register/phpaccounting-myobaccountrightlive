@@ -37,7 +37,7 @@ class DeletePaymentRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        $endpoint = 'Sale/CustomerPayment';
+        $endpoint = 'Sale/CustomerPayment?returnBody=true';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {

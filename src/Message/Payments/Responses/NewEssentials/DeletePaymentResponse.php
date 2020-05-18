@@ -94,7 +94,8 @@ class DeletePaymentResponse extends AbstractResponse
      */
     public function getPayments(){
         $payments = [];
-        foreach ($this->data['Items'] as $payment) {
+        if (!array_key_exists('Items', $this->data)) {
+            $payment = $this->data;
             $newPayment = [];
             $newPayment['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $payment);
             $newPayment['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $payment);
@@ -106,6 +107,12 @@ class DeletePaymentResponse extends AbstractResponse
             if (array_key_exists('Account', $payment)) {
                 if ($payment['Account']) {
                     $newPayment = $this->parseAccount($newPayment, $payment['Account']);
+                }
+            }
+
+            if (array_key_exists('Customer', $payment)) {
+                if ($payment['Customer']) {
+                    $newPayment = $this->parseContact($newPayment, $payment['Customer']);
                 }
             }
 
@@ -122,7 +129,44 @@ class DeletePaymentResponse extends AbstractResponse
                 }
             }
             array_push($payments, $newPayment);
+        } else {
+            foreach ($this->data['Items'] as $payment) {
+                $newPayment = [];
+                $newPayment['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $payment);
+                $newPayment['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $payment);
+                $newPayment['amount'] = IndexSanityCheckHelper::indexSanityCheck('AmountReceived', $payment);
+                $newPayment['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $payment);
+                $newPayment['type'] = IndexSanityCheckHelper::indexSanityCheck('PaymentMethod', $payment);
+                $newPayment['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $payment);
+
+                if (array_key_exists('Account', $payment)) {
+                    if ($payment['Account']) {
+                        $newPayment = $this->parseAccount($newPayment, $payment['Account']);
+                    }
+                }
+
+                if (array_key_exists('Customer', $payment)) {
+                    if ($payment['Customer']) {
+                        $newPayment = $this->parseContact($newPayment, $payment['Customer']);
+                    }
+                }
+
+                if (array_key_exists('Invoices', $payment)) {
+                    if ($payment['Invoices']) {
+                        $newPayment = $this->parseInvoices($newPayment, $payment['Invoices']);
+                    }
+                }
+
+
+                if (array_key_exists('ReceiptNumber', $payment)) {
+                    if ($payment['ReceiptNumber']) {
+                        $newPayment['is_reconciled'] = true;
+                    }
+                }
+                array_push($payments, $newPayment);
+            }
         }
+
 
         return $payments;
     }

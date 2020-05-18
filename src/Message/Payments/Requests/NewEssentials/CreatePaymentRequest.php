@@ -249,7 +249,7 @@ class CreatePaymentRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'Sale/CustomerPayment';
+        $endpoint = 'Sale/CustomerPayment?returnBody=true';
         return $endpoint;
     }
 

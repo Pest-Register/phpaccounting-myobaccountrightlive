@@ -326,7 +326,7 @@ class UpdateInventoryItemRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        $endpoint = 'Inventory/Item';
+        $endpoint = 'Inventory/Item?returnBody=true';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {

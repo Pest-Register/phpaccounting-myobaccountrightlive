@@ -11,7 +11,7 @@ class CreateContactTest extends BaseTest
         try {
 
             $params = [
-                'reference' => 'CUS0004',
+                'reference' => 'CUS0006',
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
                 'email_address' => $faker->email,
@@ -89,6 +89,7 @@ class CreateContactTest extends BaseTest
             $response = $this->gateway->createContact($params)->send();
             if ($response->isSuccessful()) {
                 $contacts = $response->getContacts();
+                var_dump($contacts);
                 $this->assertIsArray($contacts);
             } else {
                 var_dump($response->getErrorMessage());

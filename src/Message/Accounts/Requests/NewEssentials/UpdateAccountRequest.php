@@ -264,7 +264,7 @@ class UpdateAccountRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'GeneralLedger/Account';
+        $endpoint = 'GeneralLedger/Account?returnBody=true';
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
                 $endpoint = BuildEndpointHelper::createForGUID($endpoint, $this->getAccountingID());

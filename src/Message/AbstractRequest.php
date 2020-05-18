@@ -96,7 +96,9 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
     {
         return 'POST';
     }
+
     /**
+     * @param $httpMethod
      * @return array
      */
 
@@ -178,7 +180,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             $headers = $this->getOldEssentialsHeaders($this->getHttpMethod());
             $body = json_encode($data);
         }
-
         $httpResponse = $this->httpClient->request($this->getHttpMethod(), $endpoint . $this->getEndpoint(), $headers, $body);
         $this->createResponse(json_decode($httpResponse->getBody()->getContents(), true), $httpResponse->getHeaders());
         return $this->response;

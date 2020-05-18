@@ -37,7 +37,7 @@ class DeleteAccountRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        $endpoint = 'GeneralLedger/Account';
+        $endpoint = 'GeneralLedger/Account?returnBody=true';
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {

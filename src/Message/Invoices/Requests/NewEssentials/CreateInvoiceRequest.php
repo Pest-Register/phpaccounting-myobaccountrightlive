@@ -436,7 +436,7 @@ class CreateInvoiceRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'Sale/Invoice/Item';
+        $endpoint = 'Sale/Invoice/Item?returnBody=true';
         return $endpoint;
     }
 
