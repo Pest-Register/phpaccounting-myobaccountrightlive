@@ -485,7 +485,6 @@ class UpdateContactRequest extends AbstractRequest
                 $endpoint = BuildEndpointHelper::createForGUID($endpoint, $this->getAccountingID());
             }
         }
-        var_dump($endpoint);
         return $endpoint;
     }
 
