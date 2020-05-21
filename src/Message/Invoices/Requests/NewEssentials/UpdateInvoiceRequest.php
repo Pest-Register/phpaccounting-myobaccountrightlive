@@ -460,7 +460,7 @@ class UpdateInvoiceRequest extends AbstractRequest
         $endpoint = 'Sale/Invoice/Item?returnBody=true';
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::createForGUID($endpoint, $this->getAccountingID());
+                $endpoint = BuildEndpointHelper::createForGUID('Sale/Invoice/Item', $this->getAccountingID());
             }
         }
         return $endpoint;

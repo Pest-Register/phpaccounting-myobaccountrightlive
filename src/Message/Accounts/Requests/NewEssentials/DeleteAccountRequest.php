@@ -41,7 +41,7 @@ class DeleteAccountRequest extends AbstractRequest
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::deleteForGUID($endpoint, $this->getAccountingID());
+                $endpoint = BuildEndpointHelper::deleteForGUID('GeneralLedger/Account', $this->getAccountingID());
             }
         }
         return $endpoint;

@@ -41,7 +41,7 @@ class DeletePaymentRequest extends AbstractRequest
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::deleteForGUID($endpoint, $this->getAccountingID());
+                $endpoint = BuildEndpointHelper::deleteForGUID('Sale/CustomerPayment', $this->getAccountingID());
             }
         }
         return $endpoint;

@@ -330,7 +330,7 @@ class UpdateInventoryItemRequest extends AbstractRequest
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::createForGUID($endpoint, $this->getAccountingID());
+                $endpoint = BuildEndpointHelper::createForGUID('Inventory/Item', $this->getAccountingID());
             }
         }
         return $endpoint;

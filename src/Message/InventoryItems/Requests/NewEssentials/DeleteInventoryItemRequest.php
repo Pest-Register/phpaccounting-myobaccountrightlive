@@ -41,7 +41,7 @@ class DeleteInventoryItemRequest extends AbstractRequest
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::deleteForGUID($endpoint, $this->getAccountingID());
+                $endpoint = BuildEndpointHelper::deleteForGUID('Inventory/Item', $this->getAccountingID());
             }
         }
         return $endpoint;

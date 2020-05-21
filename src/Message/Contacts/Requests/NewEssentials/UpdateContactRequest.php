@@ -476,6 +476,12 @@ class UpdateContactRequest extends AbstractRequest
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
+                $endpoint = 'Contact/Customer';
+                if ($this->getType()) {
+                    if (in_array('SUPPLIER', $this->getType())) {
+                        $endpoint = 'Contact/Supplier';
+                    }
+                }
                 $endpoint = BuildEndpointHelper::createForGUID($endpoint, $this->getAccountingID());
             }
         }

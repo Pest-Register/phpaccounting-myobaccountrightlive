@@ -41,7 +41,7 @@ class DeleteInvoiceRequest extends AbstractRequest
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::deleteForGUID($endpoint, $this->getAccountingID());
+                $endpoint = BuildEndpointHelper::deleteForGUID('Sale/Invoice/Item', $this->getAccountingID());
             }
         }
         return $endpoint;
