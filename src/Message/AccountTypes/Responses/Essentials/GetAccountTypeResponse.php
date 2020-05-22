@@ -31,7 +31,7 @@ class GetAccountTypeResponse extends AbstractResponse
 
     /**
      * Fetch Error Message from Response
-     * @return string
+     * @return array
      */
     public function getErrorMessage()
     {

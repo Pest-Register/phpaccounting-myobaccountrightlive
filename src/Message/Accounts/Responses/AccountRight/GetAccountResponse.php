@@ -31,7 +31,7 @@ class GetAccountResponse extends AbstractResponse
 
     /**
      * Fetch Error Message from Response
-     * @return string
+     * @return array
      */
     public function getErrorMessage()
     {
@@ -45,7 +45,7 @@ class GetAccountResponse extends AbstractResponse
         }
         if (array_key_exists('Items', $this->data)) {
             if (count($this->data['Items']) === 0) {
-                return 'NULL Returned from API or End of Pagination';
+                return ['message' => 'NULL Returned from API or End of Pagination'];
             }
         }
 
