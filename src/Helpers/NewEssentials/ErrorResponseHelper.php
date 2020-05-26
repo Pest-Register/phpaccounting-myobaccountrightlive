@@ -24,6 +24,8 @@ class ErrorResponseHelper
                     $response = [ 'message' => 'Parameter missing from request: '.$response ];
                 } elseif (strpos($response, 'page not found') !== false ) {
                     $response = [ 'message' => 'NULL Returned from API or End of Pagination' ];
+                } else {
+                    $response = ['message' => $response];
                 }
                 return $response;
         }
