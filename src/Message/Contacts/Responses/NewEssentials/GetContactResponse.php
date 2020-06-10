@@ -181,6 +181,7 @@ class GetContactResponse extends AbstractResponse
                 $newAddress = [];
                 if ($address['Location'] == 1) {
                     $newAddress['address_type'] = 'BILLING';
+                    $contact['email_address'] = IndexSanityCheckHelper::indexSanityCheck('Email', $address);
                 } else {
                     $newAddress['address_type'] = 'PRIMARY';
                 }

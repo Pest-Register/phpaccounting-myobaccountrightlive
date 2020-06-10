@@ -11,8 +11,8 @@ class CreateAccountTest extends BaseTest
 
             $params = [
                 'code' => 002,
-                'name' => 'PESTREGISTER_Sales',
-                'type' => 'Bank',
+                'name' => 'PESTREGISTER_LongTermLiability',
+                'type' => 'OtherLiability',
                 'type_id' => 2,
                 'status' => 'ACTIVE',
                 'description' => 'Test Description',
