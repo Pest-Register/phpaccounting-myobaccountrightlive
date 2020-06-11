@@ -298,13 +298,15 @@ class CreateContactRequest extends AbstractRequest
                 default:
                     continue;
             }
+            if ($location !== 0) {
+                $data['Addresses'][$location]['Email'] = IndexSanityCheckHelper::indexSanityCheck('email', $address);
+                $data['Addresses'][$location]['Website'] = IndexSanityCheckHelper::indexSanityCheck('website', $address);
+            }
             $data['Addresses'][$location]['Street'] = IndexSanityCheckHelper::indexSanityCheck('address_line_1', $address);
             $data['Addresses'][$location]['City'] = IndexSanityCheckHelper::indexSanityCheck('suburb', $address);
             $data['Addresses'][$location]['State'] = IndexSanityCheckHelper::indexSanityCheck('state', $address);
             $data['Addresses'][$location]['PostCode'] = IndexSanityCheckHelper::indexSanityCheck('postal_code', $address);
             $data['Addresses'][$location]['Country'] = IndexSanityCheckHelper::indexSanityCheck('country', $address);
-            $data['Addresses'][$location]['Email'] = IndexSanityCheckHelper::indexSanityCheck('email', $address);
-            $data['Addresses'][$location]['Website'] = IndexSanityCheckHelper::indexSanityCheck('website', $address);
             $data['Addresses'][$location]['ContactName'] = IndexSanityCheckHelper::indexSanityCheck('contact_name', $address);
             $data['Addresses'][$location]['Salutation'] = IndexSanityCheckHelper::indexSanityCheck('salutation', $address);
         }
