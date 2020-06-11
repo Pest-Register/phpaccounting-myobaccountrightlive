@@ -163,7 +163,6 @@ class GetPaymentResponse extends AbstractResponse
                 $newPayment['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $payment);
                 $newPayment['amount'] = IndexSanityCheckHelper::indexSanityCheck('AmountReceived', $payment);
                 $newPayment['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $payment);
-                $newPayment['type'] = IndexSanityCheckHelper::indexSanityCheck('PaymentMethod', $payment);
                 $newPayment['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $payment);
 
                 if (array_key_exists('Account', $payment)) {
@@ -181,6 +180,14 @@ class GetPaymentResponse extends AbstractResponse
                 if (array_key_exists('Invoices', $payment)) {
                     if ($payment['Invoices']) {
                         $newPayment = $this->parseInvoices($newPayment, $payment['Invoices']);
+                    }
+                }
+
+                if (array_key_exists('PaymentMethod', $payment)) {
+                    if ($payment['PaymentMethod']) {
+                        $newPayment['type'] = $payment['PaymentMethod'];
+                    } else {
+                        $newPayment['type'] = 'ACCRECPAYMENT';
                     }
                 }
 
