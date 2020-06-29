@@ -11,79 +11,40 @@ class CreateContactTest extends BaseTest
         try {
 
             $params = [
-                'reference' => 'CUS0006',
-                'first_name' => $faker->firstName,
-                'last_name' => $faker->lastName,
-                'email_address' => $faker->email,
-                'status' => 'ACTIVE',
+                'name' => 'Max Yendy Business 1',
+                'first_name' => NULL,
+                'last_name' => NULL,
+                'addresses' =>
+                    [
+                        [
+                            'type' => 'PRIMARY',
+                            'address_line_1' => '18 Princes Street',
+                            'city' => 'St Kilda',
+                            'postal_code' => '3182',
+                            'state' => 'Victoria',
+                            'country' => 'Australia',
+                        ],
+                    ],
+                'is_individual' => false,
+                'email_address' => 'maxbusiness@pestregister.com',
+                'phones' =>
+                    [
+                        [
+                            'type' => 'DEFAULT',
+                            'area_code' => NULL,
+                            'country_code' => NULL,
+                            'phone_number' => '0435567535',
+                            'accounting_id' => NULL,
+                            'accounting_slot_id' => NULL,
+                        ],
+                    ],
                 'type' => ['CUSTOMER'],
-                'is_individual' => true,
+                'status' => 'ACTIVE',
+                'sync_token' => NULL,
+                'website' => 'www.maxyendall.com',
                 'tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
                 'freight_tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
-                'addresses' => [
-                    [
-                        'type' => 'BILLING',
-                        'address_line_1' => $faker->streetAddress,
-                        'city' => $faker->city,
-                        'postal_code' => $faker->postcode,
-                        'country' => $faker->country,
-                        'contact_name' => $faker->name,
-                        'salutation' => 'test'
-                    ],
-                    [
-                        'type' => 'PRIMARY',
-                        'address_line_1' => $faker->streetAddress,
-                        'city' => $faker->city,
-                        'postal_code' => $faker->postcode,
-                        'country' => $faker->country,
-                        'contact_name' => $faker->name,
-                        'salutation' => 'test',
-                        'email' => $faker->email,
-                        'website' => $faker->url
-                    ]
-                ],
-                'phones' => [
-                    [
-                        'country_code' => '',
-                        'area_code' => '',
-                        'phone_number' => '0415143787',
-                        'type' => 'MOBILE',
-                        'accounting_id' => 1,
-                        'accounting_slot_id' => 0
-                    ],
-                    [
-                        'country_code' => '',
-                        'area_code' => '',
-                        'phone_number' => 'Fax as',
-                        'type' => 'FAX',
-                        'accounting_id' => 1,
-                        'accounting_slot_id' => 'Fax'
-                    ],
-                    [
-                        'country_code' => '',
-                        'area_code' => '',
-                        'phone_number' => '0435567535',
-                        'type' => 'FAX',
-                        'accounting_id' => 2,
-                        'accounting_slot_id' => 'Fax'
-                    ],
-                    [
-                        'country_code' => '',
-                        'area_code' => '',
-                        'phone_number' => '0435567535',
-                        'type' => 'MOBILE',
-                        'accounting_id' => null,
-                        'accounting_slot_id' => null
-                    ],
-                    [
-                        'country_code' => '',
-                        'area_code' => '',
-                        'phone_number' => '0435567535',
-                        'type' => 'MOBILE',
-                        'accounting_id' => null,
-                        'accounting_slot_id' => null
-                    ]
-                ]
+                'reference' => 'MAXYENDYBUSINESS1',
             ];
 
             $response = $this->gateway->createContact($params)->send();

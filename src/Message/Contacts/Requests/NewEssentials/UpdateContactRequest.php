@@ -404,13 +404,16 @@ class UpdateContactRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('first_name', 'last_name', 'is_individual', 'accounting_id');
+        $this->validate('is_individual', 'accounting_id');
         $this->issetParam('UID', 'accounting_id');
         $this->issetParam('DisplayID', 'reference');
         $this->issetParam('FirstName', 'first_name');
         $this->issetParam('LastName', 'last_name');
         $this->issetParam('IsIndividual', 'is_individual');
         $this->issetParam('RowVersion', 'sync_token');
+        if ($this->getIsIndividual() == false) {
+            $this->issetParam('CompanyName', 'name');
+        }
         $this->data['Addresses'] = [
             [
                 "Location" => 1,
