@@ -170,6 +170,13 @@ class UpdateInvoiceResponse extends AbstractResponse
                     $newInvoice['due_date'] = IndexSanityCheckHelper::indexSanityCheck('DueDate', $invoice['Terms']);
                 }
             }
+            if ($newInvoice['amount_due'] == 0) {
+                $newInvoice['status'] = 'PAID';
+            } else if ($newInvoice['amount_due'] > 0 && $newInvoice['amount_due'] != $newInvoice['total']) {
+                $newInvoice['status'] = 'PARTIAL';
+            } else {
+                $newInvoice['status'] = 'SUBMITTED';
+            }
 
             array_push($invoices, $newInvoice);
         } else {
@@ -217,6 +224,13 @@ class UpdateInvoiceResponse extends AbstractResponse
                     }
                 }
 
+                if ($newInvoice['amount_due'] == 0) {
+                    $newInvoice['status'] = 'PAID';
+                } else if ($newInvoice['amount_due'] > 0 && $newInvoice['amount_due'] != $newInvoice['total']) {
+                    $newInvoice['status'] = 'PARTIAL';
+                } else {
+                    $newInvoice['status'] = 'SUBMITTED';
+                }
                 array_push($invoices, $newInvoice);
             }
         }

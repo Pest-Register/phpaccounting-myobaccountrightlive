@@ -13,9 +13,11 @@ class GetInvoiceTest extends BaseTest
         $this->setUp();
         try {
             $params = [
+                'canPaginate' => true,
                 'accounting_id' => "",
-                'page' => 2000,
-                'invoice_type' => 'Item'
+                'invoice_type' => 'Item',
+                'skip' => 0,
+                'page' => 1000,
             ];
 
             $response = $this->gateway->getInvoice($params)->send();
