@@ -13,34 +13,33 @@ class CreateInventoryItemTest extends BaseTest
         try {
 
             $params = [
-                'code' => 'DEV-OPS',
-                'name' => 'Development Operations',
+                'code' => 'TEST05',
+                'name' => 'Testing Ledger Sync',
+                'description' => 'Testing Ledger Sync',
+                'type' => 'PRODUCT',
+                'is_buying' => false,
                 'is_selling' => true,
-                'is_buying' => true,
                 'is_tracked' => false,
-                'description' => 'Development Operations',
-                'buying_description' => 'Development Operations',
+                'buying_details' => [],
+                'sales_details' => [
+                        'selling_unit_price' => 150.0,
+                        'selling_account_id' => '8e52f2a4-0770-4e1f-972e-305b8eb4295f',
+                        'selling_account_code' => '002',
+                        'selling_tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
+                        'selling_tax_type_code' => NULL,
+                    ],
+                'asset_details' => [],
+                'buying_description' => NULL,
+                'selling_description' => 'Testing Ledger Sync',
+                'quantity' => 0.0,
+                'cost_pool' => 0.0,
+                'accounting_id' => NULL,
                 'status' => 'ACTIVE',
                 'unit' => 'QTY',
-                'type' => 'Stock',
-                'buying_details' => [
-                    'buying_account_id' => '42872548-8060-4678-b910-29e8eede8945',
-                    'buying_unit_price' => 100,
-                    'buying_account_code' => '6-1000',
-                    'buying_tax_type_id' => '8d9cfae6-0f23-4c3e-904e-3e212cf67156',
-                    'buying_tax_type_code' => 'N-T'
-                ],
-                'sales_details' => [
-                    'selling_account_id' => '527d8f24-0175-4e98-addb-faae929b98bf',
-                    'selling_unit_price' => 150,
-                    'selling_account_code' => '4-1000',
-                    'selling_tax_type_id' => '8d9cfae6-0f23-4c3e-904e-3e212cf67156',
-                    'selling_tax_type_code' => 'N-T'
-                ]
+                'sync_token' => NULL,
             ];
 
             $response = $this->gateway->createInventoryItem($params)->send();
-            var_dump($response);
             if ($response->isSuccessful()) {
                 $this->assertIsArray($response->getData());
                 var_dump($response->getInventoryItems());

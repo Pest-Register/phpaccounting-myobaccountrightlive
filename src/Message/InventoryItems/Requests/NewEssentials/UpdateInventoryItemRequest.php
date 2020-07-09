@@ -313,11 +313,10 @@ class UpdateInventoryItemRequest extends AbstractRequest
         if($this->getStatus() !== null) {
             $this->data['IsActive'] = ($this->getStatus() === 'ACTIVE' ? true : false);
         }
-        if ($this->getSalesDetails() !== null) {
+        if ($this->getSalesDetails() !== null && !empty($this->getSalesDetails())) {
             $this->data = $this->parseSalesDetails($this->getSalesDetails(), $this->data);
         }
-
-        if ($this->getBuyingDetails() !== null) {
+        if ($this->getBuyingDetails() !== null && !empty($this->getBuyingDetails())) {
             $this->data = $this->parseBuyingDetails($this->getBuyingDetails(), $this->data);
         }
         return $this->data;
