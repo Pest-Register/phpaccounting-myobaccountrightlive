@@ -145,6 +145,7 @@ class CreateInventoryItemResponse extends AbstractResponse
             $newItem['type'] = 'UNSPECIFIED';
             $newItem['is_buying'] = IndexSanityCheckHelper::indexSanityCheck('IsBought', $item);
             $newItem['is_selling'] = IndexSanityCheckHelper::indexSanityCheck('IsSold', $item);
+            $newItem['is_tracked'] = IndexSanityCheckHelper::indexSanityCheck('IsInventoried', $item);
             $newItem['buying_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
             $newItem['selling_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
             $newItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('QuantityAvailable', $item);
@@ -164,6 +165,7 @@ class CreateInventoryItemResponse extends AbstractResponse
                 $newItem['type'] = 'UNSPECIFIED';
                 $newItem['is_buying'] = IndexSanityCheckHelper::indexSanityCheck('IsBought', $item);
                 $newItem['is_selling'] = IndexSanityCheckHelper::indexSanityCheck('IsSold', $item);
+                $newItem['is_tracked'] = IndexSanityCheckHelper::indexSanityCheck('IsInventoried', $item);
                 $newItem['buying_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
                 $newItem['selling_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
                 $newItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('QuantityAvailable', $item);
