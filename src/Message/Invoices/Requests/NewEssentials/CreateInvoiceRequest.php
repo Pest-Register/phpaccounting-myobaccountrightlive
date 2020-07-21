@@ -410,6 +410,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
         if ($this->getDueDate()) {
             $this->data['Terms']['DueDate'] = $this->getDueDate();
+            $this->data['Terms']['PaymentIsDue'] = 'OnADayOfTheMonth';
         }
 
         if ($this->getInvoiceData() !== null && $this->getGSTRegistered() !== null) {
