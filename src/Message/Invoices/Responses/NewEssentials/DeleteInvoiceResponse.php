@@ -115,7 +115,7 @@ class DeleteInvoiceResponse extends AbstractResponse
                 if (array_key_exists('Item', $lineItem)) {
                     if ($lineItem['Item']) {
                         $newLineItem['item_code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $lineItem['Item']);
-                        $newLineItem['item_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['UID']);
+                        $newLineItem['item_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['Item']);
                     }
                 }
 

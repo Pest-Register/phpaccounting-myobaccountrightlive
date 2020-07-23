@@ -99,15 +99,23 @@ class UpdateInvoiceResponse extends AbstractResponse
                 $newLineItem['amount'] = IndexSanityCheckHelper::indexSanityCheck('Total', $lineItem);
                 $newLineItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $lineItem);
 
+                if (array_key_exists('Account', $lineItem)) {
+                    if ($lineItem['Account']) {
+                        $newLineItem['account_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['Account']);
+                        $newLineItem['account_code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $lineItem['Account']);
+                    }
+                }
                 if (array_key_exists('TaxCode', $lineItem)) {
                     if ($lineItem['TaxCode']) {
                         $newLineItem['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $lineItem['TaxCode']);
+                        $newLineItem['tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['TaxCode']);
                     }
                 }
 
                 if (array_key_exists('Item', $lineItem)) {
                     if ($lineItem['Item']) {
                         $newLineItem['item_code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $lineItem['Item']);
+                        $newLineItem['item_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['Item']);
                     }
                 }
 
