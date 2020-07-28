@@ -3,6 +3,7 @@
 namespace Tests\Invoices\NewEssentials;
 
 
+use Carbon\Carbon;
 use Tests\BaseTest;
 
 class CreateInvoiceTest extends BaseTest
@@ -12,69 +13,65 @@ class CreateInvoiceTest extends BaseTest
         try {
 
             $params = [
-                'type' => 'Item',
-                'date' => '2020-05-01',
-                'due_date' => '2020-05-1',
-                'contact' => '5a225a1e-994f-4f9a-81ae-d94daa31b3ec',
-                'deposit' => 0.0,
-                'invoice_data' => [
-                    [
-                        'description' => 'Test',
-                        'accounting_id' => '',
-                        'amount' => 494.55,
-                        'quantity' => 1.0,
-                        'unit_amount' => 494.55,
-                        'discount_rate' => 0.0,
-                        'code' => 7185,
-                        'tax_type' => 'GST',
-                        'unit' => 'QTY',
-                        'tax_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
-                        'account_id' => '527d8f24-0175-4e98-addb-faae929b98bf',
-                        'discount_amount' => 0.0,
-                        'tax_inclusive_amount' => 544.0,
+                    'address' => [
+                        'address_line_1' => '18 Princes Street',
+                        'city' => 'St Kilda',
+                        'postal_code' => '3182',
+                        'state' => 'Victoria',
+                        'country' => 'Australia'
                     ],
-                    [
-                        'description' => 'Test',
-                        'amount' => 181.82,
-                        'quantity' => 1.0,
-                        'unit_amount' => 181.82,
-                        'discount_rate' => 0.0,
-                        'code' => 7185,
-                        'tax_type' => 'ITS',
-                        'unit' => 'QTY',
-                        'tax_id' => '623b4a09-fd63-47d4-a632-b4b0294f9ce1',
-                        'account_id' => '4862df87-39d7-407f-a51b-716284818aa3',
-                        'discount_amount' => 0.0,
-                        'tax_inclusive_amount' => 200.0,
-                    ]
-                ],
-                'total_discount' => 0.0,
-                'gst_registered' => true,
-                'invoice_number' => '20200327_0002',
-                'invoice_reference' => '20200327_0002',
-                'total' => 1897.40,
-                'discount_amount' => 97.60,
-                'discount_rate' => 4.89223,
-                'deposit_amount' => NULL,
-                'gst_inclusive' => 'INCLUSIVE',
-                'total_tax' => 172.49,
-                'tax_lines' => [
-                    [
-                        'tax_id' => '10',
-                        'tax_rate_id' => 20,
-                        'tax_percent' => 10.0,
-                        'net_amount' => 1724.91,
-                        'percent_based' => true,
-                        'total_tax' => 172.49,
+                    'type' => 'ACCREC',
+                    'date' => Carbon::now(),
+                    'due_date' => Carbon::now(),
+                    'contact' => '2b45792a-3128-4af6-b2f6-e9586df8bcd0',
+                    'email_status' => false,
+                    'amount_paid' => 0.0,
+                    'amount_due' => 350.0,
+                    'invoice_data' => [
+                            [
+                                'description' => 'Testing Selling Ledger',
+                                'accounting_id' => NULL,
+                                'amount' => '150.0000',
+                                'quantity' => 1.0,
+                                'unit_amount' => 150.0,
+                                'discount_rate' => 0.0,
+                                'code' => 14270,
+                                'tax_type' => 'GST',
+                                'item_code' => 'TEST05',
+                                'item_id' => '4a854435-a6e7-4abb-84ff-3cfcec10ce1f',
+                                'unit' => 'QTY',
+                                'tax_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
+                                'account_id' => '8e52f2a4-0770-4e1f-972e-305b8eb4295f',
+                            ],
+                            [
+                                'description' => 'Test Array Seek',
+                                'accounting_id' => NULL,
+                                'amount' => '200.0000',
+                                'quantity' => 1.0,
+                                'unit_amount' => 200.0,
+                                'discount_rate' => 0.0,
+                                'code' => 14270,
+                                'tax_type' => 'GST',
+                                'item_code' => 'TEST04',
+                                'item_id' => 'e317ebf2-ff6d-42e7-a1ca-29936fa53883',
+                                'unit' => 'QTY',
+                                'tax_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
+                                'account_id' => '8e52f2a4-0770-4e1f-972e-305b8eb4295f',
+                            ],
                     ],
-                ],
-                'address' => [
-                    'address_line_1' => ' ',
-                    'city' => NULL,
-                    'postal_code' => NULL,
-                    'state' => NULL,
-                    'country' => 'Australia',
-                ]
+                    'total_discount' => 0,
+                    'gst_registered' => false,
+                    'invoice_number' => '20200714_0004',
+                    'invoice_reference' => '20200714_0004',
+                    'total' => 350.0,
+                    'discount_amount' => '0.00',
+                    'discount_rate' => '0.0000',
+                    'deposit_amount' => NULL,
+                    'gst_inclusive' => 'INCLUSIVE',
+                    'sync_token' => NULL,
+                    'total_tax' => 31.82,
+                    'tax_lines' => [],
+                    'status' => 'Open'
             ];
 
             $response = $this->gateway->createInvoice($params)->send();

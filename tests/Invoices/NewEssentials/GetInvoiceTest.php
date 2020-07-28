@@ -14,7 +14,7 @@ class GetInvoiceTest extends BaseTest
         try {
             $params = [
                 'canPaginate' => true,
-                'accounting_id' => "",
+                'accounting_id' => "b5fb61aa-3a45-41b6-b436-0efc29c080cb",
                 'invoice_type' => 'Item',
                 'skip' => 0,
                 'page' => 1000,

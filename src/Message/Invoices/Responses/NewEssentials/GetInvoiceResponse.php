@@ -90,7 +90,6 @@ class GetInvoiceResponse extends AbstractResponse
     private function parseLineItems($invoice, $data) {
         if ($data) {
             $lineItems = [];
-            var_dump($data);
             foreach($data as $lineItem) {
                 $newLineItem = [];
                 $newLineItem['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('RowID', $lineItem);
