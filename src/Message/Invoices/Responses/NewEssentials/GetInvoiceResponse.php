@@ -90,6 +90,7 @@ class GetInvoiceResponse extends AbstractResponse
     private function parseLineItems($invoice, $data) {
         if ($data) {
             $lineItems = [];
+            var_dump($data);
             foreach($data as $lineItem) {
                 $newLineItem = [];
                 $newLineItem['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('RowID', $lineItem);
@@ -97,7 +98,6 @@ class GetInvoiceResponse extends AbstractResponse
                 $newLineItem['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $lineItem);
                 $newLineItem['unit_amount'] = IndexSanityCheckHelper::indexSanityCheck('UnitPrice', $lineItem);
                 $newLineItem['line_amount'] = IndexSanityCheckHelper::indexSanityCheck('Total', $lineItem);
-                $newLineItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('UnitCount', $lineItem);
                 $newLineItem['discount_rate'] = IndexSanityCheckHelper::indexSanityCheck('DiscountPercent', $lineItem);;
                 $newLineItem['amount'] = IndexSanityCheckHelper::indexSanityCheck('Total', $lineItem);
                 $newLineItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $lineItem);
@@ -119,7 +119,10 @@ class GetInvoiceResponse extends AbstractResponse
                     if ($lineItem['Item']) {
                         $newLineItem['item_code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $lineItem['Item']);
                         $newLineItem['item_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['Item']);
+                        $newLineItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('ShipQuantity', $lineItem);
                     }
+                } else {
+                    $newLineItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('UnitCount', $lineItem);
                 }
 
                 array_push($lineItems, $newLineItem);
