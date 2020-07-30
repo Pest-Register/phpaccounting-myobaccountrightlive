@@ -265,6 +265,25 @@ class UpdateInventoryItemRequest extends AbstractRequest
         return $this->setParameter('status', $value);
     }
 
+    /**
+     * Get Sync Token Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/inventory/item/
+     * @return mixed
+     */
+    public function getSyncToken() {
+        return $this->getParameter('sync_token');
+    }
+
+    /**
+     * Set Sync Token Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/inventory/item/
+     * @param $value
+     * @return mixed
+     */
+    public function setSyncToken($value) {
+        return $this->setParameter('sync_token', $value);
+    }
+
 
     /**
      * Set Sales Details Parameter from Parameter Bag
@@ -304,13 +323,14 @@ class UpdateInventoryItemRequest extends AbstractRequest
      */
     public function getData()
     {
-        $this->validate('code');
+        $this->validate('code', 'sync_token');
         $this->issetParam('UID', 'accounting_id');
         $this->issetParam('Number', 'code');
         $this->issetParam('Name', 'name');
         $this->issetParam('Description', 'description');
         $this->issetParam('IsInventoried', 'is_tracked');
         $this->issetParam('RowVersion', 'sync_token');
+
         if($this->getStatus() !== null) {
             $this->data['IsActive'] = ($this->getStatus() === 'ACTIVE' ? true : false);
         }
