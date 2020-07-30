@@ -428,7 +428,6 @@ class UpdateInvoiceRequest extends AbstractRequest
         $this->issetParam('TotalTax', 'total_tax');
         $this->issetParam('RowVersion', 'sync_token');
 
-
         if ($this->getDueDate()) {
             $this->data['Terms']['DueDate'] = $this->getDueDate();
             $this->data['Terms']['PaymentIsDue'] = 'OnADayOfTheMonth';

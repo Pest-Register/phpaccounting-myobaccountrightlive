@@ -310,6 +310,7 @@ class UpdateInventoryItemRequest extends AbstractRequest
         $this->issetParam('Name', 'name');
         $this->issetParam('Description', 'description');
         $this->issetParam('IsInventoried', 'is_tracked');
+        $this->issetParam('RowVersion', 'sync_token');
         if($this->getStatus() !== null) {
             $this->data['IsActive'] = ($this->getStatus() === 'ACTIVE' ? true : false);
         }
