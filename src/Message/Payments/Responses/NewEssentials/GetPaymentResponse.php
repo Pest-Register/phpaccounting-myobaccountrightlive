@@ -66,7 +66,7 @@ class GetPaymentResponse extends AbstractResponse
     /**
      * Add Customer to Payment
      * @param $data Array of single Contact
-     * @param array $payment Xero Invoice Object Mapping
+     * @param array $payment MYOB Invoice Object Mapping
      * @return mixed
      */
     private function parseContact($payment, $data) {
@@ -83,7 +83,7 @@ class GetPaymentResponse extends AbstractResponse
     /**
      * Add Invoice to Payment
      * @param $data Array of single Contact
-     * @param array $payment Xero Invoice Object Mapping
+     * @param array $payment MYOB Invoice Object Mapping
      * @return mixed
      */
     private function parseInvoices($payment, $data) {
@@ -101,7 +101,7 @@ class GetPaymentResponse extends AbstractResponse
     /**
      * Add Account to Payment
      * @param $data Array of single Contact
-     * @param array $payment Xero Invoice Object Mapping
+     * @param array $payment MYOB Invoice Object Mapping
      * @return mixed
      */
     private function parseAccount($payment, $data) {

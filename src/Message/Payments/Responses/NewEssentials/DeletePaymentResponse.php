@@ -62,9 +62,26 @@ class DeletePaymentResponse extends AbstractResponse
     }
 
     /**
+     * Add Customer to Payment
+     * @param $data Array of single Contact
+     * @param array $payment MYOB Invoice Object Mapping
+     * @return mixed
+     */
+    private function parseContact($payment, $data) {
+        if ($data) {
+            $newContact = [];
+            $newContact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $data);
+            $newContact['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $data);
+            $payment['contact'] = $newContact;
+        }
+
+        return $payment;
+    }
+
+    /**
      * Add Invoice to Payment
      * @param $data Array of single Contact
-     * @param array $payment Xero Invoice Object Mapping
+     * @param array $payment MYOB Invoice Object Mapping
      * @return mixed
      */
     private function parseInvoices($payment, $data) {
@@ -82,7 +99,7 @@ class DeletePaymentResponse extends AbstractResponse
     /**
      * Add Account to Payment
      * @param $data Array of single Contact
-     * @param array $payment Xero Invoice Object Mapping
+     * @param array $payment MYOB Invoice Object Mapping
      * @return mixed
      */
     private function parseAccount($payment, $data) {
