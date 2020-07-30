@@ -305,7 +305,7 @@ class UpdateInventoryItemRequest extends AbstractRequest
     public function getData()
     {
         $this->validate('code');
-
+        $this->issetParam('UID', 'accounting_id');
         $this->issetParam('Number', 'code');
         $this->issetParam('Name', 'name');
         $this->issetParam('Description', 'description');
