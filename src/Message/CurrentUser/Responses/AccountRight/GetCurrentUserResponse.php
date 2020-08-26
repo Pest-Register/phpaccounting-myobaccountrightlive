@@ -2,6 +2,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Responses\AccountRight;
 
 use Omnipay\Common\Message\AbstractResponse;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 
 /**
  * Get Contact(s) Response
@@ -33,17 +34,45 @@ class GetCurrentUserResponse extends AbstractResponse
      */
     public function getErrorMessage()
     {
-        if (array_key_exists('Errors', $this->data)) {
-            if ($this->data['Errors'][0]['Message'] === 'The supplied OAuth token (Bearer) is not valid') {
-                return 'The access token has expired';
-            }
-            else {
-                return $this->data['Errors'][0]['Message'];
-            }
-        }
-        if (array_key_exists('Items', $this->data)) {
-            if (count($this->data['Items']) === 0) {
-                return ['message' => 'NULL Returned from API or End of Pagination'];
+        if ($this->data) {
+            if (array_key_exists('Errors', $this->data)) {
+                $additionalDetails = '';
+                $message = '';
+                $errorCode = '';
+                $status ='';
+                if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
+                    $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
+                }
+                if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
+                    $errorCode = $this->data['Errors'][0]['ErrorCode'];
+                }
+                if (array_key_exists('Severity', $this->data['Errors'][0])) {
+                    $status = $this->data['Errors'][0]['Severity'];
+                }
+                if (array_key_exists('Message', $this->data['Errors'][0])) {
+                    $message = $this->data['Errors'][0]['Message'];
+                }
+                $response = $message.' '.$additionalDetails;
+                return ErrorResponseHelper::parseErrorResponse(
+                    $response,
+                    $status,
+                    $errorCode,
+                    null,
+                    $additionalDetails,
+                    'CurrentUser'
+                );
+            } else {
+                if (array_key_exists('Items', $this->data)) {
+                    if (count($this->data['Items']) == 0) {
+                        return [
+                            'message' => 'NULL Returned from API or End of Pagination',
+                            'exception' =>'NULL Returned from API or End of Pagination',
+                            'error_code' => null,
+                            'status_code' => null,
+                            'detail' => null
+                        ];
+                    }
+                }
             }
         }
 

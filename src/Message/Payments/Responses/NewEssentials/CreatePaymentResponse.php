@@ -42,17 +42,39 @@ class CreatePaymentResponse extends AbstractResponse
             if (array_key_exists('Errors', $this->data)) {
                 $additionalDetails = '';
                 $message = '';
+                $errorCode = '';
+                $status ='';
                 if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
                     $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
+                }
+                if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
+                    $errorCode = $this->data['Errors'][0]['ErrorCode'];
+                }
+                if (array_key_exists('Severity', $this->data['Errors'][0])) {
+                    $status = $this->data['Errors'][0]['Severity'];
                 }
                 if (array_key_exists('Message', $this->data['Errors'][0])) {
                     $message = $this->data['Errors'][0]['Message'];
                 }
-                return ErrorResponseHelper::parseErrorResponse($message.' '.$additionalDetails, 'Payment');
+                $response = $message.' '.$additionalDetails;
+                return ErrorResponseHelper::parseErrorResponse(
+                    $response,
+                    $status,
+                    $errorCode,
+                    null,
+                    $additionalDetails,
+                    'Payment'
+                );
             } else {
                 if (array_key_exists('Items', $this->data)) {
                     if (count($this->data['Items']) == 0) {
-                        return ['message' => 'NULL Returned from API or End of Pagination'];
+                        return [
+                            'message' => 'NULL Returned from API or End of Pagination',
+                            'exception' =>'NULL Returned from API or End of Pagination',
+                            'error_code' => null,
+                            'status_code' => null,
+                            'detail' => null
+                        ];
                     }
                 }
             }

@@ -429,8 +429,15 @@ class UpdateInvoiceRequest extends AbstractRequest
         $this->issetParam('RowVersion', 'sync_token');
 
         if ($this->getDueDate()) {
+            if ($this->getDate()) {
+                $currentDateMonth = $this->getDate()->month;
+                $dueDateMonth = $this->getDueDate()->month;
+            } else {
+                $this->data['Terms']['PaymentIsDue'] = 'OnADayOfTheMonth';
+            }
+
+
             $this->data['Terms']['DueDate'] = $this->getDueDate();
-            $this->data['Terms']['PaymentIsDue'] = 'OnADayOfTheMonth';
         }
 
         if ($this->getInvoiceData() !== null && $this->getGSTRegistered() !== null) {
