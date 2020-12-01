@@ -4,6 +4,7 @@
 namespace Tests\Invoices\NewEssentials;
 
 
+use Carbon\Carbon;
 use Tests\BaseTest;
 
 class UpdateInvoiceTest extends BaseTest
@@ -11,73 +12,62 @@ class UpdateInvoiceTest extends BaseTest
     public function testUpdateInvoices(){
         $this->setUp();
         try {
-
             $params = [
-                'accounting_id' => '396c8644-806d-42d9-974f-538afcf45b39',
-                'type' => 'Item',
-                'date' => '2020-05-01',
-                'due_date' => '2020-05-1',
-                'contact' => '5a225a1e-994f-4f9a-81ae-d94daa31b3ec',
-                'deposit' => 0.0,
-                'sync_token' => '6784391363656941568',
+                'accounting_id' => '7b9db40b-51e0-4d24-b7cb-8a4fe0c8aa0f',
+                'address' => [],
+                'type' => 'ACCREC',
+                'date' => Carbon::create('2020-07-29'),
+                'due_date' => Carbon::create('2020-09-04'),
+                'contact' => '09994328-1238-4670-baec-b567747f429b',
+                'email_status' => false,
+                'amount_paid' => 0.0,
+                'amount_due' => 334.0,
+                'sync_token' => '5957136407104323584',
                 'invoice_data' => [
                     [
-                        'description' => 'Test',
-                        'accounting_id' => '',
-                        'amount' => 494.55,
-                        'quantity' => 2.0,
-                        'unit_amount' => 494.55,
+                        'description' => 'Testing Selling Ledger',
+                        'accounting_id' => NULL,
+                        'amount' => 132.0,
+                        'sync_token' => '6450562041278103552',
+                        'quantity' => 1.0,
+                        'unit_amount' => 132.0,
                         'discount_rate' => 0.0,
-                        'code' => 7185,
+                        'code' => 18440,
                         'tax_type' => 'GST',
+                        'item_code' => 'TEST05',
+                        'item_id' => '4a854435-a6e7-4abb-84ff-3cfcec10ce1f',
                         'unit' => 'QTY',
                         'tax_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
-                        'account_id' => '527d8f24-0175-4e98-addb-faae929b98bf',
-                        'discount_amount' => 0.0,
-                        'tax_inclusive_amount' => 544.0,
+                        'account_id' => '8e52f2a4-0770-4e1f-972e-305b8eb4295f',
                     ],
                     [
-                        'description' => 'Test',
-                        'amount' => 181.82,
+                        'description' => 'Test Refresh Token',
+                        'accounting_id' => NULL,
+                        'amount' => 202.0,
+                        'sync_token' => '6522619635316031488',
                         'quantity' => 1.0,
-                        'unit_amount' => 181.82,
+                        'unit_amount' => 202.0,
                         'discount_rate' => 0.0,
-                        'code' => 7185,
-                        'tax_type' => 'ITS',
+                        'code' => 18425,
+                        'tax_type' => 'N-T',
+                        'item_code' => 'TEST03',
+                        'item_id' => '5bbf85f3-26cf-4e25-b991-712ed489d442',
                         'unit' => 'QTY',
-                        'tax_id' => '623b4a09-fd63-47d4-a632-b4b0294f9ce1',
-                        'account_id' => '4862df87-39d7-407f-a51b-716284818aa3',
-                        'discount_amount' => 0.0,
-                        'tax_inclusive_amount' => 200.0,
-                    ]
+                        'tax_id' => '8d9cfae6-0f23-4c3e-904e-3e212cf67156',
+                        'account_id' => '70f0be25-6b47-4cf2-9418-08673b35a0ec',
+                      ],
                 ],
-                'total_discount' => 0.0,
+                'total_discount' => 0,
                 'gst_registered' => true,
-                'invoice_number' => '20200327_0002',
-                'invoice_reference' => '20200327_0002',
-                'total' => 1897.40,
-                'discount_amount' => 97.60,
-                'discount_rate' => 4.89223,
+                'invoice_number' => '00000017',
+                'invoice_reference' => '00000017',
+                'total' => 334.0,
+                'discount_amount' => '0.00',
+                'discount_rate' => '0.0000',
                 'deposit_amount' => NULL,
                 'gst_inclusive' => 'INCLUSIVE',
-                'total_tax' => 172.49,
-                'tax_lines' => [
-                    [
-                        'tax_id' => '10',
-                        'tax_rate_id' => 20,
-                        'tax_percent' => 10.0,
-                        'net_amount' => 1724.91,
-                        'percent_based' => true,
-                        'total_tax' => 172.49,
-                    ],
-                ],
-                'address' => [
-                    'address_line_1' => ' ',
-                    'city' => NULL,
-                    'postal_code' => NULL,
-                    'state' => NULL,
-                    'country' => 'Australia',
-                ]
+                'total_tax' => 12.0,
+                'tax_lines' => ['status' => 'Open']
             ];
 
             $response = $this->gateway->updateInvoice($params)->send();

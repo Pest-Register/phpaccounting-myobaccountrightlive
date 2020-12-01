@@ -17,6 +17,8 @@ class GetContactTest extends BaseTest
     {
         $this->setUp();
         $params = [
+            'search_param' => 'FirstName',
+            'search_term' => 'Brice',
             'accounting_id' => "",
             'page' => 1000,
             'skip' => 0

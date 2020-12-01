@@ -73,6 +73,42 @@ class GetInventoryItemRequest extends AbstractRequest
         return 0;
     }
 
+    /**
+     * Set SearchTerm from Parameter Bag (interface for query-based searching)
+     * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
+     * @param $value
+     * @return GetInventoryItemRequest
+     */
+    public function setSearchTerm($value) {
+        return $this->setParameter('search_term', $value);
+    }
+
+    /**
+     * Set SearchParam from Parameter Bag (interface for query-based searching)
+     * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
+     * @param $value
+     * @return GetInventoryItemRequest
+     */
+    public function setSearchParam($value) {
+        return $this->setParameter('search_param', $value);
+    }
+
+    /**
+     * Return Search Parameter for query-based searching
+     * @return integer
+     */
+    public function getSearchParam() {
+        return $this->getParameter('search_param');
+    }
+
+    /**
+     * Return Search Term for query-based searching
+     * @return integer
+     */
+    public function getSearchTerm() {
+        return $this->getParameter('search_term');
+    }
+
     public function getEndpoint()
     {
 
@@ -83,7 +119,11 @@ class GetInventoryItemRequest extends AbstractRequest
                 $endpoint = BuildEndpointHelper::loadByGUID($endpoint, $this->getAccountingID());
             }
         } else {
-            if ($this->getPage()) {
+            if($this->getSearchParam() && $this->getSearchTerm())
+            {
+                $endpoint = BuildEndpointHelper::search($endpoint, $this->getSearchParam(), $this->getSearchTerm(), 'substringof');
+            }
+            else if ($this->getPage()) {
                 if ($this->getPage() !== "") {
                     $endpoint = BuildEndpointHelper::paginate($endpoint, $this->getPage(), $this->getSkip());
                 }

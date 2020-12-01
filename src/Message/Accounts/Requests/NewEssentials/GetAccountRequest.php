@@ -2,7 +2,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\NewEssentials\GetAccountResponse;
 
@@ -76,6 +76,42 @@ class GetAccountRequest extends AbstractRequest
         return 0;
     }
 
+    /**
+     * Set SearchTerm from Parameter Bag (interface for query-based searching)
+     * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
+     * @param $value
+     * @return GetAccountRequest
+     */
+    public function setSearchTerm($value) {
+        return $this->setParameter('search_term', $value);
+    }
+
+    /**
+     * Set SearchParam from Parameter Bag (interface for query-based searching)
+     * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
+     * @param $value
+     * @return GetAccountRequest
+     */
+    public function setSearchParam($value) {
+        return $this->setParameter('search_param', $value);
+    }
+
+    /**
+     * Return Search Parameter for query-based searching
+     * @return integer
+     */
+    public function getSearchParam() {
+        return $this->getParameter('search_param');
+    }
+
+    /**
+     * Return Search Term for query-based searching
+     * @return integer
+     */
+    public function getSearchTerm() {
+        return $this->getParameter('search_term');
+    }
+
     public function getEndpoint()
     {
 
@@ -86,7 +122,11 @@ class GetAccountRequest extends AbstractRequest
                 $endpoint = BuildEndpointHelper::loadByGUID($endpoint, $this->getAccountingID());
             }
         } else {
-            if ($this->getPage()) {
+            if($this->getSearchParam() && $this->getSearchTerm())
+            {
+                $endpoint = BuildEndpointHelper::search($endpoint, $this->getSearchParam(), $this->getSearchTerm(), 'substringof');
+            }
+            else if ($this->getPage()) {
                 if ($this->getPage() !== "") {
                     $endpoint = BuildEndpointHelper::paginate($endpoint, $this->getPage(), $this->getSkip());
                 }
