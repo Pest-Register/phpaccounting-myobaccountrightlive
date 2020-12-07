@@ -74,39 +74,20 @@ class GetContactRequest extends AbstractRequest
     }
 
     /**
-     * Set SearchTerm from Parameter Bag (interface for query-based searching)
+     * Set SearchParams from Parameter Bag (interface for query-based searching)
      * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
      * @param $value
      * @return GetContactRequest
      */
-    public function setSearchTerm($value) {
-        return $this->setParameter('search_term', $value);
+    public function setSearchParams($value) {
+        return $this->setParameter('search_params', $value);
     }
-
     /**
-     * Set SearchParam from Parameter Bag (interface for query-based searching)
-     * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
-     * @param $value
-     * @return GetContactRequest
-     */
-    public function setSearchParam($value) {
-        return $this->setParameter('search_param', $value);
-    }
-
-    /**
-     * Return Search Parameter for query-based searching
+     * Return Search Parameters for query-based searching
      * @return integer
      */
-    public function getSearchParam() {
-        return $this->getParameter('search_param');
-    }
-
-    /**
-     * Return Search Term for query-based searching
-     * @return integer
-     */
-    public function getSearchTerm() {
-        return $this->getParameter('search_term');
+    public function getSearchParams() {
+        return $this->getParameter('search_params');
     }
 
     public function getEndpoint()
@@ -119,9 +100,9 @@ class GetContactRequest extends AbstractRequest
                 $endpoint = BuildEndpointHelper::loadByGUID($endpoint, $this->getAccountingID());
             }
         } else {
-            if($this->getSearchParam() && $this->getSearchTerm())
+            if($this->getSearchParams())
             {
-                $endpoint = BuildEndpointHelper::search($endpoint, $this->getSearchParam(), $this->getSearchTerm(), 'substringof');
+                $endpoint = BuildEndpointHelper::search($endpoint, $this->getSearchParams(), 'substringof');
             }
             else if ($this->getPage()) {
                 if ($this->getPage() !== "") {

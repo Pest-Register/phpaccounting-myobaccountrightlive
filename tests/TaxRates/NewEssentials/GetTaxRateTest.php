@@ -14,6 +14,9 @@ class GetTaxRateTest extends BaseTest
         $this->setUp();
         try {
             $params = [
+                'search_params' => [
+                    'Name' => 'Income',
+                ],
                 'accounting_id' => "",
                 'page' => 1000,
                 'skip' => 0

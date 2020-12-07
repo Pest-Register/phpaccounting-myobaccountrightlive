@@ -21,8 +21,9 @@ class GetAccountTest extends BaseTest
         $this->setUp();
         try {
             $params = [
-                'search_param' => 'Name',
-                'search_term' => 'Asset',
+                'search_params' => [
+                    'Name' => 'Income',
+                ],
                 'accounting_id' => "",
                 'page' => 1000,
                 'skip' => 0

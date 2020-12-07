@@ -57,16 +57,21 @@ class BuildEndpointHelper
     /**
      * Search for model based on passed in search term and parameter
      * @param $endpoint
-     * @param $page
-     * @param $skip
-     * @param $searchParam
-     * @param $searchTerm
+     * @param $searchParams
      * @param string $filterPrefix
      * @return string
      */
-    public static function search($endpoint, $searchParam, $searchTerm, $filterPrefix='') {
+    public static function search($endpoint, $searchParams, $filterPrefix='') {
         $prefix = '?$';
-        $endpoint = $endpoint . $prefix."filter=".$filterPrefix."('".$searchTerm."',".$searchParam.") eq true";
+        $endpoint = $endpoint . $prefix."filter=";
+        $searchFilter = "";
+        $separationFilter = "";
+        foreach($searchParams as $key => $value)
+        {
+            $searchFilter .= $separationFilter.$filterPrefix."('".$value."',".$key.") eq true";
+            $separationFilter = " or ";
+        }
+        $endpoint .= $searchFilter;
         return $endpoint;
     }
 
