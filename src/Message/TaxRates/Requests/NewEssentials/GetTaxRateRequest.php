@@ -77,6 +77,23 @@ class GetTaxRateRequest extends AbstractRequest
     }
 
     /**
+     * Set boolean to determine partial or exact query based searches
+     * @param $value
+     * @return GetTaxRateRequest
+     */
+    public function setExactSearchValue($value) {
+        return $this->setParameter('exact_search_value', $value);
+    }
+
+    /**
+     * Get boolean to determine partial or exact query based searches
+     * @return mixed
+     */
+    public function getExactSearchValue() {
+        return $this->getParameter('exact_search_value');
+    }
+
+    /**
      * Set SearchParams from Parameter Bag (interface for query-based searching)
      * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
      * @param $value
@@ -105,7 +122,7 @@ class GetTaxRateRequest extends AbstractRequest
         } else {
             if($this->getSearchParams())
             {
-                $endpoint = BuildEndpointHelper::search($endpoint, $this->getSearchParams(), 'substringof');
+                $endpoint = BuildEndpointHelper::search($endpoint, $this->getSearchParams(), $this->getExactSearchValue(),'substringof');
             }
             else if ($this->getPage()) {
                 if ($this->getPage() !== "") {

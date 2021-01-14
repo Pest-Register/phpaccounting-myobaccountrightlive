@@ -22,11 +22,13 @@ class GetAccountTest extends BaseTest
         try {
             $params = [
                 'search_params' => [
-                    'Name' => 'Income',
+                    'Name' => 'Stock Income',
+                    'DisplayID' => '4-2000'
                 ],
-                'accounting_id' => "",
-                'page' => 1000,
-                'skip' => 0
+                'exact_search_value' => true,
+//                'accounting_id' => "",
+//                'page' => 1000,
+//                'skip' => 0
             ];
 
             $response = $this->gateway->getAccount($params)->send();

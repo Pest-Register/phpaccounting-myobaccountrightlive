@@ -93,6 +93,23 @@ class GetAccountRequest extends AbstractRequest
         return $this->getParameter('search_params');
     }
 
+    /**
+     * Set boolean to determine partial or exact query based searches
+     * @param $value
+     * @return GetAccountRequest
+     */
+    public function setExactSearchValue($value) {
+        return $this->setParameter('exact_search_value', $value);
+    }
+
+    /**
+     * Get boolean to determine partial or exact query based searches
+     * @return mixed
+     */
+    public function getExactSearchValue() {
+        return $this->getParameter('exact_search_value');
+    }
+
     public function getEndpoint()
     {
 
@@ -105,7 +122,7 @@ class GetAccountRequest extends AbstractRequest
         } else {
             if($this->getSearchParams())
             {
-                $endpoint = BuildEndpointHelper::search($endpoint, $this->getSearchParams(), 'substringof');
+                $endpoint = BuildEndpointHelper::search($endpoint, $this->getSearchParams(), $this->getExactSearchValue(),'substringof');
             }
             else if ($this->getPage()) {
                 if ($this->getPage() !== "") {

@@ -15,7 +15,7 @@ class GetTaxRateTest extends BaseTest
         try {
             $params = [
                 'search_params' => [
-                    'Name' => 'Income',
+                    'Description' => 'ABN',
                 ],
                 'accounting_id' => "",
                 'page' => 1000,
