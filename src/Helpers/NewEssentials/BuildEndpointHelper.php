@@ -59,27 +59,63 @@ class BuildEndpointHelper
      * @param $endpoint
      * @param $searchParams
      * @param $exactSearch
+     * @param null $filterParams
+     * @param bool $filterMatchAll
      * @param string $filterPrefix
      * @return string
      */
-    public static function search($endpoint, $searchParams, $exactSearch, $filterPrefix='') {
+    public static function search($endpoint, $searchParams, $exactSearch, $filterParams=null, $filterMatchAll=false, $filterPrefix='')
+    {
         $prefix = '?$';
-        $endpoint = $endpoint . $prefix."filter=";
+        $endpoint = $endpoint . $prefix . "filter=";
         $searchFilter = "";
         $separationFilter = "";
-        foreach($searchParams as $key => $value)
+        if ($searchParams)
         {
-            if ($exactSearch)
+            foreach($searchParams as $key => $value)
             {
-                $searchFilter .= $separationFilter.$key." eq '".$value."'";
-                $separationFilter = " and ";
-            } else {
-                $searchFilter .= $separationFilter.$filterPrefix."('".$value."',".$key.") eq true";
-                $separationFilter = " or ";
+                if ($exactSearch)
+                {
+                    $searchFilter .= $separationFilter.$key." eq '".$value."'";
+                    $separationFilter = " and ";
+                } else {
+                    $searchFilter .= $separationFilter.$filterPrefix."('".$value."',".$key.") eq true";
+                    $separationFilter = " or ";
+                }
             }
         }
         $endpoint .= $searchFilter;
-        var_dump($endpoint);
+        $filterQuery = '';
+        $separationFilter = '';
+        if ($filterParams)
+        {
+            foreach($filterParams as $key => $value)
+            {
+                $queryString = '';
+                $filterKey = $key;
+                $filterQuery = '(';
+                foreach ($value as $filterValue)
+                {
+
+                    if ($filterMatchAll)
+                    {
+                        $filterQuery .= $separationFilter.$filterKey." eq '".$filterValue."'";
+                        $separationFilter = " and ";
+                    } else {
+                        $filterQuery .= $separationFilter.$filterKey." eq '".$filterValue."'";
+                        $separationFilter = " or ";
+                    }
+                }
+            }
+            $filterQuery.=")";
+        }
+        if ($searchFilter)
+        {
+            $endpoint.=' and '.$filterQuery;
+        }
+        else {
+            $endpoint.=$filterQuery;
+        }
         return $endpoint;
     }
 

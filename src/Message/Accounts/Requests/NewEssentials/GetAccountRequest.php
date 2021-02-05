@@ -110,6 +110,41 @@ class GetAccountRequest extends AbstractRequest
         return $this->getParameter('exact_search_value');
     }
 
+    /**
+     * Set SearchFilters from Parameter Bag (interface for query-based searching)
+     * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
+     * @param $value
+     * @return GetAccountRequest
+     */
+    public function setSearchFilters($value) {
+        return $this->setParameter('search_filters', $value);
+    }
+
+    /**
+     * Return Search Filters for query-based searching
+     * @return array
+     */
+    public function getSearchFilters() {
+        return $this->getParameter('search_filters');
+    }
+
+    /**
+     * Set boolean to determine whether all filters need to be matched
+     * @param $value
+     * @return GetAccountRequest
+     */
+    public function setMatchAllFilters($value) {
+        return $this->setParameter('match_all_filters', $value);
+    }
+
+    /**
+     * Get boolean to determine whether all filters need to be matched
+     * @return mixed
+     */
+    public function getMatchAllFilters() {
+        return $this->getParameter('match_all_filters');
+    }
+
     public function getEndpoint()
     {
 
@@ -120,9 +155,16 @@ class GetAccountRequest extends AbstractRequest
                 $endpoint = BuildEndpointHelper::loadByGUID($endpoint, $this->getAccountingID());
             }
         } else {
-            if($this->getSearchParams())
+            if($this->getSearchParams() || $this->getSearchFilters())
             {
-                $endpoint = BuildEndpointHelper::search($endpoint, $this->getSearchParams(), $this->getExactSearchValue(),'substringof');
+                $endpoint = BuildEndpointHelper::search(
+                    $endpoint,
+                    $this->getSearchParams(),
+                    $this->getExactSearchValue(),
+                    $this->getSearchFilters(),
+                    $this->getMatchAllFilters(),
+                    'substringof'
+                );
             }
             else if ($this->getPage()) {
                 if ($this->getPage() !== "") {
