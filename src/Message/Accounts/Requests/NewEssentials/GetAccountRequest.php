@@ -165,6 +165,7 @@ class GetAccountRequest extends AbstractRequest
                     $this->getMatchAllFilters(),
                     'substringof'
                 );
+                var_dump($endpoint);
             }
             else if ($this->getPage()) {
                 if ($this->getPage() !== "") {
