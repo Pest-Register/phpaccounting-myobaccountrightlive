@@ -109,7 +109,6 @@ class BuildEndpointHelper
             }
             $filterQuery.=")";
         }
-        var_dump($searchFilter);
         if ($searchFilter && $filterQuery)
         {
             $endpoint.=' and '.$filterQuery;

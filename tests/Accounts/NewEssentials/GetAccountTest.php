@@ -24,14 +24,14 @@ class GetAccountTest extends BaseTest
                 'search_params' => [
                     'Name' => 'Sales',
                 ],
-//                'search_filters' => [
-//                    'Type' => [
-//                        'Income',
-//                        'OtherIncome'
-//                    ]
-//                ],
-//                'match_all_filters' => false,
-                'exact_search_value' => true,
+                'search_filters' => [
+                    'Type' => [
+                        'Income',
+                        'OtherIncome'
+                    ]
+                ],
+                'match_all_filters' => false,
+//                'exact_search_value' => true,
 //                'accounting_id' => "",
 //                'page' => 1000,
 //                'skip' => 0
