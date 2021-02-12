@@ -5,9 +5,6 @@ namespace PHPAccounting\MyobAccountRightLive;
 use http\Message;
 use Omnipay\Common\AbstractGateway;
 use PHPAccounting\MyobAccountRightLive\Message\AccessFlag\Requests\GetAccessFlagRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\AccountRight\GetAccountRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\GetContactRequest;
-use PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Requests\AccountRight\GetCurrentUserRequest;
 
 /**
  * Created by IntelliJ IDEA.
@@ -246,6 +243,64 @@ class Gateway extends AbstractGateway
         if ($accessFlag == 2 || $accessFlag == 3) {
             // New Essentials and AccountRight
             $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\DeleteInvoiceRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+
+    /**
+     * Quotation Requests
+     * @param array $parameters
+     * @return \Omnipay\Common\Message\AbstractRequest
+     */
+    public function getQuotation(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($this->getProduct() == 'old_essentials') {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Essentials\GetQuotationRequest::class;
+        }
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            // New Essentials and AccountRight
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\GetQuotationRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    public function createQuotation(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($this->getProduct() == 'old_essentials') {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Essentials\CreateQuotationRequest::class;
+        }
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            // New Essentials and AccountRight
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\CreateQuotationRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    public function updateQuotation(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($this->getProduct() == 'old_essentials') {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Essentials\UpdateQuotationRequest::class;
+        }
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            // New Essentials and AccountRight
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\UpdateQuotationRequest::class;
+        }
+        return $this->createRequest($class, $parameters);
+    }
+
+    public function deleteQuotation(array $parameters = []){
+        $accessFlag = $this->getAccessFlag();
+        $class = '';
+        if ($this->getProduct() == 'old_essentials') {
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Essentials\DeleteQuotationRequest::class;
+        }
+        if ($accessFlag == 2 || $accessFlag == 3) {
+            // New Essentials and AccountRight
+            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\DeleteQuotationRequest::class;
         }
         return $this->createRequest($class, $parameters);
     }

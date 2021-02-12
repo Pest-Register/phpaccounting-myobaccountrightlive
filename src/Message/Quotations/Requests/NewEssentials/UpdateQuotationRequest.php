@@ -1,18 +1,18 @@
 <?php
 
 
-namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials;
+namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials;
 
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\NewEssentials\CreateInvoiceResponse;
+use PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses\NewEssentials\UpdateQuotationResponse;
 
-class CreateInvoiceRequest extends AbstractRequest
+class UpdateQuotationRequest extends AbstractRequest
 {
     /**
      * Get Sync Token Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getSyncToken(){
@@ -21,36 +21,17 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Sync Token Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value Deposit Amount
-     * @return \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\CreateInvoiceRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\UpdateQuotationRequest
      */
     public function setSyncToken($value){
         return $this->setParameter('sync_token', $value);
     }
 
     /**
-     * Get Deposit Amount Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
-     * @return mixed
-     */
-    public function getDepositAmount(){
-        return $this->getParameter('deposit_amount');
-    }
-
-    /**
-     * Set Deposit Amount Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
-     * @param string $value Deposit Amount
-     * @return CreateInvoiceRequest
-     */
-    public function setDepositAmount($value){
-        return $this->setParameter('deposit_amount', $value);
-    }
-
-    /**
      * Get Deposit Account Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getDepositAccount(){
@@ -59,9 +40,9 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Deposit Account Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value Deposit Account
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setDepositAccount($value){
         return $this->setParameter('deposit_account', $value);
@@ -69,7 +50,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get Discount Amount Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getDiscountAmount(){
@@ -78,9 +59,9 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Discount Amount Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value Discount Amount
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setDiscountAmount($value){
         return $this->setParameter('discount_amount', $value);
@@ -88,7 +69,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get Discount Rate Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getDiscountRate(){
@@ -97,9 +78,9 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Discount Rate Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value Discount Rate
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setDiscountRate($value){
         return $this->setParameter('discount_rate', $value);
@@ -107,7 +88,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get GST Inclusive Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getGSTInclusive(){
@@ -116,9 +97,9 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set GST Inclusive Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value GST Inclusive
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setGSTInclusive($value){
         return $this->setParameter('gst_inclusive', $value);
@@ -126,7 +107,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get Total Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getTotal(){
@@ -135,9 +116,9 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Total Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value Total
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setTotal($value){
         return $this->setParameter('total', $value);
@@ -145,7 +126,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get Type Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getType(){
@@ -154,36 +135,36 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Type Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value Invoice Type
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setType($value){
         return $this->setParameter('type', $value);
     }
 
     /**
-     * Get Invoice Data Parameter from Parameter Bag (LineItems generic interface)
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * Get Quotation Data Parameter from Parameter Bag (LineItems generic interface)
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
-    public function getInvoiceData(){
-        return $this->getParameter('invoice_data');
+    public function getQuotationData(){
+        return $this->getParameter('quotation_data');
     }
 
     /**
-     * Set Invoice Data Parameter from Parameter Bag (LineItems)
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
-     * @param array $value Invoice Item Lines
-     * @return CreateInvoiceRequest
+     * Set Quotation Data Parameter from Parameter Bag (LineItems)
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
+     * @param array $value Quotation Item Lines
+     * @return UpdateQuotationRequest
      */
-    public function setInvoiceData($value){
-        return $this->setParameter('invoice_data', $value);
+    public function setQuotationData($value){
+        return $this->setParameter('quotation_data', $value);
     }
 
     /**
      * Get Date Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getDate(){
@@ -192,9 +173,9 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Date Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value Invoice date
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setDate($value){
         return $this->setParameter('date', $value);
@@ -202,7 +183,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get Status Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getStatus(){
@@ -211,9 +192,9 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Status Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value Invoice Due Date
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setStatus($value){
         return $this->setParameter('status', $value);
@@ -221,7 +202,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get Tax Inclusive Amount Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getTaxInclusiveAmount(){
@@ -230,36 +211,36 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Tax Inclusive Amount Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param string $value Invoice Due Date
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setTaxInclusiveAmount($value){
         return $this->setParameter('tax_inclusive_amount', $value);
     }
 
     /**
-     * Get Due Date Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * Get Expiry Date Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
-    public function getDueDate(){
-        return $this->getParameter('due_date');
+    public function getExpiryDate(){
+        return $this->getParameter('expiry_date');
     }
 
     /**
-     * Set Due Date Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
-     * @param string $value Invoice Due Date
-     * @return CreateInvoiceRequest
+     * Set Expiry Date Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
+     * @param string $value Quote Expiry Date
+     * @return UpdateQuotationRequest
      */
-    public function setDueDate($value){
-        return $this->setParameter('due_date', $value);
+    public function setExpiryDate($value){
+        return $this->setParameter('expiry_date', $value);
     }
 
     /**
      * Get Total Tax from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getTotalTax(){
@@ -268,7 +249,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get Total Tax from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function setTotalTax($value){
@@ -277,7 +258,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get Contact Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getContact(){
@@ -286,9 +267,9 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Contact Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @param Contact $value Contact
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setContact($value){
         return $this->setParameter('contact', $value);
@@ -303,32 +284,32 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * @param $value
-     * @return CreateInvoiceRequest
+     * @return UpdateQuotationRequest
      */
     public function setAddress($value) {
         return $this->setParameter('address', $value);
     }
 
     /**
-     * Get Invoice Number from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * Get Quotation Number from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
-    public function getInvoiceNumber(){
-        return $this->getParameter('invoice_number');
+    public function getQuotationNumber(){
+        return $this->getParameter('quotation_number');
     }
 
     /**
-     * Get Invoice Number from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * Get Quotation Number from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
-    public function setInvoiceNumber($value){
-        return $this->setParameter('invoice_number', $value);
+    public function setQuotationNumber($value){
+        return $this->setParameter('quotation_number', $value);
     }
     /**
      * Get GST Registered from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getGSTRegistered() {
@@ -337,7 +318,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set GST Registered from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function setGSTRegistered($value) {
@@ -346,7 +327,7 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Get Tax Lines from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function getTaxLines() {
@@ -355,11 +336,30 @@ class CreateInvoiceRequest extends AbstractRequest
 
     /**
      * Set Tax Lines from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
      * @return mixed
      */
     public function setTaxLines($value) {
         return $this->setParameter('tax_lines', $value);
+    }
+
+    /**
+     * Get Accounting ID Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
+     * @return mixed
+     */
+    public function getAccountingID(){
+        return $this->getParameter('accounting_id');
+    }
+
+    /**
+     * Set Accounting ID Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
+     * @param string $value UID
+     * @return \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\UpdateQuotationRequest
+     */
+    public function setAccountingID($value){
+        return $this->setParameter('accounting_id', $value);
     }
 
     private function parseLines($lines, $gst, $data) {
@@ -389,6 +389,7 @@ class CreateInvoiceRequest extends AbstractRequest
         }
         return $data;
     }
+
     /**
      * Get the raw data array for this message. The format of this varies from gateway to
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
@@ -398,20 +399,22 @@ class CreateInvoiceRequest extends AbstractRequest
      */
     public function getData()
     {
-        $this->validate('contact', 'invoice_data', 'gst_registered', 'gst_inclusive');
+        $this->validate('contact', 'quotation_data', 'gst_registered', 'gst_inclusive', 'accounting_id');
 
+        $this->issetParam('UID', 'accounting_id');
         $this->issetParam('Date', 'date');
-        $this->issetParam('Number', 'invoice_reference');
+        $this->issetParam('Number', 'quotation_reference');
         $this->issetParam('Status', 'status');
         $this->issetParam('Subtotal', 'subtotal');
         $this->issetParam('TotalAmount', 'total');
         $this->issetParam('TotalTax', 'total_tax');
+        $this->issetParam('RowVersion', 'sync_token');
 
 
-        if ($this->getDueDate()) {
+        if ($this->getExpiryDate()) {
             if ($this->getDate()) {
                 $currentDateMonth = $this->getDate()->month;
-                $dueDateMonth = $this->getDueDate()->month;
+                $dueDateMonth = $this->getExpiryDate()->month;
                 if ($dueDateMonth > $currentDateMonth) {
                     $this->data['Terms']['PaymentIsDue'] = 'DayOfMonthAfterEOM';
                 } else {
@@ -419,13 +422,13 @@ class CreateInvoiceRequest extends AbstractRequest
                 }
             }
 
-            $this->data['Terms']['DueDate'] = $this->getDueDate();
-            $this->data['Terms']['BalanceDueDate'] = $this->getDueDate()->day;
+            $this->data['Terms']['DueDate'] = $this->getExpiryDate();
+            $this->data['Terms']['BalanceDueDate'] = $this->getExpiryDate()->day;
         }
 
-        if ($this->getInvoiceData() !== null && $this->getGSTRegistered() !== null) {
+        if ($this->getQuotationData() !== null && $this->getGSTRegistered() !== null) {
             $gst = $this->getGSTRegistered();
-            $this->data = $this->parseLines($this->getInvoiceData(),$gst, $this->data);
+            $this->data = $this->parseLines($this->getQuotationData(),$gst, $this->data);
         }
         if ($this->getContact() !== null) {
             $this->data['Customer'] = [];
@@ -447,18 +450,17 @@ class CreateInvoiceRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-
-        $endpoint = 'Sale/Invoice/Item?returnBody=true';
+        $endpoint = 'Sale/Quote/Service?returnBody=true';
         return $endpoint;
     }
 
     public function getHttpMethod()
     {
-        return 'POST';
+        return 'PUT';
     }
 
     protected function createResponse($data, $headers = [])
     {
-        return $this->response = new CreateInvoiceResponse($this, $data);
+        return $this->response = new UpdateQuotationResponse($this, $data);
     }
 }
