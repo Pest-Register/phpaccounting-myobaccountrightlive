@@ -15,9 +15,10 @@ class GetTaxRateTest extends BaseTest
         try {
             $params = [
                 'search_params' => [
-                    'Description' => 'ABN',
+                    'Description' => 'Goods & Services Tax',
                 ],
-                'accounting_id' => "",
+                'exact_search_value' => true,
+//                'accounting_id' => "",
                 'page' => 1000,
                 'skip' => 0
             ];

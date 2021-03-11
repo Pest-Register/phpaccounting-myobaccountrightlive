@@ -76,10 +76,10 @@ class BuildEndpointHelper
             {
                 if ($exactSearch)
                 {
-                    $searchFilter .= $separationFilter.$key." eq '".$value."'";
+                    $searchFilter .= $separationFilter.$key." eq '".urlencode($value)."'";
                     $separationFilter = " and ";
                 } else {
-                    $searchFilter .= $separationFilter.$filterPrefix."('".$value."',".$key.") eq true";
+                    $searchFilter .= $separationFilter.$filterPrefix."('".urlencode($value)."',".$key.") eq true";
                     $separationFilter = " or ";
                 }
             }
@@ -99,10 +99,10 @@ class BuildEndpointHelper
 
                     if ($filterMatchAll)
                     {
-                        $filterQuery .= $separationFilter.$filterKey." eq '".$filterValue."'";
+                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
                         $separationFilter = " and ";
                     } else {
-                        $filterQuery .= $separationFilter.$filterKey." eq '".$filterValue."'";
+                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
                         $separationFilter = " or ";
                     }
                 }
