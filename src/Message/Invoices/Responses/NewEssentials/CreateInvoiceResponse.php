@@ -123,7 +123,7 @@ class CreateInvoiceResponse extends AbstractResponse
                 if (array_key_exists('Account', $lineItem)) {
                     if ($lineItem['Account']) {
                         $newLineItem['account_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $lineItem['Account']);
-                        $newLineItem['account_code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $lineItem['Account']);
+                        $newLineItem['code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $lineItem['Account']);
                     }
                 }
                 if (array_key_exists('TaxCode', $lineItem)) {
