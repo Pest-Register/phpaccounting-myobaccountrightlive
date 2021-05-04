@@ -302,6 +302,7 @@ class UpdateInventoryItemRequest extends AbstractRequest
         $data['IncomeAccount']['UID'] = IndexSanityCheckHelper::indexSanityCheck('selling_account_id', $details);
         $data['SellingDetails']['TaxCode']['UID'] = IndexSanityCheckHelper::indexSanityCheck('selling_tax_type_id', $details);
         $data['SellingDetails']['BaseSellingPrice'] = IndexSanityCheckHelper::indexSanityCheck('selling_unit_price', $details);
+        $data['SellingDetails']['IsTaxInclusive'] = IndexSanityCheckHelper::indexSanityCheck('selling_tax_inclusive', $details);
         return $data;
     }
 
@@ -312,6 +313,7 @@ class UpdateInventoryItemRequest extends AbstractRequest
         $data['ExpenseAccount']['UID'] = IndexSanityCheckHelper::indexSanityCheck('buying_account_id', $details);
         $data['BuyingDetails']['TaxCode']['UID'] = IndexSanityCheckHelper::indexSanityCheck('buying_tax_type_id', $details);
         $data['BuyingDetails']['StandardCost'] = IndexSanityCheckHelper::indexSanityCheck('buying_unit_price', $details);
+        $data['BuyingDetails']['StandardCostTaxInclusive'] = IndexSanityCheckHelper::indexSanityCheck('buying_tax_inclusive', $details);
         return $data;
     }
     /**
