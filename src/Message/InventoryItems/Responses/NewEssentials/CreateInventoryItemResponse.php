@@ -107,6 +107,7 @@ class CreateInventoryItemResponse extends AbstractResponse
                         }
                     }
                     $item['buying_unit_price'] = IndexSanityCheckHelper::indexSanityCheck('StandardCost', $data['BuyingDetails']);
+                    $item['buying_tax_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('StandardCostTaxInclusive', $data['BuyingDetails']);
                 }
             }
         }
@@ -131,6 +132,7 @@ class CreateInventoryItemResponse extends AbstractResponse
                         }
                     }
                     $item['selling_unit_price'] = IndexSanityCheckHelper::indexSanityCheck('BaseSellingPrice', $data['SellingDetails']);
+                    $item['selling_tax_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $data['SellingDetails']);
                 }
             }
         }
