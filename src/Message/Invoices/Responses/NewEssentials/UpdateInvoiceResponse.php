@@ -172,7 +172,7 @@ class UpdateInvoiceResponse extends AbstractResponse
             $newInvoice['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $invoice);
             $newInvoice['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice);
             $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
-
+            $newInvoice['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $invoice);
             if (array_key_exists('Customer', $invoice)) {
                 if ($invoice['Customer']) {
                     $newInvoice = $this->parseCustomer($newInvoice, $invoice['Customer']);
@@ -225,7 +225,7 @@ class UpdateInvoiceResponse extends AbstractResponse
                 $newInvoice['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $invoice);
                 $newInvoice['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice);
                 $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
-
+                $newInvoice['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $invoice);
                 if (array_key_exists('Customer', $invoice)) {
                     if ($invoice['Customer']) {
                         $newInvoice = $this->parseCustomer($newInvoice, $invoice['Customer']);

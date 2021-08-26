@@ -149,7 +149,7 @@ class DeletePaymentResponse extends AbstractResponse
             $newPayment['amount'] = IndexSanityCheckHelper::indexSanityCheck('AmountReceived', $payment);
             $newPayment['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $payment);
             $newPayment['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $payment);
-
+            $newPayment['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $payment);
             if (array_key_exists('Account', $payment)) {
                 if ($payment['Account']) {
                     $newPayment = $this->parseAccount($newPayment, $payment['Account']);
@@ -192,7 +192,7 @@ class DeletePaymentResponse extends AbstractResponse
                 $newPayment['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $payment);
                 $newPayment['type'] = IndexSanityCheckHelper::indexSanityCheck('PaymentMethod', $payment);
                 $newPayment['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $payment);
-
+                $newPayment['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $payment);
                 if (array_key_exists('Account', $payment)) {
                     if ($payment['Account']) {
                         $newPayment = $this->parseAccount($newPayment, $payment['Account']);

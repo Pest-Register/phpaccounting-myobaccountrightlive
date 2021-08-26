@@ -105,6 +105,7 @@ class GetTaxRateResponse extends AbstractResponse
             $newTaxRate['is_expense'] = true;
             $newTaxRate['is_liability'] = true;
             $newTaxRate['is_revenue'] = true;
+            $newTaxRate['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $taxRate);
 
             array_push($taxRates, $newTaxRate);
         } else {
@@ -120,6 +121,7 @@ class GetTaxRateResponse extends AbstractResponse
                 $newTaxRate['is_expense'] = true;
                 $newTaxRate['is_liability'] = true;
                 $newTaxRate['is_revenue'] = true;
+                $newTaxRate['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $taxRate);
 
                 array_push($taxRates, $newTaxRate);
             }

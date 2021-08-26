@@ -32,7 +32,7 @@ class GetAccountTest extends BaseTest
 //                ],
 //                'match_all_filters' => false,
 //                'exact_search_value' => true,
-                'accounting_id' => "720b48da-9986-4e88-8880-a3876477da22",
+                'accounting_id' => "527d8f24-0175-4e98-addb-faae929b98bf",
 //                'page' => 1000,
 //                'skip' => 0
             ];

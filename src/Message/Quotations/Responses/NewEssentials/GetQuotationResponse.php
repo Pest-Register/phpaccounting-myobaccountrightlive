@@ -170,6 +170,7 @@ class GetQuotationResponse extends AbstractResponse
             $newQuote['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $quote);
             $newQuote['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote);
             $newQuote['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $quote);
+            $newQuote['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $quote);
 
             if (array_key_exists('Customer', $quote)) {
                 if ($quote['Customer']) {
@@ -203,6 +204,7 @@ class GetQuotationResponse extends AbstractResponse
                 $newQuote['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $quote);
                 $newQuote['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote);
                 $newQuote['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $quote);
+                $newQuote['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $quote);
 
                 if (array_key_exists('Customer', $quote)) {
                     if ($quote['Customer']) {

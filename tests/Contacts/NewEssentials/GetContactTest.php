@@ -17,10 +17,10 @@ class GetContactTest extends BaseTest
     {
         $this->setUp();
         $params = [
-            'search_params' => [
-                'FirstName' => 'Brice',
-                'LastName' => 'Yendy'
-            ],
+//            'search_params' => [
+//                'FirstName' => 'Brice',
+//                'LastName' => 'Yendy'
+//            ],
 //            'accounting_id' => "",
 //            'page' => 1000,
 //            'skip' => 0

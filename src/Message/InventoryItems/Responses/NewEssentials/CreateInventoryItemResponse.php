@@ -175,6 +175,7 @@ class CreateInventoryItemResponse extends AbstractResponse
             $newItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('QuantityAvailable', $item);
             $newItem['cost_pool'] = IndexSanityCheckHelper::indexSanityCheck('AverageCost', $item);
             $newItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $item);
+            $newItem['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $item);
             $newItem = $this->parsePurchaseDetails($item, $newItem);
             $newItem = $this->parseSellingDetails($item, $newItem);
             $newItem = $this->parseAssetDetails($item, $newItem);
@@ -195,6 +196,7 @@ class CreateInventoryItemResponse extends AbstractResponse
                 $newItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('QuantityAvailable', $item);
                 $newItem['cost_pool'] = IndexSanityCheckHelper::indexSanityCheck('AverageCost', $item);
                 $newItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $item);
+                $newItem['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $item);
                 $newItem = $this->parsePurchaseDetails($item, $newItem);
                 $newItem = $this->parseSellingDetails($item, $newItem);
                 $newItem = $this->parseAssetDetails($item, $newItem);
