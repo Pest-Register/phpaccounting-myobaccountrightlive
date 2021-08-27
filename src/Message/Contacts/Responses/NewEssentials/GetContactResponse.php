@@ -209,10 +209,25 @@ class GetContactResponse extends AbstractResponse
                 }
 
                 $newAddress['address_line_1'] = IndexSanityCheckHelper::indexSanityCheck('Street', $address);
+                if ($newAddress['address_line_1']) {
+                    $newAddress['address_line_1'] = trim($newAddress['address_line_1']);
+                }
                 $newAddress['city'] = IndexSanityCheckHelper::indexSanityCheck('City', $address);
+                if ($newAddress['city']) {
+                    $newAddress['city'] = trim($newAddress['city']);
+                }
                 $newAddress['state'] = IndexSanityCheckHelper::indexSanityCheck('State', $address);
+                if ($newAddress['state']) {
+                    $newAddress['state'] = trim($newAddress['state']);
+                }
                 $newAddress['postal_code'] = IndexSanityCheckHelper::indexSanityCheck('PostCode', $address);
+                if ($newAddress['postal_code']) {
+                    $newAddress['postal_code'] = trim($newAddress['postal_code']);
+                }
                 $newAddress['country'] = IndexSanityCheckHelper::indexSanityCheck('Country', $address);
+                if ($newAddress['country']) {
+                    $newAddress['country'] = trim($newAddress['country']);
+                }
 
                 if (array_key_exists('Phone1', $address)) {
                     if ($default) {
