@@ -91,64 +91,82 @@ class UpdateContactTest extends BaseTest
 //            ];
 
             $params = [
-                'accounting_id' => '5a225a1e-994f-4f9a-81ae-d94daa31b3ec',
-                'name' => 'Max Yendy',
-                'first_name' => 'Max',
-                'last_name' => 'Yendy',
+                'accounting_id' => '779d009a-e138-4629-af2d-e68adb9d8858',
+                'name' => 'Brice Yundt 2',
+                'first_name' => 'Brice',
+                'last_name' => 'Yundt 2',
                 'addresses' =>
-                    [
-                        [
-                            'type' => 'BILLING',
-                            'contact_name' => '',
-                            'salutation' => '',
-                            'address_line_1' => '22 Muswellbrook Grove',
-                            'city' => 'Mernda',
-                            'postal_code' => '3754',
-                            'state' => 'Victoria',
-                            'country' => 'Australia',
-                        ],
-
-                        [
-                            'type' => 'PRIMARY',
-                            'contact_name' => '',
-                            'salutation' => '',
-                            'email' => '',
-                            'website' => '',
-                            'address_line_1' => ' ',
-                            'city' => NULL,
-                            'postal_code' => NULL,
-                            'state' => NULL,
-                            'country' => 'Australia',
-                        ],
-                    ],
+                    array (
+                        0 =>
+                            array (
+                                'type' => 'BILLING',
+                                'address_line_1' => '45450 McKenzie Bypass',
+                                'city' => NULL,
+                                'postal_code' => '14490-7886',
+                                'state' => '',
+                                'country' => 'Marshall Islands',
+                            ),
+                        1 =>
+                            array (
+                                'type' => 'PRIMARY',
+                                'address_line_1' => '5253 Bria Rest',
+                                'city' => '',
+                                'postal_code' => '06784',
+                                'state' => '',
+                                'country' => 'Kuwait',
+                            ),
+                    ),
                 'is_individual' => true,
-                'email_address' => NULL,
+                'email_address' => 'test@test.com',
                 'phones' =>
-                    [
-                        [
-                            'type' => 'DEFAULT',
-                            'area_code' => NULL,
-                            'country_code' => NULL,
-                            'phone_number' => '0435567535',
-                            'accounting_id' => NULL,
-                            'accounting_slot_id' => '0',
-                        ],
-                        [
-                            'type' => 'EXTRA',
-                            'area_code' => NULL,
-                            'country_code' => NULL,
-                            'phone_number' => '0435567535',
-                            'accounting_id' => NULL,
-                            'accounting_slot_id' => '1',
-                        ],
-                    ],
-                'type' => ['CUSTOMER'],
+                    array (
+                        0 =>
+                            array (
+                                'type' => 'DEFAULT',
+                                'area_code' => NULL,
+                                'country_code' => NULL,
+                                'phone_number' => '0411234566',
+                                'accounting_id' => NULL,
+                                'accounting_slot_id' => '0',
+                            ),
+                        1 =>
+                            array (
+                                'type' => 'EXTRA',
+                                'area_code' => NULL,
+                                'country_code' => NULL,
+                                'phone_number' => '0411234565',
+                                'accounting_id' => NULL,
+                                'accounting_slot_id' => '1',
+                            ),
+                        2 =>
+                            array (
+                                'type' => 'EXTRA',
+                                'area_code' => NULL,
+                                'country_code' => NULL,
+                                'phone_number' => '0411234566',
+                                'accounting_id' => NULL,
+                                'accounting_slot_id' => '2',
+                            ),
+                        3 =>
+                            array (
+                                'type' => 'EXTRA',
+                                'area_code' => NULL,
+                                'country_code' => NULL,
+                                'phone_number' => '0411276566',
+                                'accounting_id' => NULL,
+                                'accounting_slot_id' => '0',
+                            ),
+                    ),
+                'type' =>
+                    array (
+                        0 => 'CUSTOMER',
+                    ),
                 'status' => 'ACTIVE',
-                'sync_token' => '1878282519590207488',
+                'sync_token' => '-904659475636420608',
                 'website' => NULL,
-                'tax_type' => NULL,
-                'freight_tax_type' => NULL,
-                'reference' => 'XUMKO6PN',
+                'tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
+                'freight_tax_type_id' => '50a917ff-65a0-4fff-aa20-f5c541c4f125',
+                'reference' => 'BJBGZDCM',
             ];
 
             $response = $this->gateway->updateContact($params)->send();

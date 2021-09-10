@@ -43,6 +43,26 @@ class GetPaymentRequest extends AbstractRequest
     }
 
     /**
+     * Set Invoice Accounting ID Value from Parameter Bag
+     * @param $value
+     * @return GetPaymentRequest
+     */
+    public function setInvoiceAccountingID($value) {
+        return $this->setParameter('invoice_accounting_id', $value);
+    }
+
+    /***
+     * Return Invoice Accounting ID (UID)
+     * @return mixed|null
+     */
+    public function getInvoiceAccountingID() {
+        if ($this->getParameter('invoice_accounting_id')) {
+            return $this->getParameter('invoice_accounting_id');
+        }
+        return null;
+    }
+
+    /**
      * Return Page Value for Pagination
      * @return integer
      */
@@ -75,19 +95,31 @@ class GetPaymentRequest extends AbstractRequest
         return 0;
     }
 
+    private function loadByInvoiceID($endpoint, $invoiceGUID) {
+        $prefix = '?$';
+        $endpoint = $endpoint . $prefix."filter=Invoices/any(x: x/UID eq guid'".$invoiceGUID."')";
+        return $endpoint;
+    }
+
     public function getEndpoint()
     {
 
         $endpoint = 'Sale/CustomerPayment/';
-
-        if ($this->getAccountingID()) {
-            if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::loadByGUID($endpoint, $this->getAccountingID());
+        if ($this->getInvoiceAccountingID()) {
+            if ($this->getInvoiceAccountingID() !== "") {
+                $endpoint = $this->loadByInvoiceID($endpoint, $this->getInvoiceAccountingID());
             }
-        } else {
-            if ($this->getPage()) {
-                if ($this->getPage() !== "") {
-                    $endpoint = BuildEndpointHelper::paginate($endpoint, $this->getPage(), $this->getSkip());
+        }
+        else {
+            if ($this->getAccountingID()) {
+                if ($this->getAccountingID() !== "") {
+                    $endpoint = BuildEndpointHelper::loadByGUID($endpoint, $this->getAccountingID());
+                }
+            } else {
+                if ($this->getPage()) {
+                    if ($this->getPage() !== "") {
+                        $endpoint = BuildEndpointHelper::paginate($endpoint, $this->getPage(), $this->getSkip());
+                    }
                 }
             }
         }

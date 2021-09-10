@@ -21,18 +21,18 @@ class GetAccountTest extends BaseTest
         $this->setUp();
         try {
             $params = [
-//                'search_params' => [
-//                    'Name' => 'Sales',
-//                ],
-//                'search_filters' => [
-//                    'Type' => [
-//                        'Income',
-//                        'OtherIncome'
-//                    ]
-//                ],
-//                'match_all_filters' => false,
-//                'exact_search_value' => true,
-                'accounting_id' => "527d8f24-0175-4e98-addb-faae929b98bf",
+                'search_params' => [
+                    'Name' => 'Sales',
+                ],
+                'search_filters' => [
+                    'Type' => [
+                        'Income',
+                        'OtherIncome'
+                    ]
+                ],
+                'match_all_filters' => false,
+                'exact_search_value' => true,
+//                'accounting_id' => "527d8f24-0175-4e98-addb-faae929b98bf",
 //                'page' => 1000,
 //                'skip' => 0
             ];
