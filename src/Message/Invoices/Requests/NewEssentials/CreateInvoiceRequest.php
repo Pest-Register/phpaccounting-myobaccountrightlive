@@ -326,6 +326,25 @@ class CreateInvoiceRequest extends AbstractRequest
     public function setInvoiceNumber($value){
         return $this->setParameter('invoice_number', $value);
     }
+
+    /**
+     * Get Invoice Reference from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @return mixed
+     */
+    public function getInvoiceReference(){
+        return $this->getParameter('invoice_reference');
+    }
+
+    /**
+     * Set Invoice Reference from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @return mixed
+     */
+    public function setInvoiceReference($value){
+        return $this->setParameter('invoice_reference', $value);
+    }
+
     /**
      * Get GST Registered from Parameter Bag
      * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
@@ -399,7 +418,6 @@ class CreateInvoiceRequest extends AbstractRequest
     public function getData()
     {
         $this->validate('contact', 'invoice_data', 'gst_registered', 'gst_inclusive');
-
         $this->issetParam('Date', 'date');
         $this->issetParam('Number', 'invoice_reference');
         $this->issetParam('Status', 'status');
