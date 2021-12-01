@@ -3,6 +3,7 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\Acc
 
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\AccountRight\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 
 /**
  * Get Organisation(s) Response
@@ -36,6 +37,53 @@ class GetOrganisationResponse extends AbstractResponse
         return true;
     }
 
+    public function getNewEssentialsErrorMessage($data)
+    {
+        if ($data) {
+            if (array_key_exists('Errors', $data)) {
+                $additionalDetails = '';
+                $message = '';
+                $errorCode = '';
+                $status ='';
+                if (array_key_exists('AdditionalDetails', $data['Errors'][0])) {
+                    $additionalDetails = $data['Errors'][0]['AdditionalDetails'];
+                }
+                if (array_key_exists('ErrorCode', $data['Errors'][0])) {
+                    $errorCode = $data['Errors'][0]['ErrorCode'];
+                }
+                if (array_key_exists('Severity', $data['Errors'][0])) {
+                    $status = $data['Errors'][0]['Severity'];
+                }
+                if (array_key_exists('Message', $data['Errors'][0])) {
+                    $message = $data['Errors'][0]['Message'];
+                }
+                $response = $message.' '.$additionalDetails;
+                return ErrorResponseHelper::parseErrorResponse(
+                    $response,
+                    $status,
+                    $errorCode,
+                    null,
+                    $additionalDetails,
+                    'Account'
+                );
+            } else {
+                if (array_key_exists('Items', $data)) {
+                    if (count($data['Items']) == 0) {
+                        return [
+                            'message' => 'NULL Returned from API or End of Pagination',
+                            'exception' =>'NULL Returned from API or End of Pagination',
+                            'error_code' => null,
+                            'status_code' => null,
+                            'detail' => null
+                        ];
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Fetch Error Message from Response
      * @return array
@@ -44,7 +92,7 @@ class GetOrganisationResponse extends AbstractResponse
     {
         if ($this->data) {
             if (array_key_exists('Errors', $this->data)) {
-                return \PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper::parseErrorResponse($this->data['Errors'][0]['Message'], 'Invoice');
+                return $this->getNewEssentialsErrorMessage($this->data);
             }
             elseif(array_key_exists('errors', $this->data)) {
                 return \PHPAccounting\MyobAccountRightLive\Helpers\Essentials\ErrorResponseHelper::parseErrorResponse($this->data['errors'][0]['message']);
@@ -54,7 +102,7 @@ class GetOrganisationResponse extends AbstractResponse
                         return ['message' => 'NULL Returned from API or End of Pagination'];
                     }
                 } else {
-                    return 'NULL returned from API';
+                    return ['message' => 'NULL Returned from API or End of Pagination'];
                 }
             }
         }
