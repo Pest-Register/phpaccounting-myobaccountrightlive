@@ -175,7 +175,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             if ($this->getBusinessID() !== '') {
                 $endpoint = 'https://api.myob.com/'. $this->getCountryCode().'/essentials/'. $this->getBusinessID().'/';
             } else {
-                $endpoint = 'https://api.myob.com/'. $this->getCountryCode().'/essentials/';
+                $endpoint = 'https://api.myob.com/'. $this->getCountryCode().'essentials/';
             }
             $headers = $this->getOldEssentialsHeaders($this->getHttpMethod());
             $body = json_encode($data);

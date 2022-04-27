@@ -95,6 +95,76 @@ class GetPaymentRequest extends AbstractRequest
         return 0;
     }
 
+
+    /**
+     * Set SearchParams from Parameter Bag (interface for query-based searching)
+     * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
+     * @param $value
+     * @return GetPaymentRequest
+     */
+    public function setSearchParams($value) {
+        return $this->setParameter('search_params', $value);
+    }
+    /**
+     * Return Search Parameters for query-based searching
+     * @return integer
+     */
+    public function getSearchParams() {
+        return $this->getParameter('search_params');
+    }
+
+    /**
+     * Set boolean to determine partial or exact query based searches
+     * @param $value
+     * @return GetPaymentRequest
+     */
+    public function setExactSearchValue($value) {
+        return $this->setParameter('exact_search_value', $value);
+    }
+
+    /**
+     * Get boolean to determine partial or exact query based searches
+     * @return mixed
+     */
+    public function getExactSearchValue() {
+        return $this->getParameter('exact_search_value');
+    }
+
+    /**
+     * Set SearchFilters from Parameter Bag (interface for query-based searching)
+     * @see https://www.odata.org/documentation/odata-version-3-0/odata-version-3-0-core-protocol/
+     * @param $value
+     * @return GetPaymentRequest
+     */
+    public function setSearchFilters($value) {
+        return $this->setParameter('search_filters', $value);
+    }
+
+    /**
+     * Return Search Filters for query-based searching
+     * @return array
+     */
+    public function getSearchFilters() {
+        return $this->getParameter('search_filters');
+    }
+
+    /**
+     * Set boolean to determine whether all filters need to be matched
+     * @param $value
+     * @return GetPaymentRequest
+     */
+    public function setMatchAllFilters($value) {
+        return $this->setParameter('match_all_filters', $value);
+    }
+
+    /**
+     * Get boolean to determine whether all filters need to be matched
+     * @return mixed
+     */
+    public function getMatchAllFilters() {
+        return $this->getParameter('match_all_filters');
+    }
+
     private function loadByInvoiceID($endpoint, $invoiceGUID) {
         $prefix = '?$';
         $endpoint = $endpoint . $prefix."filter=Invoices/any(x: x/UID eq guid'".$invoiceGUID."')";
@@ -116,7 +186,18 @@ class GetPaymentRequest extends AbstractRequest
                     $endpoint = BuildEndpointHelper::loadByGUID($endpoint, $this->getAccountingID());
                 }
             } else {
-                if ($this->getPage()) {
+                if($this->getSearchParams() || $this->getSearchFilters())
+                {
+                    $endpoint = BuildEndpointHelper::search(
+                        $endpoint,
+                        $this->getSearchParams(),
+                        $this->getExactSearchValue(),
+                        $this->getSearchFilters(),
+                        $this->getMatchAllFilters(),
+                        'substringof'
+                    );
+                }
+                else if ($this->getPage()) {
                     if ($this->getPage() !== "") {
                         $endpoint = BuildEndpointHelper::paginate($endpoint, $this->getPage(), $this->getSkip());
                     }
