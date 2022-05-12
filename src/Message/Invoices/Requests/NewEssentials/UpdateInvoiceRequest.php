@@ -419,6 +419,7 @@ class UpdateInvoiceRequest extends AbstractRequest
                 $newLine['UnitOfMeasure'] = IndexSanityCheckHelper::indexSanityCheck('unit', $line);
                 $newLine['Description'] = IndexSanityCheckHelper::indexSanityCheck('description', $line);
                 $newLine['UnitCount'] = IndexSanityCheckHelper::indexSanityCheck('quantity', $line);
+                $newLine['ShipQuantity'] = IndexSanityCheckHelper::indexSanityCheck('quantity', $line);
                 $newLine['UnitPrice'] = IndexSanityCheckHelper::indexSanityCheck('unit_amount', $line);
                 $newLine['Total'] = IndexSanityCheckHelper::indexSanityCheck('amount', $line);
                 $newLine['Account']['UID'] = IndexSanityCheckHelper::indexSanityCheck('account_id', $line);
