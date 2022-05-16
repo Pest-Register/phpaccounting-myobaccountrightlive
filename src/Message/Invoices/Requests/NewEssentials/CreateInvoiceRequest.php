@@ -403,7 +403,10 @@ class CreateInvoiceRequest extends AbstractRequest
 
                 $newLine['UnitPrice'] = IndexSanityCheckHelper::indexSanityCheck('unit_amount', $line);
                 $newLine['Total'] = IndexSanityCheckHelper::indexSanityCheck('amount', $line);
-                $newLine['Account']['UID'] = IndexSanityCheckHelper::indexSanityCheck('account_id', $line);
+                if (IndexSanityCheckHelper::indexSanityCheck('account_id', $line)) {
+                    $newLine['Account']['UID'] = $line['account_id'];
+                }
+
                 $newLine['DiscountPercent'] = IndexSanityCheckHelper::indexSanityCheck('discount_rate', $line);
                 array_push($data['Lines'], $newLine);
             }

@@ -296,7 +296,7 @@ class CreateContactRequest extends AbstractRequest
                     $location = 1;
                     break;
                 default:
-                    continue;
+                    break;
             }
             if ($location !== 0) {
                 $data['Addresses'][$location]['Email'] = IndexSanityCheckHelper::indexSanityCheck('email', $address);
