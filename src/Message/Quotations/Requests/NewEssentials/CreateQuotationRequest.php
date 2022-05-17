@@ -384,7 +384,7 @@ class CreateQuotationRequest extends AbstractRequest
         $this->validate('contact', 'quotation_data', 'gst_registered', 'gst_inclusive');
 
         $this->issetParam('Date', 'date');
-        $this->issetParam('Number', 'quotation_reference');
+        $this->issetParam('Number', 'quotation_number');
         $this->issetParam('Status', 'status');
         $this->issetParam('Subtotal', 'subtotal');
         $this->issetParam('TotalAmount', 'total');

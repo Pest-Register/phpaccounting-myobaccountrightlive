@@ -424,7 +424,7 @@ class CreateInvoiceRequest extends AbstractRequest
     {
         $this->validate('contact', 'invoice_data', 'gst_registered', 'gst_inclusive');
         $this->issetParam('Date', 'date');
-        $this->issetParam('Number', 'invoice_reference');
+        $this->issetParam('Number', 'invoice_number');
         $this->issetParam('Status', 'status');
         $this->issetParam('Subtotal', 'subtotal');
         $this->issetParam('TotalAmount', 'total');

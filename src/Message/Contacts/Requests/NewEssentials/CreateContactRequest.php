@@ -408,7 +408,7 @@ class CreateContactRequest extends AbstractRequest
     public function getData()
     {
         $this->validate('is_individual');
-//        $this->issetParam('DisplayID', 'reference');
+        $this->issetParam('DisplayID', 'reference');
         $this->issetParam('FirstName', 'first_name');
         $this->issetParam('LastName', 'last_name');
         $this->issetParam('IsIndividual', 'is_individual');

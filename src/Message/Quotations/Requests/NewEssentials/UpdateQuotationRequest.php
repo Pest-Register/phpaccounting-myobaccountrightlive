@@ -404,7 +404,7 @@ class UpdateQuotationRequest extends AbstractRequest
 
         $this->issetParam('UID', 'accounting_id');
         $this->issetParam('Date', 'date');
-        $this->issetParam('Number', 'quotation_reference');
+        $this->issetParam('Number', 'quotation_number');
         $this->issetParam('Status', 'status');
         $this->issetParam('Subtotal', 'subtotal');
         $this->issetParam('TotalAmount', 'total');

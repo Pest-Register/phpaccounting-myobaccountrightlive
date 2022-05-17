@@ -441,7 +441,7 @@ class UpdateInvoiceRequest extends AbstractRequest
         $this->validate('contact', 'invoice_data', 'gst_registered', 'gst_inclusive', 'accounting_id', 'sync_token');
         $this->issetParam('UID', 'accounting_id');
         $this->issetParam('Date', 'date');
-        $this->issetParam('Number', 'invoice_reference');
+        $this->issetParam('Number', 'invoice_number');
         $this->issetParam('Status', 'status');
         $this->issetParam('Subtotal', 'subtotal');
         $this->issetParam('TotalAmount', 'total');
