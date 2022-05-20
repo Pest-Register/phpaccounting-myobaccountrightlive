@@ -94,15 +94,23 @@ class BuildEndpointHelper
                 $queryString = '';
                 $filterKey = $key;
                 $filterQuery = '(';
-                foreach ($value as $filterValue)
-                {
-
-                    if ($filterMatchAll)
+                if (is_array($value)) {
+                    foreach ($value as $filterValue)
                     {
-                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
+                        if ($filterMatchAll) {
+                            $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
+                            $separationFilter = " and ";
+                        } else {
+                            $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
+                            $separationFilter = " or ";
+                        }
+                    }
+                } else {
+                    if ($filterMatchAll) {
+                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($value)."'";
                         $separationFilter = " and ";
                     } else {
-                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
+                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($value)."'";
                         $separationFilter = " or ";
                     }
                 }
