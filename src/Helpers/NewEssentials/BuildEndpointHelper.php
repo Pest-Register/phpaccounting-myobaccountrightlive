@@ -74,12 +74,17 @@ class BuildEndpointHelper
         {
             foreach($searchParams as $key => $value)
             {
-                if ($exactSearch)
-                {
-                    $searchFilter .= $separationFilter.$key." eq '".urlencode($value)."'";
+                if (str_ends_with($key, 'UID')) {
+                    $searchFilter .= $separationFilter.$key." eq guid'".$value."'";
+                }
+                else {
+                    $searchFilter .= $separationFilter.$key." eq '".$value."'";
+                }
+
+                if ($exactSearch) {
                     $separationFilter = " and ";
-                } else {
-                    $searchFilter .= $separationFilter.$filterPrefix."('".urlencode($value)."',".$key.") eq true";
+                }
+                else {
                     $separationFilter = " or ";
                 }
             }
@@ -89,28 +94,61 @@ class BuildEndpointHelper
         $separationFilter = '';
         if ($filterParams)
         {
+            $filterQuery = '(';
             foreach($filterParams as $key => $value)
             {
                 $queryString = '';
                 $filterKey = $key;
-                $filterQuery = '(';
                 if (is_array($value)) {
-                    foreach ($value as $filterValue)
-                    {
-                        if ($filterMatchAll) {
-                            $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
-                            $separationFilter = " and ";
-                        } else {
-                            $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
-                            $separationFilter = " or ";
+                    if (str_contains($filterKey, '[]')) {
+                        $filterKey = str_replace("[]" , '', $filterKey);
+                        $arrayFilter = $filterKey."/any(x: ";
+                        foreach ($value as $filterSubKey => $filterSubValue)
+                        {
+                            if (str_ends_with($filterSubKey, 'UID')) {
+                                $arrayFilter .= $separationFilter."x/".$filterSubKey." eq guid'".$filterSubValue."'";
+                            } else {
+                                $arrayFilter .= $separationFilter."x/".$filterSubKey." eq '".$filterSubValue."'";
+                            }
+                            if ($filterMatchAll) {
+                                $separationFilter = " and ";
+                            }
+                            else {
+                                $separationFilter = " or ";
+                            }
+                        }
+                        $arrayFilter .= ")";
+                        $filterQuery .= $arrayFilter;
+                    } else {
+                        foreach ($value as $filterValue)
+                        {
+                            if (str_ends_with($filterKey, 'UID')) {
+                                $filterQuery .= $separationFilter.$filterKey." eq guid'".$filterValue."'";
+                            }
+                            else {
+                                $filterQuery .= $separationFilter.$filterKey." eq '".$filterValue."'";
+                            }
+
+                            if ($filterMatchAll) {
+                                $separationFilter = " and ";
+                            }
+                            else {
+                                $separationFilter = " or ";
+                            }
                         }
                     }
                 } else {
+                    if (str_ends_with($filterKey, 'UID')) {
+                        $filterQuery .= $separationFilter.$filterKey." eq guid'".$value."'";
+                    }
+                    else {
+                        $filterQuery .= $separationFilter.$filterKey." eq '".$value."'";
+                    }
+
                     if ($filterMatchAll) {
-                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($value)."'";
                         $separationFilter = " and ";
-                    } else {
-                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($value)."'";
+                    }
+                    else {
                         $separationFilter = " or ";
                     }
                 }
