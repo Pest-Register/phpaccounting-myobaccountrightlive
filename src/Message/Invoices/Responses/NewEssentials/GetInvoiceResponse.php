@@ -160,6 +160,7 @@ class GetInvoiceResponse extends AbstractResponse
      */
     public function getInvoices(){
         $invoices = [];
+        echo print_r($this->data, true);
         if (!array_key_exists('Items', $this->data)) {
             $invoice = $this->data;
             $newInvoice = [];

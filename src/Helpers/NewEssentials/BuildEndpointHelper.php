@@ -75,10 +75,10 @@ class BuildEndpointHelper
             foreach($searchParams as $key => $value)
             {
                 if (str_ends_with($key, 'UID')) {
-                    $searchFilter .= $separationFilter.$key." eq guid'".$value."'";
+                    $searchFilter .= $separationFilter.$key." eq guid'".urlencode($value)."'";
                 }
                 else {
-                    $searchFilter .= $separationFilter.$key." eq '".$value."'";
+                    $searchFilter .= $separationFilter.$key." eq '".urlencode($value)."'";
                 }
 
                 if ($exactSearch) {
@@ -106,9 +106,9 @@ class BuildEndpointHelper
                         foreach ($value as $filterSubKey => $filterSubValue)
                         {
                             if (str_ends_with($filterSubKey, 'UID')) {
-                                $arrayFilter .= $separationFilter."x/".$filterSubKey." eq guid'".$filterSubValue."'";
+                                $arrayFilter .= $separationFilter."x/".$filterSubKey." eq guid'".urlencode($filterSubValue)."'";
                             } else {
-                                $arrayFilter .= $separationFilter."x/".$filterSubKey." eq '".$filterSubValue."'";
+                                $arrayFilter .= $separationFilter."x/".$filterSubKey." eq '".urlencode($filterSubValue)."'";
                             }
                             if ($filterMatchAll) {
                                 $separationFilter = " and ";
@@ -123,10 +123,10 @@ class BuildEndpointHelper
                         foreach ($value as $filterValue)
                         {
                             if (str_ends_with($filterKey, 'UID')) {
-                                $filterQuery .= $separationFilter.$filterKey." eq guid'".$filterValue."'";
+                                $filterQuery .= $separationFilter.$filterKey." eq guid'".urlencode($filterValue)."'";
                             }
                             else {
-                                $filterQuery .= $separationFilter.$filterKey." eq '".$filterValue."'";
+                                $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
                             }
 
                             if ($filterMatchAll) {
@@ -139,10 +139,10 @@ class BuildEndpointHelper
                     }
                 } else {
                     if (str_ends_with($filterKey, 'UID')) {
-                        $filterQuery .= $separationFilter.$filterKey." eq guid'".$value."'";
+                        $filterQuery .= $separationFilter.$filterKey." eq guid'".urlencode($value)."'";
                     }
                     else {
-                        $filterQuery .= $separationFilter.$filterKey." eq '".$value."'";
+                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($value)."'";
                     }
 
                     if ($filterMatchAll) {
