@@ -83,6 +83,17 @@ class UpdateQuotationResponse extends AbstractResponse
         return null;
     }
 
+    private function parseTaxCalculation($data)  {
+        if ($data === null) {
+            return 'NONE';
+        }
+        if ($data) {
+            return 'INCLUSIVE';
+        } else {
+            return 'EXCLUSIVE';
+        }
+    }
+
     /**
      * Add Contact to Quote
      * @param $data Array of single Customer
@@ -168,7 +179,7 @@ class UpdateQuotationResponse extends AbstractResponse
             $newQuote['quotation_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $quote);
             $newQuote['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $quote);
             $newQuote['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $quote);
-            $newQuote['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote);
+            $newQuote['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote));
             $newQuote['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $quote);
             $newQuote['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $quote);
 
@@ -202,7 +213,7 @@ class UpdateQuotationResponse extends AbstractResponse
                 $newQuote['quotation_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $quote);
                 $newQuote['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $quote);
                 $newQuote['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $quote);
-                $newQuote['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote);
+                $newQuote['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote));
                 $newQuote['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $quote);
                 $newQuote['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $quote);
 

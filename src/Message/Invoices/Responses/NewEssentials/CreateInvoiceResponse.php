@@ -83,6 +83,17 @@ class CreateInvoiceResponse extends AbstractResponse
         return null;
     }
 
+    private function parseTaxCalculation($data)  {
+        if ($data === null) {
+            return 'NONE';
+        }
+        if ($data) {
+            return 'INCLUSIVE';
+        } else {
+            return 'EXCLUSIVE';
+        }
+    }
+
     /**
      * Add Contact to Invoice
      * @param $data Array of single Customer

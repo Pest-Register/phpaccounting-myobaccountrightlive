@@ -86,6 +86,17 @@ class GetInvoiceResponse extends AbstractResponse
         return null;
     }
 
+    private function parseTaxCalculation($data)  {
+        if ($data === null) {
+            return 'NONE';
+        }
+        if ($data) {
+            return 'INCLUSIVE';
+        } else {
+            return 'EXCLUSIVE';
+        }
+    }
+
     /**
      * Add Contact to Invoice
      * @param $data Array of single Customer
@@ -160,7 +171,6 @@ class GetInvoiceResponse extends AbstractResponse
      */
     public function getInvoices(){
         $invoices = [];
-        echo print_r($this->data, true);
         if (!array_key_exists('Items', $this->data)) {
             $invoice = $this->data;
             $newInvoice = [];
@@ -173,7 +183,7 @@ class GetInvoiceResponse extends AbstractResponse
             $newInvoice['invoice_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $invoice);
             $newInvoice['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $invoice);
             $newInvoice['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $invoice);
-            $newInvoice['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice);
+            $newInvoice['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice));
             $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
             $newInvoice['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $invoice);
             $newInvoice['fetch_payments_separately'] = true;
@@ -220,7 +230,7 @@ class GetInvoiceResponse extends AbstractResponse
                 $newInvoice['invoice_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $invoice);
                 $newInvoice['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $invoice);
                 $newInvoice['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $invoice);
-                $newInvoice['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice);
+                $newInvoice['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice));
                 $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
                 $newInvoice['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $invoice);
                 $newInvoice['fetch_payments_separately'] = true;
