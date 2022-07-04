@@ -95,6 +95,27 @@ class GetQuotationResponse extends AbstractResponse
     }
 
     /**
+     * Parse status
+     * @param $data
+     * @return string|null
+     */
+    private function parseStatus($data) {
+        if ($data) {
+            switch($data) {
+                case 'Open':
+                    return 'SENT';
+                case 'Closed':
+                    return 'DELETED';
+                case 'Accepted':
+                    return 'ACCEPTED';
+                case 'Rejected':
+                    return 'REJECTED';
+            }
+        }
+        return null;
+    }
+
+    /**
      * Add Contact to Quote
      * @param $data Array of single Customer
      * @param array $quote MYOB Quote Object Mapping
@@ -105,7 +126,7 @@ class GetQuotationResponse extends AbstractResponse
             $newContact = [];
             $newContact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $data);
             $newContact['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $data);
-            $invoice['contact'] = $newContact;
+            $quote['contact'] = $newContact;
         }
 
         return $quote;
@@ -172,7 +193,7 @@ class GetQuotationResponse extends AbstractResponse
             $quote = $this->data;
             $newQuote = [];
             $newQuote['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $quote);
-            $newQuote['status'] = IndexSanityCheckHelper::indexSanityCheck('Status', $quote);
+            $newQuote['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $quote));
             $newQuote['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $quote);
             $newQuote['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $quote);
             $newQuote['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $quote);
@@ -206,7 +227,7 @@ class GetQuotationResponse extends AbstractResponse
             foreach ($this->data['Items'] as $quote) {
                 $newQuote = [];
                 $newQuote['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $quote);
-                $newQuote['status'] = IndexSanityCheckHelper::indexSanityCheck('Status', $quote);
+                $newQuote['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $quote));
                 $newQuote['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $quote);
                 $newQuote['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $quote);
                 $newQuote['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $quote);

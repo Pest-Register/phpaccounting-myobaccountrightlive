@@ -83,16 +83,7 @@ class UpdateInvoiceResponse extends AbstractResponse
         return null;
     }
 
-    private function parseTaxCalculation($data)  {
-        if ($data === null) {
-            return 'NONE';
-        }
-        if ($data) {
-            return 'INCLUSIVE';
-        } else {
-            return 'EXCLUSIVE';
-        }
-    }
+
 
     /**
      * Add Contact to Invoice
@@ -109,6 +100,40 @@ class UpdateInvoiceResponse extends AbstractResponse
         }
 
         return $invoice;
+    }
+
+    /**
+     * @param $data
+     * @return string
+     */
+    private function parseTaxCalculation($data)  {
+        if ($data === null) {
+            return 'NONE';
+        }
+        if ($data) {
+            return 'INCLUSIVE';
+        } else {
+            return 'EXCLUSIVE';
+        }
+    }
+
+    /**
+     * Parse status
+     * @param $data
+     * @return string|null
+     */
+    private function parseStatus($data) {
+        if ($data) {
+            switch($data) {
+                case 'Open':
+                    return 'OPEN';
+                case 'Closed':
+                    return 'DELETED';
+                case 'Credit':
+                    return 'PAID';
+            }
+        }
+        return null;
     }
 
     /**
@@ -173,7 +198,7 @@ class UpdateInvoiceResponse extends AbstractResponse
             $invoice = $this->data;
             $newInvoice = [];
             $newInvoice['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $invoice);
-            $newInvoice['status'] = IndexSanityCheckHelper::indexSanityCheck('Status', $invoice);
+            $newInvoice['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $invoice));
             $newInvoice['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $invoice);
             $newInvoice['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $invoice);
             $newInvoice['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $invoice);
@@ -214,12 +239,11 @@ class UpdateInvoiceResponse extends AbstractResponse
                     $newInvoice['due_date'] = IndexSanityCheckHelper::indexSanityCheck('DueDate', $invoice['Terms']);
                 }
             }
+
             if ($newInvoice['amount_due'] == 0) {
                 $newInvoice['status'] = 'PAID';
             } else if ($newInvoice['amount_due'] > 0 && $newInvoice['amount_due'] != $newInvoice['total']) {
                 $newInvoice['status'] = 'PARTIAL';
-            } else {
-                $newInvoice['status'] = 'SUBMITTED';
             }
 
             array_push($invoices, $newInvoice);
@@ -227,7 +251,7 @@ class UpdateInvoiceResponse extends AbstractResponse
             foreach ($this->data['Items'] as $invoice) {
                 $newInvoice = [];
                 $newInvoice['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $invoice);
-                $newInvoice['status'] = IndexSanityCheckHelper::indexSanityCheck('Status', $invoice);
+                $newInvoice['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $invoice));
                 $newInvoice['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $invoice);
                 $newInvoice['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $invoice);
                 $newInvoice['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $invoice);
@@ -273,9 +297,8 @@ class UpdateInvoiceResponse extends AbstractResponse
                     $newInvoice['status'] = 'PAID';
                 } else if ($newInvoice['amount_due'] > 0 && $newInvoice['amount_due'] != $newInvoice['total']) {
                     $newInvoice['status'] = 'PARTIAL';
-                } else {
-                    $newInvoice['status'] = 'SUBMITTED';
                 }
+
                 array_push($invoices, $newInvoice);
             }
         }

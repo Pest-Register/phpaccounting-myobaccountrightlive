@@ -94,10 +94,43 @@ class DeleteQuotationResponse extends AbstractResponse
             $newContact = [];
             $newContact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $data);
             $newContact['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $data);
-            $invoice['contact'] = $newContact;
+            $quote['contact'] = $newContact;
         }
 
         return $quote;
+    }
+
+
+    private function parseTaxCalculation($data)  {
+        if ($data === null) {
+            return 'NONE';
+        }
+        if ($data) {
+            return 'INCLUSIVE';
+        } else {
+            return 'EXCLUSIVE';
+        }
+    }
+
+    /**
+     * Parse status
+     * @param $data
+     * @return string|null
+     */
+    private function parseStatus($data) {
+        if ($data) {
+            switch($data) {
+                case 'Open':
+                    return 'SENT';
+                case 'Closed':
+                    return 'DELETED';
+                case 'Accepted':
+                    return 'ACCEPTED';
+                case 'Rejected':
+                    return 'REJECTED';
+            }
+        }
+        return null;
     }
 
     /**
@@ -161,14 +194,14 @@ class DeleteQuotationResponse extends AbstractResponse
             $quote = $this->data;
             $newQuote = [];
             $newQuote['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $quote);
-            $newQuote['status'] = IndexSanityCheckHelper::indexSanityCheck('Status', $quote);
+            $newQuote['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $quote));
             $newQuote['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $quote);
             $newQuote['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $quote);
             $newQuote['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $quote);
             $newQuote['quotation_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $quote);
             $newQuote['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $quote);
             $newQuote['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $quote);
-            $newQuote['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote);
+            $newQuote['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote));
             $newQuote['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $quote);
             $newQuote['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $quote);
 
@@ -195,14 +228,14 @@ class DeleteQuotationResponse extends AbstractResponse
             foreach ($this->data['Items'] as $quote) {
                 $newQuote = [];
                 $newQuote['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $quote);
-                $newQuote['status'] = IndexSanityCheckHelper::indexSanityCheck('Status', $quote);
+                $newQuote['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $quote));
                 $newQuote['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $quote);
                 $newQuote['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $quote);
                 $newQuote['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $quote);
                 $newQuote['quotation_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $quote);
                 $newQuote['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $quote);
                 $newQuote['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $quote);
-                $newQuote['gst_inclusive'] = IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote);
+                $newQuote['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote));
                 $newQuote['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $quote);
                 $newQuote['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $quote);
 
