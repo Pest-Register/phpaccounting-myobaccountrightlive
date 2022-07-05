@@ -78,7 +78,11 @@ class BuildEndpointHelper
                     $searchFilter .= $separationFilter.$key." eq guid'".urlencode($value)."'";
                 }
                 else {
-                    $searchFilter .= $separationFilter.$key." eq '".urlencode($value)."'";
+                    if (is_bool($value)) {
+                        $searchFilter .= $separationFilter.$key." eq ".urlencode(($value ? 'true' : 'false'));
+                    } else {
+                        $searchFilter .= $separationFilter.$key." eq '".urlencode($value)."'";
+                    }
                 }
 
                 if ($exactSearch) {
@@ -108,7 +112,11 @@ class BuildEndpointHelper
                             if (str_ends_with($filterSubKey, 'UID')) {
                                 $arrayFilter .= $separationFilter."x/".$filterSubKey." eq guid'".urlencode($filterSubValue)."'";
                             } else {
-                                $arrayFilter .= $separationFilter."x/".$filterSubKey." eq '".urlencode($filterSubValue)."'";
+                                if (is_bool($value)) {
+                                    $arrayFilter .= $separationFilter."x/".$filterSubKey." eq ".urlencode(($filterSubValue ? 'true' : 'false'));
+                                } else {
+                                    $arrayFilter .= $separationFilter."x/".$filterSubKey." eq '".urlencode($filterSubValue)."'";
+                                }
                             }
                             if ($filterMatchAll) {
                                 $separationFilter = " and ";
@@ -126,7 +134,11 @@ class BuildEndpointHelper
                                 $filterQuery .= $separationFilter.$filterKey." eq guid'".urlencode($filterValue)."'";
                             }
                             else {
-                                $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
+                                if (is_bool($filterValue)){
+                                    $filterQuery .= $separationFilter.$filterKey." eq ".urlencode(($filterValue ? 'true' : 'false'));
+                                } else {
+                                    $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($filterValue)."'";
+                                }
                             }
 
                             if ($filterMatchAll) {
@@ -142,7 +154,11 @@ class BuildEndpointHelper
                         $filterQuery .= $separationFilter.$filterKey." eq guid'".urlencode($value)."'";
                     }
                     else {
-                        $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($value)."'";
+                        if (is_bool($filterValue)) {
+                            $filterQuery .= $separationFilter.$filterKey." eq ".urlencode(($value ? 'true' : 'false'));
+                        } else {
+                            $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($value)."'";
+                        }
                     }
 
                     if ($filterMatchAll) {
@@ -162,6 +178,7 @@ class BuildEndpointHelper
         else {
             $endpoint.=$filterQuery;
         }
+        echo print_r($endpoint, true);
         return $endpoint;
     }
 
