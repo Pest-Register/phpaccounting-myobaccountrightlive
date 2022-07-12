@@ -154,7 +154,7 @@ class BuildEndpointHelper
                         $filterQuery .= $separationFilter.$filterKey." eq guid'".urlencode($value)."'";
                     }
                     else {
-                        if (is_bool($filterValue)) {
+                        if (is_bool($value)) {
                             $filterQuery .= $separationFilter.$filterKey." eq ".urlencode(($value ? 'true' : 'false'));
                         } else {
                             $filterQuery .= $separationFilter.$filterKey." eq '".urlencode($value)."'";
