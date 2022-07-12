@@ -142,7 +142,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
         $headers['x-myobapi-version'] = $this->accountRightVersion;
         $headers['Accept-Encoding'] = 'gzip,deflate';
-
         return $headers;
     }
 
@@ -180,6 +179,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             $headers = $this->getOldEssentialsHeaders($this->getHttpMethod());
             $body = json_encode($data);
         }
+
         $httpResponse = $this->httpClient->request($this->getHttpMethod(), $endpoint . $this->getEndpoint(), $headers, $body);
         $this->createResponse(json_decode($httpResponse->getBody()->getContents(), true), $httpResponse->getHeaders());
         return $this->response;

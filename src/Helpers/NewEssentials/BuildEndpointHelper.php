@@ -178,7 +178,6 @@ class BuildEndpointHelper
         else {
             $endpoint.=$filterQuery;
         }
-        echo print_r($endpoint, true);
         return $endpoint;
     }
 
