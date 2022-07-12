@@ -50,7 +50,7 @@ class BuildEndpointHelper
     public static function paginate($endpoint, $page, $skip) {
         $prefix = '?$';
         $skipPrefix = '&$';
-        $endpoint = $endpoint . $prefix."top=".$page.$skipPrefix.'skip='.$skip;
+        $endpoint = $endpoint . $prefix."top=".$page.$skipPrefix.'skip='.$skip.$skipPrefix.'orderBy=UID';
         return $endpoint;
     }
 
