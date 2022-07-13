@@ -52,7 +52,7 @@ class GetAccountRequest extends AbstractRequest
             return $this->getParameter('page');
         }
 
-        return 1;
+        return 1000;
     }
 
     /**
@@ -163,7 +163,9 @@ class GetAccountRequest extends AbstractRequest
                     $this->getExactSearchValue(),
                     $this->getSearchFilters(),
                     $this->getMatchAllFilters(),
-                    'substringof'
+                    'substringof',
+                    $this->getPage(),
+                    $this->getSkip()
                 );
             }
             else if ($this->getPage()) {

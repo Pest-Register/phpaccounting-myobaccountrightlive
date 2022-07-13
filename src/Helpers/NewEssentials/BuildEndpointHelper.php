@@ -47,10 +47,10 @@ class BuildEndpointHelper
      * @param $skip
      * @return string
      */
-    public static function paginate($endpoint, $page, $skip) {
+    public static function paginate($endpoint, $page, $skip, $orderby='UID') {
         $prefix = '?$';
         $skipPrefix = '&$';
-        $endpoint = $endpoint . $prefix."top=".$page.$skipPrefix.'skip='.$skip.$skipPrefix.'orderby=UID';
+        $endpoint = $endpoint . $prefix."top=".$page.$skipPrefix.'skip='.$skip.$skipPrefix.'orderby='.$orderby;
         return $endpoint;
     }
 
@@ -64,10 +64,11 @@ class BuildEndpointHelper
      * @param string $filterPrefix
      * @return string
      */
-    public static function search($endpoint, $searchParams, $exactSearch, $filterParams=null, $filterMatchAll=false, $filterPrefix='')
+    public static function search($endpoint, $searchParams, $exactSearch, $filterParams=null, $filterMatchAll=false, $filterPrefix='', $page=1000, $skip=0, $orderby='UID')
     {
         $prefix = '?$';
-        $endpoint = $endpoint . $prefix . "filter=";
+        $skipPrefix = '&$';
+        $endpoint = $endpoint.$prefix."top=".$page.$skipPrefix.'skip='.$skip.$skipPrefix.'orderby='.$orderby.$skipPrefix."filter=";
         $searchFilter = "";
         $separationFilter = "";
         if ($searchParams)

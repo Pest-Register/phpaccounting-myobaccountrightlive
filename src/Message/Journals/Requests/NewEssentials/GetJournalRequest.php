@@ -52,7 +52,7 @@ class GetJournalRequest extends AbstractRequest
             return $this->getParameter('page');
         }
 
-        return 1;
+        return 1000;
     }
 
     /**

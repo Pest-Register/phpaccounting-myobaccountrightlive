@@ -66,7 +66,7 @@ class GetInvoiceRequest extends AbstractRequest
             return $this->getParameter('page');
         }
 
-        return 1;
+        return 1000;
     }
 
     /**
@@ -177,7 +177,9 @@ class GetInvoiceRequest extends AbstractRequest
                     $this->getExactSearchValue(),
                     $this->getSearchFilters(),
                     $this->getMatchAllFilters(),
-                    'substringof'
+                    'substringof',
+                    $this->getPage(),
+                    $this->getSkip()
                 );
             }
             else if ($this->getPage()) {
