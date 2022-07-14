@@ -152,9 +152,13 @@ class DeleteInventoryItemResponse extends AbstractResponse
     }
 
     /**
-     * Return all Contacts with Generic Schema Variable Assignment
-     * @return array
+     * @param $data
+     * @return string
      */
+    private function parseType() {
+        return 'PRODUCT';
+    }
+
     /**
      * Return all Contacts with Generic Schema Variable Assignment
      * @return array
@@ -168,7 +172,7 @@ class DeleteInventoryItemResponse extends AbstractResponse
             $newItem['code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $item);
             $newItem['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $item);
             $newItem['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
-            $newItem['type'] = 'UNSPECIFIED';
+            $newItem['type'] = $this->parseType();
             $newItem['is_buying'] = IndexSanityCheckHelper::indexSanityCheck('IsBought', $item);
             $newItem['is_selling'] = IndexSanityCheckHelper::indexSanityCheck('IsSold', $item);
             $newItem['is_tracked'] = IndexSanityCheckHelper::indexSanityCheck('IsInventoried', $item);
@@ -189,7 +193,7 @@ class DeleteInventoryItemResponse extends AbstractResponse
                 $newItem['code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $item);
                 $newItem['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $item);
                 $newItem['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
-                $newItem['type'] = 'UNSPECIFIED';
+                $newItem['type'] = $this->parseType();
                 $newItem['is_buying'] = IndexSanityCheckHelper::indexSanityCheck('IsBought', $item);
                 $newItem['is_selling'] = IndexSanityCheckHelper::indexSanityCheck('IsSold', $item);
                 $newItem['is_tracked'] = IndexSanityCheckHelper::indexSanityCheck('IsInventoried', $item);
