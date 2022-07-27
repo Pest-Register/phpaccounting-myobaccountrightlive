@@ -401,6 +401,24 @@ class UpdateInvoiceRequest extends AbstractRequest
         return $this->setParameter('tax_lines', $value);
     }
 
+    /**
+     * Parse status
+     * @param $data
+     * @return string|null
+     */
+    private function parseStatus($data) {
+        if ($data) {
+            switch($data) {
+                case 'DRAFT':
+                case 'SENT':
+                    return 'Open';
+                case 'DELETED':
+                    return 'Closed';
+            }
+        }
+        return null;
+    }
+
     private function parseLines($lines, $gst, $data) {
         $data['Lines'] = [];
         if ($lines) {
@@ -442,11 +460,14 @@ class UpdateInvoiceRequest extends AbstractRequest
         $this->issetParam('UID', 'accounting_id');
         $this->issetParam('Date', 'date');
         $this->issetParam('Number', 'invoice_number');
-        $this->issetParam('Status', 'status');
         $this->issetParam('Subtotal', 'subtotal');
         $this->issetParam('TotalAmount', 'total');
         $this->issetParam('TotalTax', 'total_tax');
         $this->issetParam('RowVersion', 'sync_token');
+
+        if ($this->getStatus()) {
+            $this->data['Status'] = $this->parseStatus($this->getStatus());
+        }
 
         if ($this->getDueDate()) {
             if ($this->getDate()) {

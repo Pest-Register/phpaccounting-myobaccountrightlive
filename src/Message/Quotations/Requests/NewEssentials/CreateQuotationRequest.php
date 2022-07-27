@@ -373,6 +373,28 @@ class CreateQuotationRequest extends AbstractRequest
     }
 
     /**
+     * Parse status
+     * @param $data
+     * @return string|null
+     */
+    private function parseStatus($data) {
+        if ($data) {
+            switch($data) {
+                case 'DRAFT':
+                case 'SENT':
+                    return 'Open';
+                case 'DELETED':
+                    return 'Closed';
+                case 'ACCEPTED':
+                    return 'Accepted';
+                case 'REJECTED':
+                    return 'Declined';
+            }
+        }
+        return null;
+    }
+
+    /**
      * Get the raw data array for this message. The format of this varies from gateway to
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
      *
@@ -385,11 +407,13 @@ class CreateQuotationRequest extends AbstractRequest
 
         $this->issetParam('Date', 'date');
         $this->issetParam('Number', 'quotation_number');
-        $this->issetParam('Status', 'status');
         $this->issetParam('Subtotal', 'subtotal');
         $this->issetParam('TotalAmount', 'total');
         $this->issetParam('TotalTax', 'total_tax');
 
+        if ($this->getStatus()) {
+            $this->data['Status'] = $this->parseStatus($this->getStatus());
+        }
 
         if ($this->getExpiryDate()) {
             if ($this->getDate()) {

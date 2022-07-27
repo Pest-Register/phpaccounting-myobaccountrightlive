@@ -392,6 +392,28 @@ class UpdateQuotationRequest extends AbstractRequest
     }
 
     /**
+     * Parse status
+     * @param $data
+     * @return string|null
+     */
+    private function parseStatus($data) {
+        if ($data) {
+            switch($data) {
+                case 'DRAFT':
+                case 'SENT':
+                    return 'Open';
+                case 'DELETED':
+                    return 'Closed';
+                case 'ACCEPTED':
+                    return 'Accepted';
+                case 'REJECTED':
+                    return 'Declined';
+            }
+        }
+        return null;
+    }
+
+    /**
      * Get the raw data array for this message. The format of this varies from gateway to
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
      *
@@ -411,6 +433,9 @@ class UpdateQuotationRequest extends AbstractRequest
         $this->issetParam('TotalTax', 'total_tax');
         $this->issetParam('RowVersion', 'sync_token');
 
+        if ($this->getStatus()) {
+            $this->data['Status'] = $this->parseStatus($this->getStatus());
+        }
 
         if ($this->getExpiryDate()) {
             if ($this->getDate()) {
