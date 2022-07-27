@@ -4,12 +4,32 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials;
 
 
+use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses\NewEssentials\UpdateQuotationResponse;
 
 class UpdateQuotationRequest extends AbstractRequest
 {
+    /**
+     * Get Accounting ID Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @return mixed
+     */
+    public function getAccountingID(){
+        return $this->getParameter('accounting_id');
+    }
+
+    /**
+     * Set Accounting ID Parameter from Parameter Bag
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
+     * @param string $value Deposit Amount
+     * @return UpdateQuotationRequest
+     */
+    public function setAccountingID($value){
+        return $this->setParameter('accounting_id', $value);
+    }
+
     /**
      * Get Sync Token Parameter from Parameter Bag
      * @see https://developer.myob.com/api/accountright/v2/sale/quote/
@@ -344,22 +364,25 @@ class UpdateQuotationRequest extends AbstractRequest
     }
 
     /**
-     * Get Accounting ID Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
-     * @return mixed
+     * Parse status
+     * @param $data
+     * @return string|null
      */
-    public function getAccountingID(){
-        return $this->getParameter('accounting_id');
-    }
-
-    /**
-     * Set Accounting ID Parameter from Parameter Bag
-     * @see https://developer.myob.com/api/accountright/v2/sale/quote/
-     * @param string $value UID
-     * @return \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\UpdateQuotationRequest
-     */
-    public function setAccountingID($value){
-        return $this->setParameter('accounting_id', $value);
+    private function parseStatus($data) {
+        if ($data) {
+            switch($data) {
+                case 'DRAFT':
+                case 'SENT':
+                    return 'Open';
+                case 'DELETED':
+                    return 'Closed';
+                case 'ACCEPTED':
+                    return 'Accepted';
+                case 'REJECTED':
+                    return 'Declined';
+            }
+        }
+        return null;
     }
 
     private function parseLines($lines, $gst, $data) {
@@ -391,27 +414,7 @@ class UpdateQuotationRequest extends AbstractRequest
         return $data;
     }
 
-    /**
-     * Parse status
-     * @param $data
-     * @return string|null
-     */
-    private function parseStatus($data) {
-        if ($data) {
-            switch($data) {
-                case 'DRAFT':
-                case 'SENT':
-                    return 'Open';
-                case 'DELETED':
-                    return 'Closed';
-                case 'ACCEPTED':
-                    return 'Accepted';
-                case 'REJECTED':
-                    return 'Declined';
-            }
-        }
-        return null;
-    }
+
 
     /**
      * Get the raw data array for this message. The format of this varies from gateway to
@@ -422,12 +425,10 @@ class UpdateQuotationRequest extends AbstractRequest
      */
     public function getData()
     {
-        $this->validate('contact', 'quotation_data', 'gst_registered', 'gst_inclusive', 'accounting_id');
-
+        $this->validate('contact', 'quotation_data', 'gst_registered', 'gst_inclusive', 'accounting_id', 'sync_token');
         $this->issetParam('UID', 'accounting_id');
         $this->issetParam('Date', 'date');
         $this->issetParam('Number', 'quotation_number');
-        $this->issetParam('Status', 'status');
         $this->issetParam('Subtotal', 'subtotal');
         $this->issetParam('TotalAmount', 'total');
         $this->issetParam('TotalTax', 'total_tax');
@@ -477,6 +478,11 @@ class UpdateQuotationRequest extends AbstractRequest
     public function getEndpoint()
     {
         $endpoint = 'Sale/Quote/Service?returnBody=true';
+        if ($this->getAccountingID()) {
+            if ($this->getAccountingID() !== "") {
+                $endpoint = BuildEndpointHelper::createForGUID('Sale/Quote/Service', $this->getAccountingID());
+            }
+        }
         return $endpoint;
     }
 
