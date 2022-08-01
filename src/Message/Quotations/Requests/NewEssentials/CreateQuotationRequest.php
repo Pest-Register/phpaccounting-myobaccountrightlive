@@ -455,7 +455,7 @@ class CreateQuotationRequest extends AbstractRequest
     public function getEndpoint()
     {
 
-        $endpoint = 'Sale/Quote/Service?returnBody=true';
+        $endpoint = 'Sale/Quote/Item?returnBody=true';
         return $endpoint;
     }
 

@@ -477,10 +477,10 @@ class UpdateQuotationRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-        $endpoint = 'Sale/Quote/Service?returnBody=true';
+        $endpoint = 'Sale/Quote/Item?returnBody=true';
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::createForGUID('Sale/Quote/Service', $this->getAccountingID());
+                $endpoint = BuildEndpointHelper::createForGUID('Sale/Quote/Item', $this->getAccountingID());
             }
         }
         return $endpoint;
