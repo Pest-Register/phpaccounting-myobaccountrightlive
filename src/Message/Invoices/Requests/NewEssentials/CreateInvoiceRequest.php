@@ -406,10 +406,10 @@ class CreateInvoiceRequest extends AbstractRequest
             foreach($lines as $line) {
                 $newLine = [];
                 $newLine['Account'] = [];
-                if ($gst) {
-                    $newLine['TaxCode'] = [];
-                    $newLine['TaxCode']['UID'] = IndexSanityCheckHelper::indexSanityCheck('tax_id', $line);
-                }
+
+                $newLine['TaxCode'] = [];
+                $newLine['TaxCode']['UID'] = IndexSanityCheckHelper::indexSanityCheck('tax_id', $line);
+
                 if (array_key_exists('item_id', $line)) {
                     $newLine['Item'] = [];
                     $newLine['Item']['UID'] = IndexSanityCheckHelper::indexSanityCheck('item_id', $line);
