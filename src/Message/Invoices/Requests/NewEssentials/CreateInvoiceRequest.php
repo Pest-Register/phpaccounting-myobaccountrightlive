@@ -391,6 +391,7 @@ class CreateInvoiceRequest extends AbstractRequest
             switch($data) {
                 case 'DRAFT':
                 case 'SENT':
+                case 'OPEN':
                     return 'Open';
                 case 'DELETED':
                     return 'Closed';
