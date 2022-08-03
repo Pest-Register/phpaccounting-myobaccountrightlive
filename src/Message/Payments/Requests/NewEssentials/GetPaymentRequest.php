@@ -47,17 +47,17 @@ class GetPaymentRequest extends AbstractRequest
      * @param $value
      * @return GetPaymentRequest
      */
-    public function setInvoiceAccountingID($value) {
-        return $this->setParameter('invoice_accounting_id', $value);
+    public function setInvoiceID($value) {
+        return $this->setParameter('invoice_id', $value);
     }
 
     /***
      * Return Invoice Accounting ID (UID)
      * @return mixed|null
      */
-    public function getInvoiceAccountingID() {
-        if ($this->getParameter('invoice_accounting_id')) {
-            return $this->getParameter('invoice_accounting_id');
+    public function getInvoiceID() {
+        if ($this->getParameter('invoice_id')) {
+            return $this->getParameter('invoice_id');
         }
         return null;
     }
@@ -175,9 +175,9 @@ class GetPaymentRequest extends AbstractRequest
     {
 
         $endpoint = 'Sale/CustomerPayment/';
-        if ($this->getInvoiceAccountingID()) {
-            if ($this->getInvoiceAccountingID() !== "") {
-                $endpoint = $this->loadByInvoiceID($endpoint, $this->getInvoiceAccountingID());
+        if ($this->getInvoiceID()) {
+            if ($this->getInvoiceID() !== "") {
+                $endpoint = $this->loadByInvoiceID($endpoint, $this->getInvoiceID());
             }
         }
         else {
