@@ -266,6 +266,7 @@ class GetInvoiceResponse extends AbstractResponse
                 $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
                 $newInvoice['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $invoice);
                 $newInvoice['fetch_payments_separately'] = true;
+                $newInvoice['payments'] = [];
                 if (array_key_exists('Customer', $invoice)) {
                     if ($invoice['Customer']) {
                         $newInvoice = $this->parseCustomer($newInvoice, $invoice['Customer']);
@@ -300,7 +301,6 @@ class GetInvoiceResponse extends AbstractResponse
                 } else if ($newInvoice['amount_due'] > 0 && $newInvoice['amount_due'] != $newInvoice['total']) {
                     $newInvoice['status'] = 'PARTIAL';
                 }
-
                 array_push($invoices, $newInvoice);
             }
         }
