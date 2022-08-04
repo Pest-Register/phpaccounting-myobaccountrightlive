@@ -173,7 +173,6 @@ class GetPaymentRequest extends AbstractRequest
 
     public function getEndpoint()
     {
-
         $endpoint = 'Sale/CustomerPayment/';
         if ($this->getInvoiceID()) {
             if ($this->getInvoiceID() !== "") {

@@ -208,6 +208,7 @@ class CreateInvoiceResponse extends AbstractResponse
             $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
             $newInvoice['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $invoice);
             $newInvoice['fetch_payments_separately'] = true;
+            $newInvoice['payments'] = [];
             if (array_key_exists('Customer', $invoice)) {
                 if ($invoice['Customer']) {
                     $newInvoice = $this->parseCustomer($newInvoice, $invoice['Customer']);
