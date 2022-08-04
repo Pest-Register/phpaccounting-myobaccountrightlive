@@ -412,7 +412,9 @@ class UpdateInvoiceRequest extends AbstractRequest
                 case 'DRAFT':
                 case 'SENT':
                 case 'OPEN':
+                case 'PARTIAL':
                     return 'Open';
+                case 'PAID':
                 case 'DELETED':
                     return 'Closed';
             }

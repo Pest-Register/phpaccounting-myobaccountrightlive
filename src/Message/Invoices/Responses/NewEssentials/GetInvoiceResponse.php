@@ -112,7 +112,6 @@ class GetInvoiceResponse extends AbstractResponse
                 case 'Open':
                     return 'OPEN';
                 case 'Closed':
-                    return 'DELETED';
                 case 'Credit':
                     return 'PAID';
             }
