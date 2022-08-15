@@ -293,7 +293,7 @@ class UpdateContactRequest extends AbstractRequest
                     $location = 1;
                     break;
                 default:
-                    break;
+                    continue 2;
             }
             if ($location !== 0) {
                 $data['Addresses'][$location]['Email'] = IndexSanityCheckHelper::indexSanityCheck('email', $address);
