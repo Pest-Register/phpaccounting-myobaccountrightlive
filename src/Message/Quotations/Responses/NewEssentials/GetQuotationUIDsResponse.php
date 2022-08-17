@@ -107,7 +107,7 @@ class GetQuotationUIDsResponse extends AbstractResponse
      */
     public function getQuotationUIDs(){
         $quotes = [];
-        if (!is_string($this->data)) {
+        if ($this->data && !is_string($this->data)) {
             foreach ($this->data['Items'] as $quote) {
                 $newQuote = [];
                 $newQuote['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $quote);

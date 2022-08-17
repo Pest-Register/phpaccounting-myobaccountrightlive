@@ -110,7 +110,7 @@ class GetInvoiceUIDsResponse extends AbstractResponse
      */
     public function getInvoiceUIDs(){
         $invoices = [];
-        if (!is_string($this->data)) {
+        if ($this->data && !is_string($this->data)) {
             foreach ($this->data['Items'] as $invoice) {
                 $newInvoice = [];
                 $newInvoice['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $invoice);

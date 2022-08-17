@@ -106,7 +106,7 @@ class UpdateAccountResponse extends AbstractResponse
      */
     public function getAccounts(){
         $accounts = [];
-        if (!is_string($this->data)) {
+        if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
                 $account = $this->data;
                 $newAccount = [];

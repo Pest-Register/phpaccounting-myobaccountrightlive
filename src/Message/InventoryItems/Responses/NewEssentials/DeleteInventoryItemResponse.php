@@ -182,7 +182,7 @@ class DeleteInventoryItemResponse extends AbstractResponse
      */
     public function getInventoryItems(){
         $items = [];
-        if (!is_string($this->data)) {
+        if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
                 $item = $this->data;
                 $newItem = [];

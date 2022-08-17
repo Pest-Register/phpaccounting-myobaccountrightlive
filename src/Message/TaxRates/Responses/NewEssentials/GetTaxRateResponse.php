@@ -109,7 +109,7 @@ class GetTaxRateResponse extends AbstractResponse
      */
     public function getTaxRates(){
         $taxRates = [];
-        if (!is_string($this->data)) {
+        if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
                 $taxRate = $this->data;
                 $newTaxRate = [];

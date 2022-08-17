@@ -207,7 +207,7 @@ class DeleteInvoiceResponse extends AbstractResponse
      */
     public function getInvoices(){
         $invoices = [];
-        if (!is_string($this->data)) {
+        if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
                 $invoice = $this->data;
                 $newInvoice = [];

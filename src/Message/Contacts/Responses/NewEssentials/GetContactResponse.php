@@ -282,7 +282,7 @@ class GetContactResponse extends AbstractResponse
      */
     public function getContacts(){
         $contacts = [];
-        if (!is_string($this->data)) {
+        if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
                 $contact = $this->data;
                 $newContact = [];

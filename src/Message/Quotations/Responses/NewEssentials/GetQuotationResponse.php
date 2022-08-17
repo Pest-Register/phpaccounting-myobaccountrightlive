@@ -207,7 +207,7 @@ class GetQuotationResponse extends AbstractResponse
      */
     public function getQuotations(){
         $quotes = [];
-        if (!is_string($this->data)) {
+        if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
                 $quote = $this->data;
                 $newQuote = [];
