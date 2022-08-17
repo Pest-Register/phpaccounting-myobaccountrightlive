@@ -29,8 +29,6 @@ class DeleteContactResponse extends AbstractResponse
                     }
                 }
             }
-        } else {
-            return false;
         }
 
         return true;

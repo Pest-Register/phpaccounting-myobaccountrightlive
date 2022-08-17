@@ -28,8 +28,6 @@ class UpdateInventoryItemResponse extends AbstractResponse
                     }
                 }
             }
-        } else {
-            return false;
         }
 
         return true;

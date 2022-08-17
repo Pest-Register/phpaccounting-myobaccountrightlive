@@ -33,8 +33,6 @@ class GetInvoiceUIDsResponse extends AbstractResponse
                     }
                 }
             }
-        } else {
-            return false;
         }
 
         return true;

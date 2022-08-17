@@ -29,8 +29,6 @@ class CreateAccountResponse extends AbstractResponse
                     }
                 }
             }
-        } else {
-            return false;
         }
 
         return true;

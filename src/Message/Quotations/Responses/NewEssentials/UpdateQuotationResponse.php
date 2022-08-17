@@ -29,8 +29,6 @@ class UpdateQuotationResponse extends AbstractResponse
                     }
                 }
             }
-        } else {
-            return false;
         }
 
         return true;

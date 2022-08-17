@@ -31,8 +31,6 @@ class CreateInventoryItemResponse extends AbstractResponse
                     }
                 }
             }
-        } else {
-            return false;
         }
 
         return true;

@@ -31,8 +31,6 @@ class GetPaymentResponse extends AbstractResponse
                     }
                 }
             }
-        } else {
-            return false;
         }
 
         return true;
