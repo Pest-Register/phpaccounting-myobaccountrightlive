@@ -158,7 +158,7 @@ class DeletePaymentResponse extends AbstractResponse
      */
     public function getPayments(){
         $payments = [];
-        if (!is_string($this->data)) {
+        if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
                 $payment = $this->data;
                 $newPayment = [];
