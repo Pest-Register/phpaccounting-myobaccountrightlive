@@ -6,8 +6,7 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssent
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\DeleteAccountRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\NewEssentials\DeleteAccountResponse;
+use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\NewEssentials\DeleteContactResponse;
 
 class DeleteContactRequest extends AbstractRequest
 {
@@ -85,6 +84,6 @@ class DeleteContactRequest extends AbstractRequest
 
     protected function createResponse($data, $headers = [])
     {
-        return $this->response = new DeleteAccountResponse($this, $data);
+        return $this->response = new DeleteContactResponse($this, $data);
     }
 }
