@@ -17,12 +17,16 @@ class UpdateQuotationResponse extends AbstractResponse
     public function isSuccessful()
     {
         if ($this->data) {
-            if(array_key_exists('Errors', $this->data)){
-                return !$this->data['Errors'][0]['Severity'] == 'Error';
-            }
-            if (array_key_exists('Items', $this->data)) {
-                if (count($this->data['Items']) === 0) {
-                    return false;
+            if (is_string($this->data)) {
+                return true;
+            } else {
+                if (array_key_exists('Errors', $this->data)) {
+                    return !$this->data['Errors'][0]['Severity'] == 'Error';
+                }
+                if (array_key_exists('Items', $this->data)) {
+                    if (count($this->data['Items']) === 0) {
+                        return false;
+                    }
                 }
             }
         } else {
@@ -39,24 +43,11 @@ class UpdateQuotationResponse extends AbstractResponse
     public function getErrorMessage()
     {
         if ($this->data) {
-            if (array_key_exists('Errors', $this->data)) {
+            if (is_string($this->data)) {
                 $additionalDetails = '';
-                $message = '';
                 $errorCode = '';
                 $status ='';
-                if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
-                    $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
-                }
-                if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
-                    $errorCode = $this->data['Errors'][0]['ErrorCode'];
-                }
-                if (array_key_exists('Severity', $this->data['Errors'][0])) {
-                    $status = $this->data['Errors'][0]['Severity'];
-                }
-                if (array_key_exists('Message', $this->data['Errors'][0])) {
-                    $message = $this->data['Errors'][0]['Message'];
-                }
-                $response = $message.' '.$additionalDetails;
+                $response = $this->data;
                 return ErrorResponseHelper::parseErrorResponse(
                     $response,
                     $status,
@@ -65,16 +56,45 @@ class UpdateQuotationResponse extends AbstractResponse
                     $additionalDetails,
                     'Quotation'
                 );
-            } else {
-                if (array_key_exists('Items', $this->data)) {
-                    if (count($this->data['Items']) == 0) {
-                        return [
-                            'message' => 'NULL Returned from API or End of Pagination',
-                            'exception' =>'NULL Returned from API or End of Pagination',
-                            'error_code' => null,
-                            'status_code' => null,
-                            'detail' => null
-                        ];
+            }
+            else {
+                if (array_key_exists('Errors', $this->data)) {
+                    $additionalDetails = '';
+                    $message = '';
+                    $errorCode = '';
+                    $status ='';
+                    if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
+                        $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
+                    }
+                    if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
+                        $errorCode = $this->data['Errors'][0]['ErrorCode'];
+                    }
+                    if (array_key_exists('Severity', $this->data['Errors'][0])) {
+                        $status = $this->data['Errors'][0]['Severity'];
+                    }
+                    if (array_key_exists('Message', $this->data['Errors'][0])) {
+                        $message = $this->data['Errors'][0]['Message'];
+                    }
+                    $response = $message.' '.$additionalDetails;
+                    return ErrorResponseHelper::parseErrorResponse(
+                        $response,
+                        $status,
+                        $errorCode,
+                        null,
+                        $additionalDetails,
+                        'Quotation'
+                    );
+                } else {
+                    if (array_key_exists('Items', $this->data)) {
+                        if (count($this->data['Items']) == 0) {
+                            return [
+                                'message' => 'NULL Returned from API or End of Pagination',
+                                'exception' =>'NULL Returned from API or End of Pagination',
+                                'error_code' => null,
+                                'status_code' => null,
+                                'detail' => null
+                            ];
+                        }
                     }
                 }
             }
@@ -189,42 +209,9 @@ class UpdateQuotationResponse extends AbstractResponse
      */
     public function getQuotations(){
         $quotes = [];
-        if (!array_key_exists('Items', $this->data)) {
-            $quote = $this->data;
-            $newQuote = [];
-            $newQuote['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $quote);
-            $newQuote['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $quote));
-            $newQuote['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $quote);
-            $newQuote['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $quote);
-            $newQuote['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $quote);
-            $newQuote['quotation_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $quote);
-            $newQuote['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $quote);
-            $newQuote['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $quote);
-            $newQuote['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote));
-            $newQuote['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $quote);
-            $newQuote['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $quote);
-
-            if (array_key_exists('Customer', $quote)) {
-                if ($quote['Customer']) {
-                    $newQuote = $this->parseCustomer($newQuote, $quote['Customer']);
-                }
-            }
-
-            if (array_key_exists('Lines', $quote)) {
-                if ($quote['Lines']) {
-                    $newQuote = $this->parseLineItems($newQuote, $quote['Lines']);
-                }
-            }
-
-            if (array_key_exists('Terms', $quote)) {
-                if ($quote['Terms']) {
-                    $newQuote['expiry_date'] = IndexSanityCheckHelper::indexSanityCheck('DueDate', $quote['Terms']);
-                }
-            }
-
-            array_push($quotes, $newQuote);
-        } else {
-            foreach ($this->data['Items'] as $quote) {
+        if (!is_string($this->data)) {
+            if (!array_key_exists('Items', $this->data)) {
+                $quote = $this->data;
                 $newQuote = [];
                 $newQuote['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $quote);
                 $newQuote['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $quote));
@@ -257,6 +244,41 @@ class UpdateQuotationResponse extends AbstractResponse
                 }
 
                 array_push($quotes, $newQuote);
+            } else {
+                foreach ($this->data['Items'] as $quote) {
+                    $newQuote = [];
+                    $newQuote['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $quote);
+                    $newQuote['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $quote));
+                    $newQuote['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $quote);
+                    $newQuote['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $quote);
+                    $newQuote['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $quote);
+                    $newQuote['quotation_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $quote);
+                    $newQuote['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $quote);
+                    $newQuote['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $quote);
+                    $newQuote['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $quote));
+                    $newQuote['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $quote);
+                    $newQuote['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $quote);
+
+                    if (array_key_exists('Customer', $quote)) {
+                        if ($quote['Customer']) {
+                            $newQuote = $this->parseCustomer($newQuote, $quote['Customer']);
+                        }
+                    }
+
+                    if (array_key_exists('Lines', $quote)) {
+                        if ($quote['Lines']) {
+                            $newQuote = $this->parseLineItems($newQuote, $quote['Lines']);
+                        }
+                    }
+
+                    if (array_key_exists('Terms', $quote)) {
+                        if ($quote['Terms']) {
+                            $newQuote['expiry_date'] = IndexSanityCheckHelper::indexSanityCheck('DueDate', $quote['Terms']);
+                        }
+                    }
+
+                    array_push($quotes, $newQuote);
+                }
             }
         }
 

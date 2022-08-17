@@ -20,12 +20,16 @@ class GetTaxRateResponse extends AbstractResponse
     public function isSuccessful()
     {
         if ($this->data) {
-            if(array_key_exists('Errors', $this->data)){
-                return !$this->data['Errors'][0]['Severity'] == 'Error';
-            }
-            if (array_key_exists('Items', $this->data)) {
-                if (count($this->data['Items']) === 0) {
-                    return false;
+            if (is_string($this->data)) {
+                return true;
+            } else {
+                if (array_key_exists('Errors', $this->data)) {
+                    return !$this->data['Errors'][0]['Severity'] == 'Error';
+                }
+                if (array_key_exists('Items', $this->data)) {
+                    if (count($this->data['Items']) === 0) {
+                        return false;
+                    }
                 }
             }
         } else {
@@ -42,24 +46,11 @@ class GetTaxRateResponse extends AbstractResponse
     public function getErrorMessage()
     {
         if ($this->data) {
-            if (array_key_exists('Errors', $this->data)) {
+            if (is_string($this->data)) {
                 $additionalDetails = '';
-                $message = '';
                 $errorCode = '';
                 $status ='';
-                if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
-                    $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
-                }
-                if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
-                    $errorCode = $this->data['Errors'][0]['ErrorCode'];
-                }
-                if (array_key_exists('Severity', $this->data['Errors'][0])) {
-                    $status = $this->data['Errors'][0]['Severity'];
-                }
-                if (array_key_exists('Message', $this->data['Errors'][0])) {
-                    $message = $this->data['Errors'][0]['Message'];
-                }
-                $response = $message.' '.$additionalDetails;
+                $response = $this->data;
                 return ErrorResponseHelper::parseErrorResponse(
                     $response,
                     $status,
@@ -69,15 +60,43 @@ class GetTaxRateResponse extends AbstractResponse
                     'TaxRate'
                 );
             } else {
-                if (array_key_exists('Items', $this->data)) {
-                    if (count($this->data['Items']) == 0) {
-                        return [
-                            'message' => 'NULL Returned from API or End of Pagination',
-                            'exception' =>'NULL Returned from API or End of Pagination',
-                            'error_code' => null,
-                            'status_code' => null,
-                            'detail' => null
-                        ];
+                if (array_key_exists('Errors', $this->data)) {
+                    $additionalDetails = '';
+                    $message = '';
+                    $errorCode = '';
+                    $status ='';
+                    if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
+                        $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
+                    }
+                    if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
+                        $errorCode = $this->data['Errors'][0]['ErrorCode'];
+                    }
+                    if (array_key_exists('Severity', $this->data['Errors'][0])) {
+                        $status = $this->data['Errors'][0]['Severity'];
+                    }
+                    if (array_key_exists('Message', $this->data['Errors'][0])) {
+                        $message = $this->data['Errors'][0]['Message'];
+                    }
+                    $response = $message.' '.$additionalDetails;
+                    return ErrorResponseHelper::parseErrorResponse(
+                        $response,
+                        $status,
+                        $errorCode,
+                        null,
+                        $additionalDetails,
+                        'TaxRate'
+                    );
+                } else {
+                    if (array_key_exists('Items', $this->data)) {
+                        if (count($this->data['Items']) == 0) {
+                            return [
+                                'message' => 'NULL Returned from API or End of Pagination',
+                                'exception' =>'NULL Returned from API or End of Pagination',
+                                'error_code' => null,
+                                'status_code' => null,
+                                'detail' => null
+                            ];
+                        }
                     }
                 }
             }
@@ -92,24 +111,9 @@ class GetTaxRateResponse extends AbstractResponse
      */
     public function getTaxRates(){
         $taxRates = [];
-        if (!array_key_exists('Items', $this->data)) {
-            $taxRate = $this->data;
-            $newTaxRate = [];
-            $newTaxRate['accounting_id'] =  IndexSanityCheckHelper::indexSanityCheck('UID', $taxRate);
-            $newTaxRate['name'] = IndexSanityCheckHelper::indexSanityCheck('Description', $taxRate);
-            $newTaxRate['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $taxRate);
-            $newTaxRate['rate'] = IndexSanityCheckHelper::indexSanityCheck('Rate', $taxRate);
-            $newTaxRate['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $taxRate);
-            $newTaxRate['is_asset'] = true;
-            $newTaxRate['is_equity'] = true;
-            $newTaxRate['is_expense'] = true;
-            $newTaxRate['is_liability'] = true;
-            $newTaxRate['is_revenue'] = true;
-            $newTaxRate['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $taxRate);
-
-            array_push($taxRates, $newTaxRate);
-        } else {
-            foreach ($this->data['Items'] as $taxRate) {
+        if (!is_string($this->data)) {
+            if (!array_key_exists('Items', $this->data)) {
+                $taxRate = $this->data;
                 $newTaxRate = [];
                 $newTaxRate['accounting_id'] =  IndexSanityCheckHelper::indexSanityCheck('UID', $taxRate);
                 $newTaxRate['name'] = IndexSanityCheckHelper::indexSanityCheck('Description', $taxRate);
@@ -124,9 +128,25 @@ class GetTaxRateResponse extends AbstractResponse
                 $newTaxRate['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $taxRate);
 
                 array_push($taxRates, $newTaxRate);
+            } else {
+                foreach ($this->data['Items'] as $taxRate) {
+                    $newTaxRate = [];
+                    $newTaxRate['accounting_id'] =  IndexSanityCheckHelper::indexSanityCheck('UID', $taxRate);
+                    $newTaxRate['name'] = IndexSanityCheckHelper::indexSanityCheck('Description', $taxRate);
+                    $newTaxRate['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $taxRate);
+                    $newTaxRate['rate'] = IndexSanityCheckHelper::indexSanityCheck('Rate', $taxRate);
+                    $newTaxRate['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $taxRate);
+                    $newTaxRate['is_asset'] = true;
+                    $newTaxRate['is_equity'] = true;
+                    $newTaxRate['is_expense'] = true;
+                    $newTaxRate['is_liability'] = true;
+                    $newTaxRate['is_revenue'] = true;
+                    $newTaxRate['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $taxRate);
+
+                    array_push($taxRates, $newTaxRate);
+                }
             }
         }
-
 
         return $taxRates;
     }

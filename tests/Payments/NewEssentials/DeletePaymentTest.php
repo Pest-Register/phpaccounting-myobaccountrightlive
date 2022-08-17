@@ -14,7 +14,7 @@ class DeletePaymentTest extends BaseTest
         try {
 
             $params = [
-                'accounting_id' => 'db2d14e2-2878-43fd-8db5-ebbea182d035',
+                'accounting_id' => '263c19d2-61bf-44ea-82d2-f0a79dee941a',
             ];
 
             $response = $this->gateway->deletePayment($params)->send();

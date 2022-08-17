@@ -19,12 +19,16 @@ class CreateContactResponse extends AbstractResponse
     public function isSuccessful()
     {
         if ($this->data) {
-            if(array_key_exists('Errors', $this->data)){
-                return !$this->data['Errors'][0]['Severity'] == 'Error';
-            }
-            if (array_key_exists('Items', $this->data)) {
-                if (count($this->data['Items']) === 0) {
-                    return false;
+            if (is_string($this->data)) {
+                return true;
+            } else {
+                if (array_key_exists('Errors', $this->data)) {
+                    return !$this->data['Errors'][0]['Severity'] == 'Error';
+                }
+                if (array_key_exists('Items', $this->data)) {
+                    if (count($this->data['Items']) === 0) {
+                        return false;
+                    }
                 }
             }
         } else {
@@ -41,24 +45,11 @@ class CreateContactResponse extends AbstractResponse
     public function getErrorMessage()
     {
         if ($this->data) {
-            if (array_key_exists('Errors', $this->data)) {
+            if (is_string($this->data)) {
                 $additionalDetails = '';
-                $message = '';
                 $errorCode = '';
                 $status ='';
-                if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
-                    $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
-                }
-                if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
-                    $errorCode = $this->data['Errors'][0]['ErrorCode'];
-                }
-                if (array_key_exists('Severity', $this->data['Errors'][0])) {
-                    $status = $this->data['Errors'][0]['Severity'];
-                }
-                if (array_key_exists('Message', $this->data['Errors'][0])) {
-                    $message = $this->data['Errors'][0]['Message'];
-                }
-                $response = $message.' '.$additionalDetails;
+                $response = $this->data;
                 return ErrorResponseHelper::parseErrorResponse(
                     $response,
                     $status,
@@ -68,15 +59,43 @@ class CreateContactResponse extends AbstractResponse
                     'Contact'
                 );
             } else {
-                if (array_key_exists('Items', $this->data)) {
-                    if (count($this->data['Items']) == 0) {
-                        return [
-                            'message' => 'NULL Returned from API or End of Pagination',
-                            'exception' =>'NULL Returned from API or End of Pagination',
-                            'error_code' => null,
-                            'status_code' => null,
-                            'detail' => null
-                        ];
+                if (array_key_exists('Errors', $this->data)) {
+                    $additionalDetails = '';
+                    $message = '';
+                    $errorCode = '';
+                    $status ='';
+                    if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
+                        $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
+                    }
+                    if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
+                        $errorCode = $this->data['Errors'][0]['ErrorCode'];
+                    }
+                    if (array_key_exists('Severity', $this->data['Errors'][0])) {
+                        $status = $this->data['Errors'][0]['Severity'];
+                    }
+                    if (array_key_exists('Message', $this->data['Errors'][0])) {
+                        $message = $this->data['Errors'][0]['Message'];
+                    }
+                    $response = $message.' '.$additionalDetails;
+                    return ErrorResponseHelper::parseErrorResponse(
+                        $response,
+                        $status,
+                        $errorCode,
+                        null,
+                        $additionalDetails,
+                        'Contact'
+                    );
+                } else {
+                    if (array_key_exists('Items', $this->data)) {
+                        if (count($this->data['Items']) == 0) {
+                            return [
+                                'message' => 'NULL Returned from API or End of Pagination',
+                                'exception' =>'NULL Returned from API or End of Pagination',
+                                'error_code' => null,
+                                'status_code' => null,
+                                'detail' => null
+                            ];
+                        }
                     }
                 }
             }
@@ -264,44 +283,9 @@ class CreateContactResponse extends AbstractResponse
      */
     public function getContacts(){
         $contacts = [];
-        if (!array_key_exists('Items', $this->data)) {
-            $contact = $this->data;
-            $newContact = [];
-            $newContact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact);
-            $newContact['first_name'] = IndexSanityCheckHelper::indexSanityCheck('FirstName', $contact);
-            $newContact['last_name'] = IndexSanityCheckHelper::indexSanityCheck('LastName', $contact);
-            $newContact['is_individual'] = IndexSanityCheckHelper::indexSanityCheck('IsIndividual', $contact);
-            $newContact['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $contact);
-            $newContact['raw_addresses'] = IndexSanityCheckHelper::indexSanityCheck('Addresses', $contact);
-
-            if ($newContact['is_individual']) {
-                $newContact['display_name'] = $newContact['first_name']. ' '.$newContact['last_name'];
-            } else {
-                $newContact['display_name'] = IndexSanityCheckHelper::indexSanityCheck('CompanyName', $contact);
-            }
-            $newContact['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $contact);
-
-            if (array_key_exists('Type', $contact)) {
-                $newContact = $this->parseType($newContact, $contact['Type']);
-            }
-
-            if (array_key_exists('Addresses', $contact)) {
-                $newContact = $this->parseAddressesAndPhones($newContact, $contact['Addresses']);
-            }
-
-            if (array_key_exists('SellingDetails', $contact)) {
-                if ($contact['SellingDetails']) {
-                    if (array_key_exists('TaxCode', $contact['SellingDetails'])) {
-                        $newContact['tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact['SellingDetails']['TaxCode']);
-                    }
-                    if (array_key_exists('FreightTaxCode', $contact['SellingDetails'])) {
-                        $newContact['freight_tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact['SellingDetails']['FreightTaxCode']);
-                    }
-                }
-            }
-            array_push($contacts, $newContact);
-        } else {
-            foreach ($this->data['Items'] as $contact) {
+        if (!is_string($this->data)) {
+            if (!array_key_exists('Items', $this->data)) {
+                $contact = $this->data;
                 $newContact = [];
                 $newContact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact);
                 $newContact['first_name'] = IndexSanityCheckHelper::indexSanityCheck('FirstName', $contact);
@@ -335,8 +319,45 @@ class CreateContactResponse extends AbstractResponse
                         }
                     }
                 }
-
                 array_push($contacts, $newContact);
+            } else {
+                foreach ($this->data['Items'] as $contact) {
+                    $newContact = [];
+                    $newContact['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact);
+                    $newContact['first_name'] = IndexSanityCheckHelper::indexSanityCheck('FirstName', $contact);
+                    $newContact['last_name'] = IndexSanityCheckHelper::indexSanityCheck('LastName', $contact);
+                    $newContact['is_individual'] = IndexSanityCheckHelper::indexSanityCheck('IsIndividual', $contact);
+                    $newContact['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $contact);
+                    $newContact['raw_addresses'] = IndexSanityCheckHelper::indexSanityCheck('Addresses', $contact);
+
+                    if ($newContact['is_individual']) {
+                        $newContact['display_name'] = $newContact['first_name']. ' '.$newContact['last_name'];
+                    } else {
+                        $newContact['display_name'] = IndexSanityCheckHelper::indexSanityCheck('CompanyName', $contact);
+                    }
+                    $newContact['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $contact);
+
+                    if (array_key_exists('Type', $contact)) {
+                        $newContact = $this->parseType($newContact, $contact['Type']);
+                    }
+
+                    if (array_key_exists('Addresses', $contact)) {
+                        $newContact = $this->parseAddressesAndPhones($newContact, $contact['Addresses']);
+                    }
+
+                    if (array_key_exists('SellingDetails', $contact)) {
+                        if ($contact['SellingDetails']) {
+                            if (array_key_exists('TaxCode', $contact['SellingDetails'])) {
+                                $newContact['tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact['SellingDetails']['TaxCode']);
+                            }
+                            if (array_key_exists('FreightTaxCode', $contact['SellingDetails'])) {
+                                $newContact['freight_tax_type_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $contact['SellingDetails']['FreightTaxCode']);
+                            }
+                        }
+                    }
+
+                    array_push($contacts, $newContact);
+                }
             }
         }
 

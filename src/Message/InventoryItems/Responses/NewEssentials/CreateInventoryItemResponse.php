@@ -19,12 +19,16 @@ class CreateInventoryItemResponse extends AbstractResponse
     public function isSuccessful()
     {
         if ($this->data) {
-            if(array_key_exists('Errors', $this->data)){
-                return !$this->data['Errors'][0]['Severity'] == 'Error';
-            }
-            if (array_key_exists('Items', $this->data)) {
-                if (count($this->data['Items']) === 0) {
-                    return false;
+            if (is_string($this->data)) {
+                return true;
+            } else {
+                if (array_key_exists('Errors', $this->data)) {
+                    return !$this->data['Errors'][0]['Severity'] == 'Error';
+                }
+                if (array_key_exists('Items', $this->data)) {
+                    if (count($this->data['Items']) === 0) {
+                        return false;
+                    }
                 }
             }
         } else {
@@ -41,24 +45,11 @@ class CreateInventoryItemResponse extends AbstractResponse
     public function getErrorMessage()
     {
         if ($this->data) {
-            if (array_key_exists('Errors', $this->data)) {
+            if (is_string($this->data)) {
                 $additionalDetails = '';
-                $message = '';
                 $errorCode = '';
                 $status ='';
-                if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
-                    $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
-                }
-                if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
-                    $errorCode = $this->data['Errors'][0]['ErrorCode'];
-                }
-                if (array_key_exists('Severity', $this->data['Errors'][0])) {
-                    $status = $this->data['Errors'][0]['Severity'];
-                }
-                if (array_key_exists('Message', $this->data['Errors'][0])) {
-                    $message = $this->data['Errors'][0]['Message'];
-                }
-                $response = $message.' '.$additionalDetails;
+                $response = $this->data;
                 return ErrorResponseHelper::parseErrorResponse(
                     $response,
                     $status,
@@ -68,15 +59,43 @@ class CreateInventoryItemResponse extends AbstractResponse
                     'InventoryItem'
                 );
             } else {
-                if (array_key_exists('Items', $this->data)) {
-                    if (count($this->data['Items']) == 0) {
-                        return [
-                            'message' => 'NULL Returned from API or End of Pagination',
-                            'exception' =>'NULL Returned from API or End of Pagination',
-                            'error_code' => null,
-                            'status_code' => null,
-                            'detail' => null
-                        ];
+                if (array_key_exists('Errors', $this->data)) {
+                    $additionalDetails = '';
+                    $message = '';
+                    $errorCode = '';
+                    $status ='';
+                    if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
+                        $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
+                    }
+                    if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
+                        $errorCode = $this->data['Errors'][0]['ErrorCode'];
+                    }
+                    if (array_key_exists('Severity', $this->data['Errors'][0])) {
+                        $status = $this->data['Errors'][0]['Severity'];
+                    }
+                    if (array_key_exists('Message', $this->data['Errors'][0])) {
+                        $message = $this->data['Errors'][0]['Message'];
+                    }
+                    $response = $message.' '.$additionalDetails;
+                    return ErrorResponseHelper::parseErrorResponse(
+                        $response,
+                        $status,
+                        $errorCode,
+                        null,
+                        $additionalDetails,
+                        'InventoryItem'
+                    );
+                } else {
+                    if (array_key_exists('Items', $this->data)) {
+                        if (count($this->data['Items']) == 0) {
+                            return [
+                                'message' => 'NULL Returned from API or End of Pagination',
+                                'exception' =>'NULL Returned from API or End of Pagination',
+                                'error_code' => null,
+                                'status_code' => null,
+                                'detail' => null
+                            ];
+                        }
                     }
                 }
             }
@@ -167,29 +186,9 @@ class CreateInventoryItemResponse extends AbstractResponse
      */
     public function getInventoryItems(){
         $items = [];
-        if (!array_key_exists('Items', $this->data)) {
-            $item = $this->data;
-            $newItem = [];
-            $newItem['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $item);
-            $newItem['code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $item);
-            $newItem['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $item);
-            $newItem['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
-            $newItem['type'] = $this->parseType();
-            $newItem['is_buying'] = IndexSanityCheckHelper::indexSanityCheck('IsBought', $item);
-            $newItem['is_selling'] = IndexSanityCheckHelper::indexSanityCheck('IsSold', $item);
-            $newItem['is_tracked'] = IndexSanityCheckHelper::indexSanityCheck('IsInventoried', $item);
-            $newItem['buying_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
-            $newItem['selling_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
-            $newItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('QuantityAvailable', $item);
-            $newItem['cost_pool'] = IndexSanityCheckHelper::indexSanityCheck('AverageCost', $item);
-            $newItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $item);
-            $newItem['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $item);
-            $newItem = $this->parsePurchaseDetails($item, $newItem);
-            $newItem = $this->parseSellingDetails($item, $newItem);
-            $newItem = $this->parseAssetDetails($item, $newItem);
-            array_push($items, $newItem);
-        } else {
-            foreach ($this->data['Items'] as $item) {
+        if (!is_string($this->data)) {
+            if (!array_key_exists('Items', $this->data)) {
+                $item = $this->data;
                 $newItem = [];
                 $newItem['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $item);
                 $newItem['code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $item);
@@ -209,9 +208,30 @@ class CreateInventoryItemResponse extends AbstractResponse
                 $newItem = $this->parseSellingDetails($item, $newItem);
                 $newItem = $this->parseAssetDetails($item, $newItem);
                 array_push($items, $newItem);
+            } else {
+                foreach ($this->data['Items'] as $item) {
+                    $newItem = [];
+                    $newItem['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $item);
+                    $newItem['code'] = IndexSanityCheckHelper::indexSanityCheck('Number', $item);
+                    $newItem['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $item);
+                    $newItem['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
+                    $newItem['type'] = $this->parseType();
+                    $newItem['is_buying'] = IndexSanityCheckHelper::indexSanityCheck('IsBought', $item);
+                    $newItem['is_selling'] = IndexSanityCheckHelper::indexSanityCheck('IsSold', $item);
+                    $newItem['is_tracked'] = IndexSanityCheckHelper::indexSanityCheck('IsInventoried', $item);
+                    $newItem['buying_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
+                    $newItem['selling_description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $item);
+                    $newItem['quantity'] = IndexSanityCheckHelper::indexSanityCheck('QuantityAvailable', $item);
+                    $newItem['cost_pool'] = IndexSanityCheckHelper::indexSanityCheck('AverageCost', $item);
+                    $newItem['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $item);
+                    $newItem['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $item);
+                    $newItem = $this->parsePurchaseDetails($item, $newItem);
+                    $newItem = $this->parseSellingDetails($item, $newItem);
+                    $newItem = $this->parseAssetDetails($item, $newItem);
+                    array_push($items, $newItem);
+                }
             }
         }
-
 
         return $items;
     }
