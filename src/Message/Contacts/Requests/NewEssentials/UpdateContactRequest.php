@@ -300,7 +300,7 @@ class UpdateContactRequest extends AbstractRequest
                 $data['Addresses'][$location]['Website'] = IndexSanityCheckHelper::indexSanityCheck('website', $address);
             }
             $data['Addresses'][$location]['Street'] = IndexSanityCheckHelper::indexSanityCheck('address_line_1', $address);
-            $data['Addresses'][$location]['City'] = IndexSanityCheckHelper::indexSanityCheck('suburb', $address);
+            $data['Addresses'][$location]['City'] = IndexSanityCheckHelper::indexSanityCheck('city', $address);
             $data['Addresses'][$location]['State'] = IndexSanityCheckHelper::indexSanityCheck('state', $address);
             $data['Addresses'][$location]['PostCode'] = IndexSanityCheckHelper::indexSanityCheck('postal_code', $address);
             $data['Addresses'][$location]['Country'] = IndexSanityCheckHelper::indexSanityCheck('country', $address);

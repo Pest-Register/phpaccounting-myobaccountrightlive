@@ -72,7 +72,7 @@ class GetContactResponse extends AbstractResponse
             $newAddress['address_type'] = $type;
             $newAddress['address_line_1'] = IndexSanityCheckHelper::indexSanityCheck('addressLine1', $data);
             $newAddress['address_line_2'] = IndexSanityCheckHelper::indexSanityCheck('addressLine2', $data);
-            $newAddress['city'] = IndexSanityCheckHelper::indexSanityCheck('suburb', $data);
+            $newAddress['city'] = IndexSanityCheckHelper::indexSanityCheck('city', $data);
             $newAddress['postal_code'] = IndexSanityCheckHelper::indexSanityCheck('postCode', $data);
             $newAddress['country'] = IndexSanityCheckHelper::indexSanityCheck('country', $data);
             $newAddress['state'] = IndexSanityCheckHelper::indexSanityCheck('state', $data);
