@@ -260,12 +260,7 @@ class UpdateContactResponse extends AbstractResponse
                     $contact = $this->addPhone($contact, $address['Phone3'], $address['Location'], 2,  'Phone3');
                 }
                 if (array_key_exists('Fax', $address)) {
-                    if ($default) {
-                        $contact = $this->addPhone($contact, $address['Fax'], $address['Location'], 'Fax', 'Fax');
-                    }
-                    else {
-                        $contact = $this->addPhone($contact, $address['Fax'], $address['Location'], 'Fax','Fax' );
-                    }
+                    $contact = $this->addPhone($contact, $address['Fax'], $address['Location'], 'Fax','Fax' );
                 }
                 $newAddress = $this->createNoteForAddress($address, $newAddress);
                 array_push($addresses, $newAddress);

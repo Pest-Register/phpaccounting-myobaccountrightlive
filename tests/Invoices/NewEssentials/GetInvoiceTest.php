@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Invoices;
+namespace Tests\Invoices\NewEssentials;
 
 
 use Tests\BaseTest;
