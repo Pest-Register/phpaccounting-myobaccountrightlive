@@ -106,7 +106,7 @@ class CreateContactResponse extends AbstractResponse
         $newPhone = [];
         switch ($type) {
             case 'Default':
-                $newPhone['type'] = 'DEFAULT';
+                $newPhone['type'] = $slotID == 0 ? 'DEFAULT' : 'EXTRA';
                 break;
             case 'Phone1':
                 $newPhone['type'] = 'EXTRA';
@@ -118,7 +118,7 @@ class CreateContactResponse extends AbstractResponse
                 $newPhone['type'] = 'EXTRA';
                 break;
             case 'Fax':
-                $newPhone['type'] = 'FAX';
+                $newPhone['type'] = $slotID == 0 ? 'FAX' : 'EXTRA';
                 break;
             default:
                 $newPhone['type'] = 'EXTRA';

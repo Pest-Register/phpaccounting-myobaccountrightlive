@@ -58,13 +58,13 @@ class GetContactResponse extends AbstractResponse
                 $newPhone['type'] = 'DEFAULT';
                 break;
             case 'Phone1':
-                $newPhone['type'] = 'OTHER';
+                $newPhone['type'] = 'EXTRA';
                 break;
             case 'Phone2':
-                $newPhone['type'] = 'OTHER';
+                $newPhone['type'] = 'EXTRA';
                 break;
             case 'Phone3':
-                $newPhone['type'] = 'OTHER';
+                $newPhone['type'] = 'EXTRA';
                 break;
             case 'Fax':
                 $newPhone['type'] = 'FAX';
