@@ -375,6 +375,17 @@ class CreateContactRequest extends AbstractRequest
             // Try to add unassigned phones
             foreach ($unassignedPhones as $phone) {
                 $phoneNumber = $phone['country_code'] . $phone['area_code'].$phone['phone_number'];
+                if ($phone['type'] == 'FAX') {
+                    if ($data['Addresses'][0]['Fax'] == '') {
+                        $data['Addresses'][0]['Fax'] = $phoneNumber;
+                        continue;
+                    }
+                    elseif ($data['Addresses'][1]['Fax'] == '') {
+                        $data['Addresses'][1]['Fax'] = $phoneNumber;
+                        continue;
+                    }
+                }
+
                 if ($data['Addresses'][0]['Phone1'] == '') {
                     $data['Addresses'][0]['Phone1'] = $phoneNumber;
                     continue;
