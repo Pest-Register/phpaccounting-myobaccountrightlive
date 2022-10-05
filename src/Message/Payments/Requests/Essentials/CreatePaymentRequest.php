@@ -225,20 +225,20 @@ class CreatePaymentRequest extends AbstractRequest
 
         $this->issetParam('paymentDate', 'date');
         $this->issetParam('reference', 'reference_id');
-        if ($this->getInvoice() !== null && $this->getAmount()!== null) {
+        if ($this->getInvoice() !== null && $this->getAmount()!== null && isset($this->getInvoice()['accounting_id'])) {
             $this->data['invoices'] = [[
                 "invoice" => ['uid' => $this->getInvoice()['accounting_id']],
                 "paymentAmount" => $this->getAmount()
             ]];
         }
 
-        if ($this->getAccount() !== null) {
+        if ($this->getAccount() !== null && isset($this->getAccount()['accounting_id'])) {
             $this->data['account'] = [
                 'uid' => $this->getAccount()['accounting_id']
             ];
         }
 
-        if ($this->getContact() !== null) {
+        if ($this->getContact() !== null && isset($this->getContact()['accounting_id'])) {
             $this->data['customer'] = [
                 'uid' => $this->getContact()['accounting_id']
             ];
