@@ -24,7 +24,7 @@ use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\GetInvoiceReque
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\UpdateInvoiceRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\GetJournalRequest;
 use PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Requests\GetManualJournalRequest;
-use PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\Essentials\GetOrganisationRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\AccountRight\GetOrganisationRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\CreatePaymentRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\DeletePaymentRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\GetPaymentRequest;
