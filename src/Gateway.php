@@ -5,24 +5,41 @@ namespace PHPAccounting\MyobAccountRightLive;
 use http\Message;
 use Omnipay\Common\AbstractGateway;
 use PHPAccounting\MyobAccountRightLive\Message\AccessFlag\Requests\GetAccessFlagRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\CreateAccountRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\DeleteAccountRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\GetAccountRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\UpdateAccountRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\CreateContactRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\DeleteContactRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\GetContactRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\UpdateContactRequest;
+use PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Requests\GetCurrentUserRequest;
+use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\CreateInventoryItemRequest;
+use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\DeleteInventoryItemRequest;
+use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\GetInventoryItemRequest;
+use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\UpdateInventoryItemRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\CreateInvoiceRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\DeleteInvoiceRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\GetInvoiceRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\UpdateInvoiceRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\GetJournalRequest;
+use PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Requests\GetManualJournalRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\Essentials\GetOrganisationRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\CreatePaymentRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\DeletePaymentRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\GetPaymentRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\CreateQuotationRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\DeleteQuotationRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\GetQuotationRequest;
+use PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\UpdateQuotationRequest;
+use PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\GetTaxRateRequest;
+use Tests\ManualJournals\CreateManualJournalTest;
 
 /**
  * Created by IntelliJ IDEA.
  * User: Dylan
  * Date: 13/05/2019
  * Time: 3:11 PM
- * @method \PhpAccounting\Common\Message\NotificationInterface acceptNotification(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface authorize(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface completeAuthorize(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface capture(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface purchase(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface completePurchase(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface refund(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface fetchTransaction(array $options = [])
- * @method \PhpAccounting\Common\Message\RequestInterface void(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface createCard(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface updateCard(array $options = array())
- * @method \PhpAccounting\Common\Message\RequestInterface deleteCard(array $options = array())
  */
 
 class Gateway extends AbstractGateway
@@ -142,51 +159,19 @@ class Gateway extends AbstractGateway
      */
 
     public function getContact(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials\GetContactRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\GetContactRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetContactRequest::class, $parameters);
     }
 
     public function createContact(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials\CreateContactRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\CreateContactRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(CreateContactRequest::class, $parameters);
     }
 
     public function updateContact(array $parameters = []) {
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials\UpdateContactRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            $class =\PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\UpdateContactRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(UpdateContactRequest::class, $parameters);
     }
 
     public function deleteContact(array $parameters = []) {
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials\DeleteContactRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            $class =\PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials\DeleteContactRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(DeleteContactRequest::class, $parameters);
     }
 
     /**
@@ -196,55 +181,19 @@ class Gateway extends AbstractGateway
      */
 
     public function getInvoice(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials\GetInvoiceRequest::class;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\GetInvoiceRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetInvoiceRequest::class, $parameters);
     }
 
     public function createInvoice(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials\CreateInvoiceRequest::class;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\CreateInvoiceRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(CreateInvoiceRequest::class, $parameters);
     }
 
     public function updateInvoice(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials\UpdateInvoiceRequest::class;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\UpdateInvoiceRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(UpdateInvoiceRequest::class, $parameters);
     }
 
     public function deleteInvoice(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Essentials\DeleteInvoiceRequest::class;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials\DeleteInvoiceRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(DeleteInvoiceRequest::class, $parameters);
     }
 
 
@@ -254,55 +203,19 @@ class Gateway extends AbstractGateway
      * @return \Omnipay\Common\Message\AbstractRequest
      */
     public function getQuotation(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Essentials\GetQuotationRequest::class;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\GetQuotationRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetQuotationRequest::class, $parameters);
     }
 
     public function createQuotation(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Essentials\CreateQuotationRequest::class;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\CreateQuotationRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(CreateQuotationRequest::class, $parameters);
     }
 
     public function updateQuotation(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Essentials\UpdateQuotationRequest::class;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\UpdateQuotationRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(UpdateQuotationRequest::class, $parameters);
     }
 
     public function deleteQuotation(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Essentials\DeleteQuotationRequest::class;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\NewEssentials\DeleteQuotationRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(DeleteQuotationRequest::class, $parameters);
     }
 
     /**
@@ -312,51 +225,19 @@ class Gateway extends AbstractGateway
      */
 
     public function getAccount(array $parameters = []) {
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\GetAccountRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\GetAccountRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetAccountRequest::class, $parameters);
     }
 
     public function createAccount(array $parameters = []) {
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\CreateAccountRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\CreateAccountRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(CreateAccountRequest::class, $parameters);
     }
 
     public function updateAccount(array $parameters = []) {
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\Essentials\UpdateAccountRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\UpdateAccountRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(UpdateAccountRequest::class, $parameters);
     }
 
     public function deleteAccount(array $parameters = []) {
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            return;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            $class =\PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials\DeleteAccountRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(DeleteAccountRequest::class, $parameters);
     }
 
     /**
@@ -366,16 +247,7 @@ class Gateway extends AbstractGateway
      */
 
     public function getTaxRate(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\Essentials\GetTaxRateRequest::class;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\NewEssentials\GetTaxRateRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetTaxRateRequest::class, $parameters);
     }
 
     /**
@@ -385,42 +257,15 @@ class Gateway extends AbstractGateway
      */
 
     public function getPayment(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            return;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\NewEssentials\GetPaymentRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetPaymentRequest::class, $parameters);
     }
 
     public function createPayment(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\Essentials\CreatePaymentRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\NewEssentials\CreatePaymentRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(CreatePaymentRequest::class, $parameters);
     }
 
     public function deletePayment(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            return;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\NewEssentials\DeletePaymentRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(DeletePaymentRequest::class, $parameters);
     }
 
     /**
@@ -430,8 +275,7 @@ class Gateway extends AbstractGateway
      */
 
     public function getOrganisation(array $parameters = []){
-        $class = \PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\AccountRight\GetOrganisationRequest::class;
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetOrganisationRequest::class, $parameters);
     }
 
     /**
@@ -441,9 +285,7 @@ class Gateway extends AbstractGateway
      */
 
     public function getCurrentUser(array $parameters = []){
-        $class = \PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Requests\AccountRight\GetCurrentUserRequest::class;
-
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetCurrentUserRequest::class, $parameters);
     }
 
     /**
@@ -453,16 +295,7 @@ class Gateway extends AbstractGateway
      */
 
     public function getJournal(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\Essentials\GetJournalRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\NewEssentials\GetJournalRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetJournalRequest::class, $parameters);
     }
 
     /**
@@ -472,28 +305,11 @@ class Gateway extends AbstractGateway
      */
 
     public function getManualJournal(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            return;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\NewEssentials\GetJournalRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetManualJournalRequest::class, $parameters);
     }
 
     public function createManualJournal(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            return;
-        }
-        if ($accessFlag == 2 || $accessFlag == 3) {
-            return;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(CreateManualJournalTest::class, $parameters);
     }
 
     /**
@@ -503,54 +319,18 @@ class Gateway extends AbstractGateway
      */
 
     public function getInventoryItem(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Essentials\GetInventoryItemRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials\GetInventoryItemRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(GetInventoryItemRequest::class, $parameters);
     }
 
     public function createInventoryItem(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Essentials\CreateInventoryItemRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials\CreateInventoryItemRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(CreateInventoryItemRequest::class, $parameters);
     }
 
     public function updateInventoryItem(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\Essentials\UpdateInventoryItemRequest::class;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials\UpdateInventoryItemRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(UpdateInventoryItemRequest::class, $parameters);
     }
 
     public function deleteInventoryItem(array $parameters = []){
-        $accessFlag = $this->getAccessFlag();
-        $class = '';
-        if ($this->getProduct() == 'old_essentials') {
-            return;
-        }
-        elseif ($accessFlag == 2 || $accessFlag == 3) {
-            // New Essentials and AccountRight
-            $class = \PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials\DeleteInventoryItemRequest::class;
-        }
-        return $this->createRequest($class, $parameters);
+        return $this->createRequest(DeleteInventoryItemRequest::class, $parameters);
     }
 }
