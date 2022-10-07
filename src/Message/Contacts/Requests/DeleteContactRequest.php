@@ -3,13 +3,14 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests;
 
-
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\DeleteContactResponse;
 
-class DeleteContactRequest extends AbstractRequest
+class DeleteContactRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Contact';
+
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value

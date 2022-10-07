@@ -1,14 +1,15 @@
 <?php
 namespace PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\AccountRight;
 
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\AccountRight\GetOrganisationResponse;
 /**
  * Get Organisation(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight
  */
-class GetOrganisationRequest extends AbstractRequest
+class GetOrganisationRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Organisation';
 
     public function setBusinessID($value)
     {

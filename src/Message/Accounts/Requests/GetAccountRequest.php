@@ -3,7 +3,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\GetAccountResponse;
 
 
@@ -11,8 +11,9 @@ use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\GetAccountResp
  * Get Account(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\NewEssentials
  */
-class GetAccountRequest extends AbstractRequest
+class GetAccountRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Account';
 
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)

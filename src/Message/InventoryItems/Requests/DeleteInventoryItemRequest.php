@@ -5,11 +5,13 @@ namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests;
 
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\DeleteInventoryItemResponse;
 
-class DeleteInventoryItemRequest extends AbstractRequest
+class DeleteInventoryItemRequest extends AbstractMYOBRequest
 {
+    public string $model = 'InventoryItem';
+
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value

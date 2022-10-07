@@ -5,11 +5,13 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests;
 
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses\DeleteQuotationResponse;
 
-class DeleteQuotationRequest extends AbstractRequest
+class DeleteQuotationRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Quotation';
+
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value

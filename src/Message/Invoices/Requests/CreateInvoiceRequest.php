@@ -5,11 +5,13 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\CreateInvoiceResponse;
 
-class CreateInvoiceRequest extends AbstractRequest
+class CreateInvoiceRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Invoice';
+
     /**
      * Get Sync Token Parameter from Parameter Bag
      * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/

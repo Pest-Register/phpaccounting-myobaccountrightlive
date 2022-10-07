@@ -5,11 +5,13 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests;
 
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses\GetQuotationResponse;
 
-class GetQuotationRequest extends AbstractRequest
+class GetQuotationRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Quotation';
+
     /**
      * Set Invoice Type from Parameter Bag
      * @param $value

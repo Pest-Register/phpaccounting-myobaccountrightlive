@@ -6,11 +6,13 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses\UpdateQuotationResponse;
 
-class UpdateQuotationRequest extends AbstractRequest
+class UpdateQuotationRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Quotation';
+
     /**
      * Get Accounting ID Parameter from Parameter Bag
      * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/

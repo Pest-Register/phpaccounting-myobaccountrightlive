@@ -5,95 +5,20 @@ namespace PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Responses;
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
 
 /**
  * Get Manual Journal(s) Response
  * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\NewEssentials
  */
-class GetManualJournalResponse extends AbstractResponse
+class GetManualJournalResponse extends AbstractMYOBResponse
 {
-
-    /**
-     * Check Response for Error or Success
-     * @return boolean
-     */
-    public function isSuccessful()
-    {
-        if ($this->data) {
-            if(array_key_exists('Errors', $this->data)){
-                return !$this->data['Errors'][0]['Severity'] == 'Error';
-            }
-            if (array_key_exists('Items', $this->data)) {
-                if (count($this->data['Items']) === 0) {
-                    return false;
-                }
-            }
-        } else {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Fetch Error Message from Response
-     * @return array
-     */
-    public function getErrorMessage()
-    {
-        if ($this->data) {
-            if (array_key_exists('Errors', $this->data)) {
-                $additionalDetails = '';
-                $message = '';
-                $errorCode = '';
-                $status ='';
-                if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
-                    $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
-                }
-                if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
-                    $errorCode = $this->data['Errors'][0]['ErrorCode'];
-                }
-                if (array_key_exists('Severity', $this->data['Errors'][0])) {
-                    $status = $this->data['Errors'][0]['Severity'];
-                }
-                if (array_key_exists('Message', $this->data['Errors'][0])) {
-                    $message = $this->data['Errors'][0]['Message'];
-                }
-                $response = $message.' '.$additionalDetails;
-                return ErrorResponseHelper::parseErrorResponse(
-                    $response,
-                    $status,
-                    $errorCode,
-                    null,
-                    $additionalDetails,
-                    'ManualJournal'
-                );
-            } else {
-                if (array_key_exists('Items', $this->data)) {
-                    if (count($this->data['Items']) == 0) {
-                        return [
-                            'message' => 'NULL Returned from API or End of Pagination',
-                            'exception' =>'NULL Returned from API or End of Pagination',
-                            'error_code' => null,
-                            'status_code' => null,
-                            'detail' => null
-                        ];
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
 
     private function parseJournalItems($data, $journal) {
         if ($data) {
             $journalItems = [];
             foreach($data as $journalItem) {
                 $newJournalItem = [];
-                $newJournalItem['tax_amount'] = 0;
-                $newJournalItem['gross_amount'] = 0;
-                $newJournalItem['net_amount'] = 0;
                 $newJournalItem['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('RowID', $journalItem);
                 $newJournalItem['description'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $journalItem);
                 $newJournalItem['is_credit'] = IndexSanityCheckHelper::indexSanityCheck('IsCredit', $journalItem);
@@ -123,41 +48,39 @@ class GetManualJournalResponse extends AbstractResponse
     }
 
     /**
+     * @param $journal
+     * @return array
+     */
+    private function parseData($journal) {
+        $newJournal = [];
+        $newJournal['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journal);
+        $newJournal['date'] = IndexSanityCheckHelper::indexSanityCheck('DateOccurred', $journal);
+        $newJournal['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $journal);
+        $newJournal['narration'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $journal);
+        $newJournal['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $journal);
+
+        if (array_key_exists('Lines', $journal)) {
+            if ($journal['Lines']) {
+                $newJournal = $this->parseJournalItems($journal['Lines'],$newJournal);
+            }
+        }
+
+        return $newJournal;
+    }
+
+    /**
      * Return all Accounts with Generic Schema Variable Assignment
      * @return array
      */
     public function getManualJournals(){
         $journals = [];
         if (!array_key_exists('Items', $this->data)) {
-            $journal = $this->data;
-            $newJournal = [];
-            $newJournal['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journal);
-            $newJournal['date'] = IndexSanityCheckHelper::indexSanityCheck('DateOccurred', $journal);
-            $newJournal['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $journal);
-            $newJournal['narration'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $journal);
-            $newJournal['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $journal);
-
-            if (array_key_exists('Lines', $journal)) {
-                if ($journal['Lines']) {
-                    $newJournal = $this->parseJournalItems($journal['Lines'],$newJournal);
-                }
-            }
-            array_push($journals, $newJournal);
+            $newJournal = $this->parseData($this->data);
+            $journals[] = $newJournal;
         } else {
             foreach ($this->data['Items'] as $journal) {
-                $newJournal = [];
-                $newJournal['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $journal);
-                $newJournal['date'] = IndexSanityCheckHelper::indexSanityCheck('DateOccurred', $journal);
-                $newJournal['reference_id'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $journal);
-                $newJournal['narration'] = IndexSanityCheckHelper::indexSanityCheck('Memo', $journal);
-                $newJournal['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $journal);
-
-                if (array_key_exists('Lines', $journal)) {
-                    if ($journal['Lines']) {
-                        $newJournal = $this->parseJournalItems($journal['Lines'],$newJournal);
-                    }
-                }
-                array_push($journals, $newJournal);
+                $newJournal = $this->parseData($journal);
+                $journals[] = $newJournal;
             }
         }
 

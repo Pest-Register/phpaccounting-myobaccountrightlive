@@ -2,15 +2,16 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\GetInvoiceResponse;
 
 /**
  * Get Invoice(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials
  */
-class GetInvoiceRequest extends AbstractRequest
+class GetInvoiceRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Invoice';
 
     /**
      * Set Invoice Type from Parameter Bag

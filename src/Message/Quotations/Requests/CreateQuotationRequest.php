@@ -5,11 +5,13 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests;
 
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses\CreateQuotationResponse;
 
-class CreateQuotationRequest extends AbstractRequest
+class CreateQuotationRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Quotation';
+
     /**
      * Get Sync Token Parameter from Parameter Bag
      * @see https://developer.myob.com/api/accountright/v2/sale/quote/

@@ -1,8 +1,9 @@
 <?php
 namespace PHPAccounting\MyobAccountRightLive\Message;
-use Omnipay\Common\Message\ResponseInterface;
 
-abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
+use Omnipay\Common\Message\AbstractRequest;
+
+abstract class AbstractMYOBRequest extends AbstractRequest
 {
     /**
      * Live or Test Endpoint URL.

@@ -2,106 +2,53 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses;
 
-use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
 
 /**
  * Get Accounts(s) Response
  * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\NewEssentials
  */
-class GetAccountResponse extends AbstractResponse
+class GetAccountResponse extends AbstractMYOBResponse
 {
 
-    /**
-     * Check Response for Error or Success
-     * @return boolean
-     */
-    public function isSuccessful()
-    {
-        if ($this->data) {
-            if (is_string($this->data)) {
-                return true;
-            } else {
-                if (array_key_exists('Errors', $this->data)) {
-                    return !$this->data['Errors'][0]['Severity'] == 'Error';
-                }
-                if (array_key_exists('Items', $this->data)) {
-                    if (count($this->data['Items']) === 0) {
-                        return false;
-                    }
-                }
+    private function parseData($account) {
+        $newAccount = [];
+        $newAccount['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $account);
+        $newAccount['code'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $account);
+        $newAccount['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $account);
+        $newAccount['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $account);
+        $newAccount['type'] = IndexSanityCheckHelper::indexSanityCheck('Type', $account);
+        $newAccount['is_header'] = IndexSanityCheckHelper::indexSanityCheck('IsHeader', $account);
+        $newAccount['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $account);
+
+        if (array_key_exists('Type', $account)) {
+            if ($account['Type']) {
+                $newAccount['is_bank_account'] = ($account['Type'] === 'Bank');
             }
         }
 
-        return true;
-    }
-
-    /**
-     * Fetch Error Message from Response
-     * @return array
-     */
-    public function getErrorMessage()
-    {
-        if ($this->data) {
-            if (is_string($this->data)) {
-                $additionalDetails = '';
-                $errorCode = '';
-                $status ='';
-                $response = $this->data;
-                return ErrorResponseHelper::parseErrorResponse(
-                    $response,
-                    $status,
-                    $errorCode,
-                    null,
-                    $additionalDetails,
-                    'Account'
-                );
-            } else {
-                if (array_key_exists('Errors', $this->data)) {
-                    $additionalDetails = '';
-                    $message = '';
-                    $errorCode = '';
-                    $status ='';
-                    if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
-                        $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
-                    }
-                    if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
-                        $errorCode = $this->data['Errors'][0]['ErrorCode'];
-                    }
-                    if (array_key_exists('Severity', $this->data['Errors'][0])) {
-                        $status = $this->data['Errors'][0]['Severity'];
-                    }
-                    if (array_key_exists('Message', $this->data['Errors'][0])) {
-                        $message = $this->data['Errors'][0]['Message'];
-                    }
-                    $response = $message.' '.$additionalDetails;
-                    return ErrorResponseHelper::parseErrorResponse(
-                        $response,
-                        $status,
-                        $errorCode,
-                        null,
-                        $additionalDetails,
-                        'Account'
-                    );
-                } else {
-                    if (array_key_exists('Items', $this->data)) {
-                        if (count($this->data['Items']) == 0) {
-                            return [
-                                'message' => 'NULL Returned from API or End of Pagination',
-                                'exception' =>'NULL Returned from API or End of Pagination',
-                                'error_code' => null,
-                                'status_code' => null,
-                                'detail' => null
-                            ];
-                        }
-                    }
-                }
+        if (array_key_exists('BankingDetails', $account)) {
+            if ($account['BankingDetails']) {
+                $newAccount['bank_account_number'] = IndexSanityCheckHelper::indexSanityCheck('BankAccountNumber', $account['BankingDetails']);
             }
         }
 
-        return null;
+        if (array_key_exists('TaxCode', $account)) {
+            if ($account['TaxCode']) {
+                $newAccount['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $account['TaxCode']);
+            }
+        }
+
+        if (array_key_exists('ParentAccount', $account)) {
+            if ($account['ParentAccount']) {
+                $newAccount['accounting_parent_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $account['ParentAccount']);
+            }
+        }
+
+        return $newAccount;
     }
+
 
     /**
      * Return all Accounts with Generic Schema Variable Assignment
@@ -111,75 +58,12 @@ class GetAccountResponse extends AbstractResponse
         $accounts = [];
         if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
-                $account = $this->data;
-                $newAccount = [];
-                $newAccount['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $account);
-                $newAccount['code'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $account);
-                $newAccount['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $account);
-                $newAccount['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $account);
-                $newAccount['type'] = IndexSanityCheckHelper::indexSanityCheck('Type', $account);
-                $newAccount['is_header'] = IndexSanityCheckHelper::indexSanityCheck('IsHeader', $account);
-                $newAccount['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $account);
-
-                if (array_key_exists('Type', $account)) {
-                    if ($account['Type']) {
-                        $newAccount['is_bank_account'] = ($account['Type'] === 'Bank');
-                    }
-                }
-
-                if (array_key_exists('BankingDetails', $account)) {
-                    if ($account['BankingDetails']) {
-                        $newAccount['bank_account_number'] = IndexSanityCheckHelper::indexSanityCheck('BankAccountNumber', $account['BankingDetails']);
-                    }
-                }
-
-                if (array_key_exists('TaxCode', $account)) {
-                    if ($account['TaxCode']) {
-                        $newAccount['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $account['TaxCode']);
-                    }
-                }
-
-                if (array_key_exists('ParentAccount', $account)) {
-                    if ($account['ParentAccount']) {
-                        $newAccount['accounting_parent_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $account['ParentAccount']);
-                    }
-                }
-                array_push($accounts, $newAccount);
+                $newAccount = $this->parseData($this->data);
+                $accounts[] = $newAccount;
             } else {
                 foreach ($this->data['Items'] as $account) {
-                    $newAccount = [];
-                    $newAccount['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $account);
-                    $newAccount['code'] = IndexSanityCheckHelper::indexSanityCheck('DisplayID', $account);
-                    $newAccount['name'] = IndexSanityCheckHelper::indexSanityCheck('Name', $account);
-                    $newAccount['description'] = IndexSanityCheckHelper::indexSanityCheck('Description', $account);
-                    $newAccount['type'] = IndexSanityCheckHelper::indexSanityCheck('Type', $account);
-                    $newAccount['is_header'] = IndexSanityCheckHelper::indexSanityCheck('IsHeader', $account);
-                    $newAccount['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $account);
-
-                    if (array_key_exists('Type', $account)) {
-                        if ($account['Type']) {
-                            $newAccount['is_bank_account'] = ($account['Type'] === 'Bank');
-                        }
-                    }
-
-                    if (array_key_exists('BankingDetails', $account)) {
-                        if ($account['BankingDetails']) {
-                            $newAccount['bank_account_number'] = IndexSanityCheckHelper::indexSanityCheck('BankAccountNumber', $account['BankingDetails']);
-                        }
-                    }
-
-                    if (array_key_exists('TaxCode', $account)) {
-                        if ($account['TaxCode']) {
-                            $newAccount['tax_type'] = IndexSanityCheckHelper::indexSanityCheck('Code', $account['TaxCode']);
-                        }
-                    }
-
-                    if (array_key_exists('ParentAccount', $account)) {
-                        if ($account['ParentAccount']) {
-                            $newAccount['accounting_parent_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $account['ParentAccount']);
-                        }
-                    }
-                    array_push($accounts, $newAccount);
+                    $newAccount = $this->parseData($account);
+                    $accounts[] = $newAccount;
                 }
             }
         }

@@ -3,7 +3,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Journals\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\GetJournalResponse;
 
 
@@ -11,8 +11,9 @@ use PHPAccounting\MyobAccountRightLive\Message\Journals\Responses\GetJournalResp
  * Get Journal(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\NewEssentials
  */
-class GetJournalRequest extends AbstractRequest
+class GetJournalRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Journal';
 
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)

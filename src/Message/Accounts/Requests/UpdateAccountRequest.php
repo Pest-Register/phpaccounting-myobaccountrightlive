@@ -5,11 +5,13 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests;
 
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\UpdateAccountResponse;
 
-class UpdateAccountRequest extends AbstractRequest
+class UpdateAccountRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Account';
+
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value

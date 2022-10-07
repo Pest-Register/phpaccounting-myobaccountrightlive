@@ -4,11 +4,12 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\CreateInventoryItemResponse;
 
-class CreateInventoryItemRequest extends AbstractRequest
+class CreateInventoryItemRequest extends AbstractMYOBRequest
 {
+    public string $model = 'InventoryItem';
 
     /**
      * Get Code Parameter from Parameter Bag

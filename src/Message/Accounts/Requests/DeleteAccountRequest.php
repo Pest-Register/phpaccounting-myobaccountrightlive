@@ -4,12 +4,14 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests;
 
 
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\DeleteAccountResponse;
 
-class DeleteAccountRequest extends AbstractRequest
+class DeleteAccountRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Account';
+
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value

@@ -7,98 +7,10 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses;
 use Omnipay\Common\Message\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
 
-class DeleteInvoiceResponse extends AbstractResponse
+class DeleteInvoiceResponse extends AbstractMYOBResponse
 {
-    /**
-     * Check Response for Error or Success
-     * @return boolean
-     */
-    public function isSuccessful()
-    {
-        if ($this->data) {
-            if (is_string($this->data)) {
-                return true;
-            } else {
-                if (array_key_exists('Errors', $this->data)) {
-                    return !$this->data['Errors'][0]['Severity'] == 'Error';
-                }
-                if (array_key_exists('Items', $this->data)) {
-                    if (count($this->data['Items']) === 0) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Fetch Error Message from Response
-     * @return array
-     */
-    public function getErrorMessage()
-    {
-        if ($this->data) {
-            if (is_string($this->data)) {
-                $additionalDetails = '';
-                $errorCode = '';
-                $status ='';
-                $response = $this->data;
-                return ErrorResponseHelper::parseErrorResponse(
-                    $response,
-                    $status,
-                    $errorCode,
-                    null,
-                    $additionalDetails,
-                    'Invoice'
-                );
-            } else {
-                if (array_key_exists('Errors', $this->data)) {
-                    $additionalDetails = '';
-                    $message = '';
-                    $errorCode = '';
-                    $status ='';
-                    if (array_key_exists('AdditionalDetails', $this->data['Errors'][0])) {
-                        $additionalDetails = $this->data['Errors'][0]['AdditionalDetails'];
-                    }
-                    if (array_key_exists('ErrorCode', $this->data['Errors'][0])) {
-                        $errorCode = $this->data['Errors'][0]['ErrorCode'];
-                    }
-                    if (array_key_exists('Severity', $this->data['Errors'][0])) {
-                        $status = $this->data['Errors'][0]['Severity'];
-                    }
-                    if (array_key_exists('Message', $this->data['Errors'][0])) {
-                        $message = $this->data['Errors'][0]['Message'];
-                    }
-                    $response = $message.' '.$additionalDetails;
-                    return ErrorResponseHelper::parseErrorResponse(
-                        $response,
-                        $status,
-                        $errorCode,
-                        null,
-                        $additionalDetails,
-                        'Invoice'
-                    );
-                } else {
-                    if (array_key_exists('Items', $this->data)) {
-                        if (count($this->data['Items']) == 0) {
-                            return [
-                                'message' => 'NULL Returned from API or End of Pagination',
-                                'exception' =>'NULL Returned from API or End of Pagination',
-                                'error_code' => null,
-                                'status_code' => null,
-                                'detail' => null
-                            ];
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
 
     /**
      * @param $data
@@ -192,7 +104,7 @@ class DeleteInvoiceResponse extends AbstractResponse
                     }
                 }
 
-                array_push($lineItems, $newLineItem);
+                $lineItems[] = $newLineItem;
             }
 
             $invoice['invoice_data'] = $lineItems;
@@ -202,6 +114,64 @@ class DeleteInvoiceResponse extends AbstractResponse
     }
 
     /**
+     * @param $invoice
+     * @return array|mixed
+     */
+    private function parseData($invoice) {
+        $newInvoice = [];
+        $newInvoice['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $invoice);
+        $newInvoice['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $invoice));
+        $newInvoice['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $invoice);
+        $newInvoice['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $invoice);
+        $newInvoice['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $invoice);
+        $newInvoice['type'] = IndexSanityCheckHelper::indexSanityCheck('InvoiceType', $invoice);
+        $newInvoice['invoice_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $invoice);
+        $newInvoice['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $invoice);
+        $newInvoice['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $invoice);
+        $newInvoice['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice));
+        $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
+        $newInvoice['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $invoice);
+        $newInvoice['fetch_payments_separately'] = true;
+        $newInvoice['payments'] = [];
+        if (array_key_exists('Customer', $invoice)) {
+            if ($invoice['Customer']) {
+                $newInvoice = $this->parseCustomer($newInvoice, $invoice['Customer']);
+            }
+        }
+
+        if (array_key_exists('Lines', $invoice)) {
+            if ($invoice['Lines']) {
+                $newInvoice = $this->parseLineItems($newInvoice, $invoice['Lines']);
+            }
+        }
+
+        if (array_key_exists('TotalAmount', $invoice) && array_key_exists('BalanceDueAmount', $invoice)) {
+            if ($invoice['TotalAmount'] && $invoice['BalanceDueAmount']) {
+                $amountPaid = floatval($invoice['TotalAmount']) - floatval($invoice['BalanceDueAmount']);
+                if ($amountPaid) {
+                    $newInvoice['amount_paid'] = $amountPaid;
+                } else {
+                    $newInvoice['amount_paid'] = 0.00;
+                }
+
+            }
+        }
+
+        if (array_key_exists('Terms', $invoice)) {
+            if ($invoice['Terms']) {
+                $newInvoice['due_date'] = IndexSanityCheckHelper::indexSanityCheck('DueDate', $invoice['Terms']);
+            }
+        }
+
+        if ($newInvoice['amount_due'] == 0) {
+            $newInvoice['status'] = 'PAID';
+        } else if ($newInvoice['amount_due'] > 0 && $newInvoice['amount_due'] != $newInvoice['total']) {
+            $newInvoice['status'] = 'PARTIAL';
+        }
+
+        return $newInvoice;
+    }
+    /**
      * Return all Invoices with Generic Schema Variable Assignment
      * @return array
      */
@@ -209,111 +179,12 @@ class DeleteInvoiceResponse extends AbstractResponse
         $invoices = [];
         if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
-                $invoice = $this->data;
-                $newInvoice = [];
-                $newInvoice['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $invoice);
-                $newInvoice['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $invoice));
-                $newInvoice['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $invoice);
-                $newInvoice['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $invoice);
-                $newInvoice['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $invoice);
-                $newInvoice['type'] = IndexSanityCheckHelper::indexSanityCheck('InvoiceType', $invoice);
-                $newInvoice['invoice_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $invoice);
-                $newInvoice['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $invoice);
-                $newInvoice['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $invoice);
-                $newInvoice['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice));
-                $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
-                $newInvoice['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $invoice);
-                $newInvoice['fetch_payments_separately'] = true;
-                if (array_key_exists('Customer', $invoice)) {
-                    if ($invoice['Customer']) {
-                        $newInvoice = $this->parseCustomer($newInvoice, $invoice['Customer']);
-                    }
-                }
-
-                if (array_key_exists('Lines', $invoice)) {
-                    if ($invoice['Lines']) {
-                        $newInvoice = $this->parseLineItems($newInvoice, $invoice['Lines']);
-                    }
-                }
-
-                if (array_key_exists('TotalAmount', $invoice) && array_key_exists('BalanceDueAmount', $invoice)) {
-                    if ($invoice['TotalAmount'] && $invoice['BalanceDueAmount']) {
-                        $amountPaid = floatval($invoice['TotalAmount']) - floatval($invoice['BalanceDueAmount']);
-                        if ($amountPaid) {
-                            $newInvoice['amount_paid'] = $amountPaid;
-                        } else {
-                            $newInvoice['amount_paid'] = 0.00;
-                        }
-
-                    }
-                }
-
-                if (array_key_exists('Terms', $invoice)) {
-                    if ($invoice['Terms']) {
-                        $newInvoice['due_date'] = IndexSanityCheckHelper::indexSanityCheck('DueDate', $invoice['Terms']);
-                    }
-                }
-
-                if ($newInvoice['amount_due'] == 0) {
-                    $newInvoice['status'] = 'PAID';
-                } else if ($newInvoice['amount_due'] > 0 && $newInvoice['amount_due'] != $newInvoice['total']) {
-                    $newInvoice['status'] = 'PARTIAL';
-                }
-
-                array_push($invoices, $newInvoice);
+                $newInvoice = $this->parseData($this->data);
+                $invoices[] = $newInvoice;
             } else {
                 foreach ($this->data['Items'] as $invoice) {
-                    $newInvoice = [];
-                    $newInvoice['accounting_id'] = IndexSanityCheckHelper::indexSanityCheck('UID', $invoice);
-                    $newInvoice['status'] = $this->parseStatus(IndexSanityCheckHelper::indexSanityCheck('Status', $invoice));
-                    $newInvoice['sub_total'] = IndexSanityCheckHelper::indexSanityCheck('Subtotal', $invoice);
-                    $newInvoice['total_tax'] = IndexSanityCheckHelper::indexSanityCheck('TotalTax', $invoice);
-                    $newInvoice['total'] = IndexSanityCheckHelper::indexSanityCheck('TotalAmount', $invoice);
-                    $newInvoice['type'] = IndexSanityCheckHelper::indexSanityCheck('InvoiceType', $invoice);
-                    $newInvoice['invoice_number'] = IndexSanityCheckHelper::indexSanityCheck('Number', $invoice);
-                    $newInvoice['amount_due'] = IndexSanityCheckHelper::indexSanityCheck('BalanceDueAmount', $invoice);
-                    $newInvoice['date'] = IndexSanityCheckHelper::indexSanityCheck('Date', $invoice);
-                    $newInvoice['gst_inclusive'] = $this->parseTaxCalculation(IndexSanityCheckHelper::indexSanityCheck('IsTaxInclusive', $invoice));
-                    $newInvoice['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $invoice);
-                    $newInvoice['updated_at'] = IndexSanityCheckHelper::indexSanityCheck('LastModified', $invoice);
-                    $newInvoice['fetch_payments_separately'] = true;
-                    if (array_key_exists('Customer', $invoice)) {
-                        if ($invoice['Customer']) {
-                            $newInvoice = $this->parseCustomer($newInvoice, $invoice['Customer']);
-                        }
-                    }
-
-                    if (array_key_exists('Lines', $invoice)) {
-                        if ($invoice['Lines']) {
-                            $newInvoice = $this->parseLineItems($newInvoice, $invoice['Lines']);
-                        }
-                    }
-
-                    if (array_key_exists('TotalAmount', $invoice) && array_key_exists('BalanceDueAmount', $invoice)) {
-                        if ($invoice['TotalAmount'] && $invoice['BalanceDueAmount']) {
-                            $amountPaid = floatval($invoice['TotalAmount']) - floatval($invoice['BalanceDueAmount']);
-                            if ($amountPaid) {
-                                $newInvoice['amount_paid'] = $amountPaid;
-                            } else {
-                                $newInvoice['amount_paid'] = 0.00;
-                            }
-
-                        }
-                    }
-
-                    if (array_key_exists('Terms', $invoice)) {
-                        if ($invoice['Terms']) {
-                            $newInvoice['due_date'] = IndexSanityCheckHelper::indexSanityCheck('DueDate', $invoice['Terms']);
-                        }
-                    }
-
-                    if ($newInvoice['amount_due'] == 0) {
-                        $newInvoice['status'] = 'PAID';
-                    } else if ($newInvoice['amount_due'] > 0 && $newInvoice['amount_due'] != $newInvoice['total']) {
-                        $newInvoice['status'] = 'PARTIAL';
-                    }
-
-                    array_push($invoices, $newInvoice);
+                    $newInvoice = $this->parseData($invoice);
+                    $invoices[] = $newInvoice;
                 }
             }
         }

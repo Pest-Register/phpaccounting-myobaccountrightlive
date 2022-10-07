@@ -2,15 +2,17 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests;
 
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\CreateAccountResponse;
 
 /**
  * Create Account(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Accounts\NewEssentials\Requests
  */
-class CreateAccountRequest extends AbstractRequest
+class CreateAccountRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Account';
+
     /**
      * Get Code Parameter from Parameter Bag
      * @see https://developer.myob.com/api/accountright/essentials-new-v2/generalledger/account/

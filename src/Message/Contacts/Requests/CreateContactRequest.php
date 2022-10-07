@@ -4,15 +4,16 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\CreateContactResponse;
 
 /**
  * Create Contact(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Essentials
  */
-class CreateContactRequest extends AbstractRequest
+class CreateContactRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Contact';
 
     /**
      * Set Name Parameter from Parameter Bag

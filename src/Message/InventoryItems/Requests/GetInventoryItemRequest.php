@@ -2,15 +2,17 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\GetInventoryItemResponse;
 
 /**
  * Get InventoryItem(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests\NewEssentials
  */
-class GetInventoryItemRequest extends AbstractRequest
+class GetInventoryItemRequest extends AbstractMYOBRequest
 {
+    public string $model = 'InventoryItem';
+
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value

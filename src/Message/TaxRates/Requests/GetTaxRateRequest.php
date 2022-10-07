@@ -3,16 +3,16 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\TaxRates\Responses\GetTaxRateResponse;
-
 
 /**
  * Get Tax Rate(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\NewEssentials
  */
-class GetTaxRateRequest extends AbstractRequest
+class GetTaxRateRequest extends AbstractMYOBRequest
 {
+    public string $model = 'TaxRate';
 
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)

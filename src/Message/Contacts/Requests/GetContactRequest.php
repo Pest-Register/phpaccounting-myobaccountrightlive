@@ -2,15 +2,17 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\GetContactResponse;
 
 /**
  * Get Contact(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\NewEssentials
  */
-class GetContactRequest extends AbstractRequest
+class GetContactRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Contact';
+
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value

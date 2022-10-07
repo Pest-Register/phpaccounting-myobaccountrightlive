@@ -3,15 +3,16 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\GetPaymentResponse;
 
 /**
  * Get Payment(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials
  */
-class GetPaymentRequest extends AbstractRequest
+class GetPaymentRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Payment';
 
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)

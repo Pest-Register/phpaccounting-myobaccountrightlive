@@ -4,11 +4,13 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Requests;
 
 
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\CreatePaymentResponse;
 
-class CreatePaymentRequest extends AbstractRequest
+class CreatePaymentRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Payment';
+
     /**
      * Get Amount Parameter from Parameter Bag
      * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/customerpayment/

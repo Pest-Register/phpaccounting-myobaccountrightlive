@@ -5,11 +5,13 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Requests;
 
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\DeletePaymentResponse;
 
-class DeletePaymentRequest extends AbstractRequest
+class DeletePaymentRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Payment';
+
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)
      * @param $value

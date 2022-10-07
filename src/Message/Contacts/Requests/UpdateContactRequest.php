@@ -6,11 +6,12 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\UpdateContactResponse;
 
-class UpdateContactRequest extends AbstractRequest
+class UpdateContactRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Contact';
 
     /**
      * Set Name Parameter from Parameter Bag

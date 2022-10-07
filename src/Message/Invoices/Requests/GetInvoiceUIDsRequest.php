@@ -5,15 +5,16 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\GetInvoiceUIDsResponse;
 
 /**
  * Get Invoice UIDs
  * @package PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\NewEssentials
  */
-class GetInvoiceUIDsRequest extends AbstractRequest
+class GetInvoiceUIDsRequest extends AbstractMYOBRequest
 {
+    public string $model = 'Invoice';
 
     /**
      * Set AccountingID from Parameter Bag (UID generic interface)

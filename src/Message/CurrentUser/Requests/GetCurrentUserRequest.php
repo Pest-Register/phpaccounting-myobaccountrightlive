@@ -1,15 +1,17 @@
 <?php
 namespace PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Requests;
 
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Responses\GetCurrentUserResponse;
 
 /**
  * Get CurrentUser(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\CurrentUser\Requests\AccountRight
  */
-class GetCurrentUserRequest extends AbstractRequest
+class GetCurrentUserRequest extends AbstractMYOBRequest
 {
+    public string $model = 'CurrentUser';
+
     public function getEndpoint()
     {
 

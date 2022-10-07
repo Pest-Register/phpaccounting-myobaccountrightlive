@@ -6,11 +6,13 @@ namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Requests;
 
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
-use PHPAccounting\MyobAccountRightLive\Message\AbstractRequest;
+use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses\UpdateInventoryItemResponse;
 
-class UpdateInventoryItemRequest extends AbstractRequest
+class UpdateInventoryItemRequest extends AbstractMYOBRequest
 {
+    public string $model = 'InventoryItem';
+
     /**
      * Get Accounting ID Parameter from Parameter Bag
      * @see https://developer.myob.com/api/accountright/essentials-new-v2/inventory/item/
