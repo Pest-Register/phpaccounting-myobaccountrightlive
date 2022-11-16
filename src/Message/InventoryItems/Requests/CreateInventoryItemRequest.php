@@ -13,7 +13,6 @@ class CreateInventoryItemRequest extends AbstractMYOBRequest
 
     public string $model = 'InventoryItem';
 
-
     /**
      * Get the raw data array for this message. The format of this varies from gateway to
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
@@ -29,6 +28,7 @@ class CreateInventoryItemRequest extends AbstractMYOBRequest
         $this->issetParam('Name', 'name');
         $this->issetParam('Description', 'description');
         $this->issetParam('IsInventoried', 'is_tracked');
+
         if($this->getStatus() !== null) {
             $this->data['IsActive'] = ($this->getStatus() === 'ACTIVE' ? true : false);
         }

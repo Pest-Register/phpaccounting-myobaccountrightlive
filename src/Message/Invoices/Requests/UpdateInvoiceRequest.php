@@ -3,7 +3,6 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 
-
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Traits\InvoiceRequestTrait;
@@ -57,6 +56,7 @@ class UpdateInvoiceRequest extends AbstractMYOBRequest
             $gst = $this->getGSTRegistered();
             $this->data = $this->parseLines($this->getInvoiceData(),$gst, $this->data);
         }
+
         if ($this->getContact() !== null) {
             $this->data['Customer'] = [];
             $this->data['Customer']['UID'] = $this->getContact();
