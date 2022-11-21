@@ -7,30 +7,14 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\DeleteInvoiceResponse;
+use PHPAccounting\MyobAccountRightLive\Traits\AccountingIDRequestTrait;
 
 class DeleteInvoiceRequest extends AbstractMYOBRequest
 {
+    use AccountingIDRequestTrait;
+
     public string $model = 'Invoice';
 
-    /**
-     * Set AccountingID from Parameter Bag (UID generic interface)
-     * @param $value
-     * @return DeleteInvoiceRequest
-     */
-    public function setAccountingID($value) {
-        return $this->setParameter('accounting_id', $value);
-    }
-
-    /**
-     * Return Accounting ID (UID)
-     * @return mixed comma-delimited-string
-     */
-    public function getAccountingID() {
-        if ($this->getParameter('accounting_id')) {
-            return $this->getParameter('accounting_id');
-        }
-        return null;
-    }
 
     public function getData()
     {

@@ -7,6 +7,7 @@ namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\GetInvoiceUIDsResponse;
+use PHPAccounting\MyobAccountRightLive\Traits\GetRequestTrait;
 
 /**
  * Get Invoice UIDs
@@ -14,69 +15,10 @@ use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\GetInvoiceUIDs
  */
 class GetInvoiceUIDsRequest extends AbstractMYOBRequest
 {
+    use GetRequestTrait;
+
     public string $model = 'Invoice';
 
-    /**
-     * Set AccountingID from Parameter Bag (UID generic interface)
-     * @param $value
-     * @return GetInvoiceUIDsRequest
-     */
-    public function setAccountingID($value) {
-        return $this->setParameter('accounting_id', $value);
-    }
-
-    /**
-     * Set Page Value for Pagination from Parameter Bag
-     * @param $value
-     * @return GetInvoiceUIDsRequest
-     */
-    public function setPage($value) {
-        return $this->setParameter('page', $value);
-    }
-
-    /**
-     * Return Accounting ID (UID)
-     * @return mixed comma-delimited-string
-     */
-    public function getAccountingID() {
-        if ($this->getParameter('accounting_id')) {
-            return $this->getParameter('accounting_id');
-        }
-        return null;
-    }
-
-    /**
-     * Return Page Value for Pagination
-     * @return integer
-     */
-    public function getPage() {
-        if ($this->getParameter('page')) {
-            return $this->getParameter('page');
-        }
-
-        return 1;
-    }
-
-    /**
-     * Set Page Value for Pagination from Parameter Bag
-     * @param $value
-     * @return GetInvoiceUIDsRequest
-     */
-    public function setSkip($value) {
-        return $this->setParameter('skip', $value);
-    }
-
-    /**
-     * Return Page Value for Pagination
-     * @return integer
-     */
-    public function getSkip() {
-        if ($this->getParameter('skip')) {
-            return $this->getParameter('skip');
-        }
-
-        return 0;
-    }
 
     public function getEndpoint()
     {
