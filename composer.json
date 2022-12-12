@@ -26,7 +26,7 @@
         "php-http/guzzle7-adapter": "*",
         "ext-json": "*",
         "omnipay/common": "^3.0",
-        "fzaninotto/faker": "^1.8"
+        "fakerphp/faker": "^1.9.1"
     },
     "scripts": {
         "docs": "swagger src/"
