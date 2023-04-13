@@ -44,6 +44,22 @@ trait InventoryItemRequestTrait
     }
 
     /**
+     * Set Sync Token Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function setSyncToken($value) {
+        return $this->setParameter('sync_token', $value);
+    }
+
+    /**
+     * Get IsHeader Parameter from Parameter Bag
+     * @return mixed
+     */
+    public function getSyncToken(){
+        return $this->getParameter('sync_token');
+    }
+
+    /**
      * Get Name Parameter from Parameter Bag
      * @see https://developer.myob.com/api/accountright/essentials-new-v2/inventory/item/
      * @return mixed
