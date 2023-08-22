@@ -23,9 +23,8 @@
         }
     },
     "require": {
-        "php-http/guzzle7-adapter": "*",
         "ext-json": "*",
-        "omnipay/common": "^3.0",
+        "omnipay/common": "^3.2.1",
         "fakerphp/faker": "^1.9.1"
     },
     "scripts": {
