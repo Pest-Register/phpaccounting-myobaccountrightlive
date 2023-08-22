@@ -142,7 +142,8 @@ abstract class AbstractMYOBRequest extends AbstractRequest
         }
 
         $headers['x-myobapi-version'] = $this->accountRightVersion;
-        $headers['Accept-Encoding'] = 'gzip,deflate';
+        $headers['Accept'] = 'application/json';
+        $headers['Content-Type'] = 'application/json';
         return $headers;
     }
 
