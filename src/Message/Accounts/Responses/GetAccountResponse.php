@@ -22,6 +22,12 @@ class GetAccountResponse extends AbstractMYOBResponse
         $newAccount['is_header'] = IndexSanityCheckHelper::indexSanityCheck('IsHeader', $account);
         $newAccount['sync_token'] = IndexSanityCheckHelper::indexSanityCheck('RowVersion', $account);
 
+        if (array_key_exists('IsHeader', $account)) {
+            if ($account['IsHeader']) {
+                return null;
+            }
+        }
+
         if (array_key_exists('Type', $account)) {
             if ($account['Type']) {
                 $newAccount['is_bank_account'] = ($account['Type'] === 'Bank');
@@ -59,15 +65,18 @@ class GetAccountResponse extends AbstractMYOBResponse
         if ($this->data && !is_string($this->data)) {
             if (!array_key_exists('Items', $this->data)) {
                 $newAccount = $this->parseData($this->data);
-                $accounts[] = $newAccount;
+                if ($newAccount) {
+                    $accounts[] = $newAccount;
+                }
             } else {
                 foreach ($this->data['Items'] as $account) {
                     $newAccount = $this->parseData($account);
-                    $accounts[] = $newAccount;
+                    if ($newAccount) {
+                        $accounts[] = $newAccount;
+                    }
                 }
             }
         }
-
         return $accounts;
     }
 }

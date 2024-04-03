@@ -10,7 +10,7 @@ class BaseTest extends TestCase
 {
     public $gateway;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $dotenv = Dotenv::create(__DIR__ . '/..');
