@@ -64,10 +64,10 @@ try {
         }
     }
 } catch (\GuzzleHttp\Exception\RequestException $e) {
-    echo "\n✗ HTTP/2 PROTOCOL ERROR (Expected with current code)\n\n";
+    echo "\n✗ HTTP/2 PROTOCOL ERROR (Unexpected after fallback fix)\n\n";
     echo "Error: " . $e->getMessage() . "\n\n";
-    echo "This error demonstrates the HTTP/2 issue that the fix addresses.\n";
-    echo "The fix will catch this error and retry with HTTP/1.1 using Guzzle.\n";
+    echo "This error should not occur under normal circumstances after the HTTP/2 fallback fix.\n";
+    echo "If you see this, please investigate the fallback mechanism and network configuration.\n";
 } catch (\Exception $e) {
     echo "\n✗ EXCEPTION CAUGHT\n\n";
     echo "Exception Type: " . get_class($e) . "\n";

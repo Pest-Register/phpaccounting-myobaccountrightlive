@@ -193,7 +193,8 @@ abstract class AbstractMYOBRequest extends AbstractRequest
             // Check if this is an HTTP/2 protocol error
             $isHttp2Error = stripos($e->getMessage(), 'HTTP/2') !== false
                          || stripos($e->getMessage(), 'PROTOCOL_ERROR') !== false
-                         || stripos($e->getMessage(), 'stream') !== false;
+                         || stripos($e->getMessage(), 'stream error') !== false
+                         || stripos($e->getMessage(), 'stream closed') !== false;
 
             // If it's not an HTTP/2 error, or Guzzle is not available, rethrow
             if (!$isHttp2Error || !class_exists('\GuzzleHttp\Client')) {
@@ -203,13 +204,14 @@ abstract class AbstractMYOBRequest extends AbstractRequest
             // Retry with HTTP/1.1 using Guzzle
             $guzzle = new \GuzzleHttp\Client([
                 'timeout' => 60,
-                'version' => 1.1, // Force HTTP/1.1
+                // Removed 'version' option; will set protocol_version in request options
                 'http_errors' => false,
             ]);
 
             $guzzleResponse = $guzzle->request($this->getHttpMethod(), $endpoint . $this->getEndpoint(), [
                 'headers' => $headers,
                 'body' => $body,
+                'protocol_version' => '1.1', // Force HTTP/1.1
             ]);
 
             $responseData = json_decode($guzzleResponse->getBody()->getContents(), true);
