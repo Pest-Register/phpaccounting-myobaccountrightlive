@@ -27,6 +27,7 @@ class CreateAccountRequest extends AbstractMYOBRequest
         $this->issetParam('Description','description');
         $this->issetParam('IsHeader', 'is_header');
         $this->issetParam('RowVersion', 'sync_token');
+        $this->issetParam('Number', 'number');
 
         if($this->getAccountingParentID()) {
             $this->data['ParentAccount'] = [

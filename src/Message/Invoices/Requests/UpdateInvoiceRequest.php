@@ -77,11 +77,11 @@ class UpdateInvoiceRequest extends AbstractMYOBRequest
 
     public function getEndpoint()
     {
-
-        $endpoint = 'Sale/Invoice/Item?returnBody=true';
+        $invoiceType = $this->getInvoiceType() ?: 'Item';
+        $endpoint = 'Sale/Invoice/' . $invoiceType . '?returnBody=true';
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::createForGUID('Sale/Invoice/Item', $this->getAccountingID());
+                $endpoint = BuildEndpointHelper::createForGUID('Sale/Invoice/' . $invoiceType, $this->getAccountingID());
             }
         }
         return $endpoint;

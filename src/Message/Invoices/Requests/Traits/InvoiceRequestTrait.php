@@ -152,6 +152,27 @@ trait InvoiceRequestTrait
     }
 
     /**
+     * Get Invoice Type Parameter from Parameter Bag
+     * Supported types: Item, Service, Professional, TimeBilling, Miscellaneous
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/
+     * @return mixed
+     */
+    public function getInvoiceType(){
+        return $this->getParameter('invoice_type');
+    }
+
+    /**
+     * Set Invoice Type Parameter from Parameter Bag
+     * Supported types: Item, Service, Professional, TimeBilling, Miscellaneous
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/
+     * @param string $value Invoice Type (defaults to 'Item' for backward compatibility)
+     * @return \PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\CreateInvoiceRequest
+     */
+    public function setInvoiceType($value){
+        return $this->setParameter('invoice_type', $value);
+    }
+
+    /**
      * Get Invoice Data Parameter from Parameter Bag (LineItems generic interface)
      * @see https://developer.myob.com/api/accountright/essentials-new-v2/sale/invoice/invoice_item/
      * @return mixed
@@ -379,6 +400,8 @@ trait InvoiceRequestTrait
                 case 'PAID':
                 case 'DELETED':
                     return 'Closed';
+                case 'CREDIT':
+                    return 'Credit';
             }
         }
         return null;

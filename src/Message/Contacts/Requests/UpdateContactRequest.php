@@ -19,7 +19,7 @@ class UpdateContactRequest extends AbstractMYOBRequest
 
     public function getData()
     {
-        $this->validate('is_individual', 'accounting_id');
+        $this->validate('is_individual', 'accounting_id', 'sync_token');
         $this->issetParam('UID', 'accounting_id');
         $this->issetParam('DisplayID', 'reference');
         $this->issetParam('FirstName', 'first_name');

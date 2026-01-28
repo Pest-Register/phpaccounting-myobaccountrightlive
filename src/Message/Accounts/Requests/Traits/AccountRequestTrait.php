@@ -196,4 +196,22 @@ trait AccountRequestTrait
     public function setTaxTypeID($value){
         return $this->setParameter('tax_type_id', $value);
     }
+
+    /**
+     * Get Number Parameter from Parameter Bag (4-digit account number)
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/generalledger/account/
+     * @return mixed
+     */
+    public function getNumber(){
+        return $this->getParameter('number');
+    }
+
+    /**
+     * Set Number Parameter from Parameter Bag (4-digit account number)
+     * @see https://developer.myob.com/api/accountright/essentials-new-v2/generalledger/account/
+     * @param string $value Account Number
+     */
+    public function setNumber($value){
+        return $this->setParameter('number', $value);
+    }
 }

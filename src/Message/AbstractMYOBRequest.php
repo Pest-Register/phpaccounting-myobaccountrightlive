@@ -115,6 +115,7 @@ abstract class AbstractMYOBRequest extends AbstractRequest
 
         $headers['x-myobapi-version'] = $this->essentialsVersion;
         $headers['Accept-Encoding'] = 'gzip,deflate';
+        $headers['Accept'] = 'application/json';
 
         if ($httpMethod === 'POST' || $httpMethod === 'PUT') {
             $headers['Content-Type'] = 'application/json';

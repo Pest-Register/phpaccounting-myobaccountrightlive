@@ -18,7 +18,7 @@ class UpdateAccountRequest extends AbstractMYOBRequest
 
     public function getData()
     {
-        $this->validate('code', 'name', 'type', 'tax_type', 'accounting_parent_id', 'accounting_id');
+        $this->validate('code', 'name', 'type', 'tax_type', 'accounting_parent_id', 'accounting_id', 'sync_token');
 
         $this->issetParam('UID', 'accounting_id');
         $this->issetParam('DisplayID', 'code');

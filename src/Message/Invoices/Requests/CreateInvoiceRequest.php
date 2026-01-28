@@ -72,8 +72,8 @@ class CreateInvoiceRequest extends AbstractMYOBRequest
 
     public function getEndpoint()
     {
-
-        $endpoint = 'Sale/Invoice/Item?returnBody=true';
+        $invoiceType = $this->getInvoiceType() ?: 'Item';
+        $endpoint = 'Sale/Invoice/' . $invoiceType . '?returnBody=true';
         return $endpoint;
     }
 
