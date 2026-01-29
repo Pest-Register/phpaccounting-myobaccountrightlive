@@ -2,16 +2,9 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message;
 
-use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RequestInterface;
+use PHPAccounting\MyobAccountRightLive\Foundation\AbstractResponse;
+use PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
-
-/**
- * Created by IntelliJ IDEA.
- * User: Dylan
- * Date: 13/05/2019
- * Time: 3:33 PM
- */
 
 class AbstractMYOBResponse extends AbstractResponse
 {
@@ -35,15 +28,12 @@ class AbstractMYOBResponse extends AbstractResponse
 
     public function __construct(RequestInterface $request, $data, $headers = [])
     {
-        $this->request = $request;
         if (is_string($data)) {
-            $this->data = json_decode($data, true);
-        } else {
-            $this->data = $data;
+            $data = json_decode($data, true);
         }
-        $this->headers = $headers;
-        $this->modelType = $request->model;
         parent::__construct($request, $data);
+        $this->headers = $headers;
+        $this->modelType = $request->model ?? '';
     }
 
     public function getHeaders(){
@@ -54,7 +44,7 @@ class AbstractMYOBResponse extends AbstractResponse
      * Check Response for Error or Success
      * @return boolean
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         if ($this->data) {
             if (is_string($this->data)) {

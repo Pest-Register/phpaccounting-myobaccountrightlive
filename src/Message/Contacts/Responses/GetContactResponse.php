@@ -1,9 +1,6 @@
 <?php
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses;
 
-use Cassandra\Index;
-use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
 

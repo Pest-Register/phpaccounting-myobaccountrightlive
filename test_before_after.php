@@ -3,14 +3,14 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
-use Omnipay\Omnipay;
+use PHPAccounting\MyobAccountRightLive\Gateway;
 
 // Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Create gateway
-$gateway = Omnipay::create('\PHPAccounting\MyobAccountRightLive\Gateway');
+$gateway = new Gateway();
 
 // Configure gateway
 $gateway->setAPIKey($_ENV['API_KEY'] ?? '');

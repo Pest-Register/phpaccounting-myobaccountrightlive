@@ -24,7 +24,7 @@ class BuildEndpointHelper
     }
 
     public static function paginateLegacy($endpoint, $page, $fromDate = '', $toDate = '') {
-        $prefix = '?&';
+        $prefix = '?';
         $endpoint = $endpoint.$prefix."pageNumber=".$page;
         if ($fromDate !== '' && $toDate !== '') {
             $endpoint = $endpoint.'&fromDate='.$fromDate.'&toDate='.$toDate;

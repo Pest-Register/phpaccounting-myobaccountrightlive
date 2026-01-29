@@ -3,7 +3,6 @@
 namespace Tests;
 
 use Faker;
-use Omnipay\Omnipay;
 
 class UpdateContactTest extends BaseTest
 {

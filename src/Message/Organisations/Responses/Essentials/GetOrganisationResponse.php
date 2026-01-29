@@ -1,7 +1,8 @@
 <?php
 namespace PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\Essentials;
 
-use Omnipay\Common\Message\AbstractResponse;
+use PHPAccounting\MyobAccountRightLive\Foundation\AbstractResponse;
+use PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\ErrorResponseHelper;
 use PHPAccounting\MyobAccountRightLive\Helpers\Essentials\IndexSanityCheckHelper;
 
@@ -16,7 +17,7 @@ class GetOrganisationResponse extends AbstractResponse
      * Check Response for Error or Success
      * @return boolean
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         if ($this->data) {
             if(array_key_exists('errors', $this->data)){

@@ -20,7 +20,7 @@ class UpdateInvoiceRequest extends AbstractMYOBRequest
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
      *
      * @return mixed
-     * @throws \Omnipay\Common\Exception\InvalidRequestException
+     * @throws \PHPAccounting\MyobAccountRightLive\Foundation\Exceptions\InvalidRequestException
      */
     public function getData()
     {

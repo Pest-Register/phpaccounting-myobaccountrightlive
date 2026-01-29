@@ -3,7 +3,7 @@ namespace Tests;
 
 
 use Dotenv\Dotenv;
-use Omnipay\Omnipay;
+use PHPAccounting\MyobAccountRightLive\Gateway;
 use PHPUnit\Framework\TestCase;
 
 class BaseTest extends TestCase
@@ -13,17 +13,17 @@ class BaseTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $dotenv = Dotenv::create(__DIR__ . '/..');
-        $dotenv->load();
-        $this->gateway = Omnipay::create('\PHPAccounting\MyobAccountRightLive\Gateway');
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+        $dotenv->safeLoad();
+        $this->gateway = new Gateway();
 
-        $this->gateway->setAPIKey(getenv('API_KEY'));
-        $this->gateway->setAccessToken(getenv('ACCESS_TOKEN'));
-        $this->gateway->setCompanyEndpoint(getenv('COMPANY_FILE_URI'));
+        $this->gateway->setAPIKey($_ENV['API_KEY'] ?? '');
+        $this->gateway->setAccessToken($_ENV['ACCESS_TOKEN'] ?? '');
+        $this->gateway->setCompanyEndpoint($_ENV['COMPANY_FILE_URI'] ?? '');
         $this->gateway->setCompanyFile(base64_encode('Administrator:'));
-        $this->gateway->setAccessFlag(getenv('ACCESS_FLAG'));
-        $this->gateway->setProduct(getenv('PRODUCT'));
-        $this->gateway->setBusinessID(getenv('BUSINESS_ID'));
-        $this->gateway->setCountryCode(getenv('COUNTRY_CODE'));
+        $this->gateway->setAccessFlag($_ENV['ACCESS_FLAG'] ?? '');
+        $this->gateway->setProduct($_ENV['PRODUCT'] ?? '');
+        $this->gateway->setBusinessID($_ENV['BUSINESS_ID'] ?? '');
+        $this->gateway->setCountryCode($_ENV['COUNTRY_CODE'] ?? '');
     }
 }

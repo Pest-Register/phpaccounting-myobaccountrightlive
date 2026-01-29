@@ -2,8 +2,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive;
 
-use http\Message;
-use Omnipay\Common\AbstractGateway;
+use PHPAccounting\MyobAccountRightLive\Foundation\AbstractGateway;
 use PHPAccounting\MyobAccountRightLive\Message\AccessFlag\Requests\GetAccessFlagRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\CreateAccountRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\DeleteAccountRequest;
@@ -23,6 +22,7 @@ use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\DeleteInvoiceRe
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\GetInvoiceRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\UpdateInvoiceRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Journals\Requests\GetJournalRequest;
+use PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Requests\CreateManualJournalRequest;
 use PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Requests\GetManualJournalRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\AccountRight\GetOrganisationRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Requests\CreatePaymentRequest;
@@ -33,14 +33,6 @@ use PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\DeleteQuotati
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\GetQuotationRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\UpdateQuotationRequest;
 use PHPAccounting\MyobAccountRightLive\Message\TaxRates\Requests\GetTaxRateRequest;
-use Tests\ManualJournals\CreateManualJournalTest;
-
-/**
- * Created by IntelliJ IDEA.
- * User: Dylan
- * Date: 13/05/2019
- * Time: 3:11 PM
- */
 
 class Gateway extends AbstractGateway
 {
@@ -51,7 +43,7 @@ class Gateway extends AbstractGateway
      * This can be used by carts to get the display name for each gateway.
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'Myob';
     }
@@ -108,12 +100,12 @@ class Gateway extends AbstractGateway
 
     public function getAPIKey()
     {
-        return $this->getParameter('APIKey');
+        return $this->getParameter('apiKey');
     }
 
     public function setAPIKey($value)
     {
-        return $this->setParameter('APIKey', $value);
+        return $this->setParameter('apiKey', $value);
     }
 
 
@@ -155,7 +147,7 @@ class Gateway extends AbstractGateway
     /**
      * Customer Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getContact(array $parameters = []){
@@ -177,7 +169,7 @@ class Gateway extends AbstractGateway
     /**
      * Invoice Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getInvoice(array $parameters = []){
@@ -200,7 +192,7 @@ class Gateway extends AbstractGateway
     /**
      * Quotation Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
     public function getQuotation(array $parameters = []){
         return $this->createRequest(GetQuotationRequest::class, $parameters);
@@ -221,7 +213,7 @@ class Gateway extends AbstractGateway
     /**
      * Account Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getAccount(array $parameters = []) {
@@ -243,7 +235,7 @@ class Gateway extends AbstractGateway
     /**
      * Tax Rate Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getTaxRate(array $parameters = []){
@@ -253,7 +245,7 @@ class Gateway extends AbstractGateway
     /**
      * Payment Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getPayment(array $parameters = []){
@@ -271,7 +263,7 @@ class Gateway extends AbstractGateway
     /**
      * Organisation Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getOrganisation(array $parameters = []){
@@ -281,7 +273,7 @@ class Gateway extends AbstractGateway
     /**
      * CurrentUser Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getCurrentUser(array $parameters = []){
@@ -291,7 +283,7 @@ class Gateway extends AbstractGateway
     /**
      * Journal Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getJournal(array $parameters = []){
@@ -301,7 +293,7 @@ class Gateway extends AbstractGateway
     /**
      * Manual Journal Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getManualJournal(array $parameters = []){
@@ -309,13 +301,13 @@ class Gateway extends AbstractGateway
     }
 
     public function createManualJournal(array $parameters = []){
-        return $this->createRequest(CreateManualJournalTest::class, $parameters);
+        return $this->createRequest(CreateManualJournalRequest::class, $parameters);
     }
 
     /**
      * Inventory Item Requests
      * @param array $parameters
-     * @return \Omnipay\Common\Message\AbstractRequest
+     * @return \PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface
      */
 
     public function getInventoryItem(array $parameters = []){

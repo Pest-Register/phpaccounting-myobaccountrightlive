@@ -2,9 +2,7 @@
 
 namespace Tests;
 
-use Omnipay\Omnipay;
 use PHPUnit\Framework\TestCase;
-use XeroPHP\Remote\Collection;
 
 
 /**

@@ -1,72 +1,46 @@
 <?php
 
-
 namespace PHPAccounting\MyobAccountRightLive\Helpers\AccountRight;
 
+use PHPAccounting\MyobAccountRightLive\Helpers\ODataQueryBuilder;
 
+/**
+ * Endpoint builder for MYOB AccountRight Live API.
+ * Uses OData query syntax.
+ */
 class BuildEndpointHelper
 {
     /**
      * Load model by specific GUID
-     * @param $endpoint
-     * @param $guid
-     * @param string $filterPrefix
-     * @return string
      */
-    public static function loadByGUID($endpoint, $guid, $filterPrefix='') {
-        $prefix = '?$';
-        $endpoint = $endpoint . $prefix."filter=".$filterPrefix."UID eq guid'".$guid."'";
-        return $endpoint;
+    public static function loadByGUID(string $endpoint, string $guid, string $filterPrefix = ''): string
+    {
+        return ODataQueryBuilder::filterByGuid($endpoint, $guid, $filterPrefix);
     }
 
     /**
-     * Paginate based on page and skip parameters
-     * @param $endpoint
-     * @param $page
-     * @param $skip
-     * @return string
+     * Paginate based on top and skip parameters
      */
-    public static function paginate($endpoint, $page, $skip) {
-        $prefix = '?$';
-        $skipPrefix = '&$';
-        $endpoint = $endpoint . $prefix."top=".$page.$skipPrefix.'skip='.$skip;
-        return $endpoint;
+    public static function paginate(string $endpoint, int $top, int $skip = 0): string
+    {
+        return ODataQueryBuilder::paginate($endpoint, $top, $skip, 'UID');
     }
 
     /**
      * Search for model based on passed in search term and parameter
-     * @param $endpoint
-     * @param $page
-     * @param $skip
-     * @param $searchParam
-     * @param $searchTerm
-     * @param string $filterPrefix
-     * @return string
+     * Note: AccountRight uses a different search syntax (substringof)
      */
-    public static function search($endpoint, $searchParam, $searchTerm, $filterPrefix='') {
+    public static function search(string $endpoint, string $searchParam, string $searchTerm, string $filterPrefix = ''): string
+    {
         $prefix = '?$';
-        $endpoint = $endpoint . $prefix."filter=".$filterPrefix."('".$searchTerm."',".$searchParam.") eq true";
-        return $endpoint;
+        return $endpoint . $prefix . "filter={$filterPrefix}('{$searchTerm}',{$searchParam}) eq true";
     }
 
-    public static function contactType($endpoint, $type){
-        switch ($type) {
-            case "Customer":
-                return $endpoint . 'Customer';
-            case "Supplier":
-                return $endpoint . 'Supplier';
-            case "Employee":
-                return $endpoint . 'Employee';
-            case "EmployeePayrollDetails":
-                return $endpoint . 'EmployeePayrollDetails';
-            case "EmployeePaymentDetails":
-                return $endpoint . 'EmployeePaymentDetails';
-            case "EmployeeStandardPay":
-                return $endpoint . 'EmployeeStandardPay';
-            case "Personal":
-                return $endpoint . 'Personal';
-            default:
-                return $endpoint . 'Customer';
-        }
+    /**
+     * Append contact type to endpoint
+     */
+    public static function contactType(string $endpoint, string $type): string
+    {
+        return ODataQueryBuilder::appendContactType($endpoint, $type);
     }
 }
