@@ -3,7 +3,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Responses;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
 
 class CreatePaymentResponse extends AbstractMYOBResponse

@@ -4,7 +4,7 @@ namespace PHPAccounting\MyobAccountRightLive\Message;
 
 use PHPAccounting\MyobAccountRightLive\Foundation\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface;
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\ErrorResponseHelper;
 
 class AbstractMYOBResponse extends AbstractResponse
 {
@@ -14,6 +14,12 @@ class AbstractMYOBResponse extends AbstractResponse
      * @var string
      */
     private string $modelType;
+
+    /**
+     * HTTP status code from response
+     * @var int|null
+     */
+    protected ?int $httpStatusCode = null;
 
     /**
      * Request id
@@ -26,14 +32,23 @@ class AbstractMYOBResponse extends AbstractResponse
      */
     protected $headers = [];
 
-    public function __construct(RequestInterface $request, $data, $headers = [])
+    public function __construct(RequestInterface $request, $data, $headers = [], ?int $statusCode = null)
     {
         if (is_string($data)) {
             $data = json_decode($data, true);
         }
         parent::__construct($request, $data);
         $this->headers = $headers;
+        $this->httpStatusCode = $statusCode;
         $this->modelType = $request->model ?? '';
+    }
+
+    /**
+     * Get the HTTP status code
+     */
+    public function getHttpStatusCode(): ?int
+    {
+        return $this->httpStatusCode;
     }
 
     public function getHeaders(){
@@ -46,13 +61,27 @@ class AbstractMYOBResponse extends AbstractResponse
      */
     public function isSuccessful(): bool
     {
+        // Check HTTP status code first (if available)
+        if ($this->httpStatusCode !== null && ($this->httpStatusCode < 200 || $this->httpStatusCode >= 300)) {
+            return false;
+        }
+
         if ($this->data) {
             if (is_string($this->data)) {
+                // String data could be an error message - check if it looks like JSON error
+                $decoded = json_decode($this->data, true);
+                if ($decoded && isset($decoded['Errors'])) {
+                    return false;
+                }
                 return true;
             } else {
                 if (is_object($this->data)) {
-                    if (property_exists($this->data, 'Errors')) {
-                        return !$this->data->Errors[0]->Severity == 'Error';
+                    if (property_exists($this->data, 'Errors') && !empty($this->data->Errors)) {
+                        $firstError = $this->data->Errors[0] ?? null;
+                        if ($firstError && property_exists($firstError, 'Severity')) {
+                            return $firstError->Severity !== 'Error';
+                        }
+                        return false; // Has errors but can't determine severity
                     }
                     if (property_exists($this->data,'Items')) {
                         if (count($this->data->Items) === 0) {
@@ -60,8 +89,12 @@ class AbstractMYOBResponse extends AbstractResponse
                         }
                     }
                 } else {
-                    if (array_key_exists('Errors', $this->data)) {
-                        return !$this->data['Errors'][0]['Severity'] == 'Error';
+                    if (array_key_exists('Errors', $this->data) && !empty($this->data['Errors'])) {
+                        $firstError = $this->data['Errors'][0] ?? null;
+                        if ($firstError && isset($firstError['Severity'])) {
+                            return $firstError['Severity'] !== 'Error';
+                        }
+                        return false; // Has errors but can't determine severity
                     }
                     if (array_key_exists('Items', $this->data)) {
                         if (count($this->data['Items']) === 0) {

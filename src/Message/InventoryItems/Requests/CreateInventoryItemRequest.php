@@ -53,8 +53,8 @@ class CreateInventoryItemRequest extends AbstractMYOBRequest
         return 'POST';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new CreateInventoryItemResponse($this, $data);
+        return $this->response = new CreateInventoryItemResponse($this, $data, $headers, $statusCode);
     }
 }

@@ -151,4 +151,92 @@ class ResponseParsingTest extends TestCase
         $this->assertTrue($response->isSuccessful()); // null is considered "no error"
         $this->assertEmpty($response->getAccounts());
     }
+
+    public function testResponseFailsOnHttpError(): void
+    {
+        // HTTP 401 should be detected as failure even with valid-looking data
+        $mockData = [
+            'Items' => [
+                ['UID' => 'test-uid', 'Name' => 'Test']
+            ]
+        ];
+
+        $response = new GetAccountResponse($this->createMockRequest(), $mockData, [], 401);
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertEquals(401, $response->getHttpStatusCode());
+    }
+
+    public function testResponseSucceedsOn200(): void
+    {
+        $mockData = [
+            'Items' => [
+                ['UID' => 'test-uid', 'Name' => 'Test', 'IsHeader' => false]
+            ]
+        ];
+
+        $response = new GetAccountResponse($this->createMockRequest(), $mockData, [], 200);
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals(200, $response->getHttpStatusCode());
+    }
+
+    public function testResponseDetectsErrorSeverityCorrectly(): void
+    {
+        // This tests the fixed operator precedence bug
+        // The old code had: !$this->data['Errors'][0]['Severity'] == 'Error'
+        // Which evaluates as: (!$this->data['Errors'][0]['Severity']) == 'Error'
+        // The fix is: $this->data['Errors'][0]['Severity'] !== 'Error'
+
+        $mockData = [
+            'Errors' => [
+                [
+                    'Severity' => 'Error',
+                    'Message' => 'Test error'
+                ]
+            ]
+        ];
+
+        $response = new GetAccountResponse($this->createMockRequest(), $mockData);
+
+        // This should now correctly return false
+        $this->assertFalse($response->isSuccessful());
+    }
+
+    public function testResponseAllowsWarningsSeverity(): void
+    {
+        $mockData = [
+            'Errors' => [
+                [
+                    'Severity' => 'Warning',
+                    'Message' => 'Just a warning'
+                ]
+            ]
+        ];
+
+        $response = new GetAccountResponse($this->createMockRequest(), $mockData);
+
+        // Warnings are not errors, so this should succeed
+        $this->assertTrue($response->isSuccessful());
+    }
+
+    public function testResponseHandles404NotFound(): void
+    {
+        $mockData = [
+            'Message' => 'Resource not found'
+        ];
+
+        $response = new GetAccountResponse($this->createMockRequest(), $mockData, [], 404);
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertEquals(404, $response->getHttpStatusCode());
+    }
+
+    public function testResponseHandles500ServerError(): void
+    {
+        $response = new GetAccountResponse($this->createMockRequest(), null, [], 500);
+
+        $this->assertFalse($response->isSuccessful());
+        $this->assertEquals(500, $response->getHttpStatusCode());
+    }
 }

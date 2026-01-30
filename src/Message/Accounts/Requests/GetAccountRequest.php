@@ -2,7 +2,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Responses\GetAccountResponse;
 use PHPAccounting\MyobAccountRightLive\Traits\GetRequestTrait;
@@ -55,9 +55,9 @@ class GetAccountRequest extends AbstractMYOBRequest
         return 'GET';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new GetAccountResponse($this, $data);
+        return $this->response = new GetAccountResponse($this, $data, $headers, $statusCode);
     }
 
 }

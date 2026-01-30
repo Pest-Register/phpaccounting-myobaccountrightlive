@@ -2,7 +2,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Traits;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 
 trait ContactRequestTrait
 {

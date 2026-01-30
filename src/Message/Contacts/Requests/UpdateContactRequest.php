@@ -4,8 +4,8 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests;
 
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\Traits\ContactRequestTrait;
 use PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses\UpdateContactResponse;
@@ -113,8 +113,8 @@ class UpdateContactRequest extends AbstractMYOBRequest
         return 'PUT';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new UpdateContactResponse($this, $data);
+        return $this->response = new UpdateContactResponse($this, $data, $headers, $statusCode);
     }
 }

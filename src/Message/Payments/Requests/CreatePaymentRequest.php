@@ -57,8 +57,8 @@ class CreatePaymentRequest extends AbstractMYOBRequest
         return 'POST';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new CreatePaymentResponse($this, $data);
+        return $this->response = new CreatePaymentResponse($this, $data, $headers, $statusCode);
     }
 }

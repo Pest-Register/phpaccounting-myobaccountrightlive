@@ -1,7 +1,7 @@
 <?php
 namespace PHPAccounting\MyobAccountRightLive\Message\Contacts\Responses;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
 
 /**

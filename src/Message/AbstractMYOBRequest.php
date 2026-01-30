@@ -200,7 +200,12 @@ abstract class AbstractMYOBRequest extends AbstractRequest
                 'body' => $body,
             ]);
             $responseBody = $httpResponse->getBody()->getContents();
-            $this->createResponse(json_decode($responseBody, true), $httpResponse->getHeaders());
+            $statusCode = $httpResponse->getStatusCode();
+            $this->createResponse(
+                json_decode($responseBody, true),
+                $httpResponse->getHeaders(),
+                $statusCode
+            );
             return $this->response;
         } catch (\Exception $e) {
             // Check if this is an HTTP/2 protocol error
@@ -227,7 +232,12 @@ abstract class AbstractMYOBRequest extends AbstractRequest
             ]);
 
             $responseData = json_decode($guzzleResponse->getBody()->getContents(), true);
-            $this->createResponse($responseData, $guzzleResponse->getHeaders());
+            $statusCode = $guzzleResponse->getStatusCode();
+            $this->createResponse(
+                $responseData,
+                $guzzleResponse->getHeaders(),
+                $statusCode
+            );
             return $this->response;
         }
     }
@@ -237,7 +247,8 @@ abstract class AbstractMYOBRequest extends AbstractRequest
      *
      * @param mixed $data
      * @param array $headers
+     * @param int|null $statusCode HTTP status code
      * @return mixed
      */
-    abstract protected function createResponse($data, $headers = []);
+    abstract protected function createResponse($data, $headers = [], ?int $statusCode = null);
 }

@@ -3,7 +3,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Traits\InvoiceRequestTrait;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\UpdateInvoiceResponse;
@@ -92,8 +92,8 @@ class UpdateInvoiceRequest extends AbstractMYOBRequest
         return 'PUT';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new UpdateInvoiceResponse($this, $data);
+        return $this->response = new UpdateInvoiceResponse($this, $data, $headers, $statusCode);
     }
 }

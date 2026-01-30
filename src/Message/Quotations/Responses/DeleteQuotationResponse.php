@@ -4,7 +4,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses;
 
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
 
 class DeleteQuotationResponse extends AbstractMYOBResponse

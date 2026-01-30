@@ -82,8 +82,8 @@ class CreateInvoiceRequest extends AbstractMYOBRequest
         return 'POST';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new CreateInvoiceResponse($this, $data);
+        return $this->response = new CreateInvoiceResponse($this, $data, $headers, $statusCode);
     }
 }

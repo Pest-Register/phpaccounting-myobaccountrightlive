@@ -3,7 +3,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\InventoryItems\Responses;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
 
 class UpdateInventoryItemResponse extends AbstractMYOBResponse

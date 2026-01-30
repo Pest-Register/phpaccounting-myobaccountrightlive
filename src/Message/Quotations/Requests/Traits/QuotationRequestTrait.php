@@ -2,7 +2,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Traits;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 
 trait QuotationRequestTrait
 {

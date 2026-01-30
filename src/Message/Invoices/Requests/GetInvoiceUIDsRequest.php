@@ -4,7 +4,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\GetInvoiceUIDsResponse;
 use PHPAccounting\MyobAccountRightLive\Traits\GetRequestTrait;
@@ -44,8 +44,8 @@ class GetInvoiceUIDsRequest extends AbstractMYOBRequest
         return 'GET';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new GetInvoiceUIDsResponse($this, $data);
+        return $this->response = new GetInvoiceUIDsResponse($this, $data, $headers, $statusCode);
     }
 }
