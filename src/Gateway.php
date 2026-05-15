@@ -3,7 +3,6 @@
 namespace PHPAccounting\MyobAccountRightLive;
 
 use PHPAccounting\MyobAccountRightLive\Foundation\AbstractGateway;
-use PHPAccounting\MyobAccountRightLive\Message\AccessFlag\Requests\GetAccessFlagRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\CreateAccountRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\DeleteAccountRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Accounts\Requests\GetAccountRequest;
@@ -75,7 +74,16 @@ class Gateway extends AbstractGateway
 
     public function setBusinessID($value)
     {
-        return $this->setParameter('businessID', 'businesses/' .$value);
+        // Historically this prepended 'businesses/' unconditionally — calling
+        // the setter twice produced 'businesses/businesses/<id>'. Strip any
+        // existing prefix first so repeat calls are idempotent. The prefix is
+        // still required by the (currently dead) Essentials URL pattern at
+        // Message/AbstractMYOBRequest::sendData.
+        $value = ltrim((string) $value, '/');
+        if (str_starts_with($value, 'businesses/')) {
+            $value = substr($value, strlen('businesses/'));
+        }
+        return $this->setParameter('businessID', 'businesses/'.$value);
     }
 
     /**
