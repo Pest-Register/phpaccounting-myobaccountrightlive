@@ -49,13 +49,22 @@ class ODataQueryBuilder
     }
 
     /**
-     * Build pagination query string
+     * Build pagination query string. When $modifiedSince is supplied, adds an
+     * OData $filter clause `LastModified ge datetime'...'` so the response
+     * is restricted to records updated since that cutoff (delta sync).
      */
-    public static function paginate(string $endpoint, int $top, int $skip = 0, string $orderBy = 'UID'): string
+    public static function paginate(string $endpoint, int $top, int $skip = 0, string $orderBy = 'UID', ?string $modifiedSince = null): string
     {
-        return $endpoint . self::QUERY_PREFIX . "top={$top}"
+        $url = $endpoint . self::QUERY_PREFIX . "top={$top}"
             . self::PARAM_PREFIX . "skip={$skip}"
             . self::PARAM_PREFIX . "orderby={$orderBy}";
+
+        $modifiedClause = self::buildLastModifiedClause($modifiedSince);
+        if ($modifiedClause !== '') {
+            $url .= self::PARAM_PREFIX . 'filter=' . $modifiedClause;
+        }
+
+        return $url;
     }
 
     /**
@@ -91,7 +100,10 @@ class ODataQueryBuilder
     }
 
     /**
-     * Build complex search query with filters
+     * Build complex search query with filters. When $modifiedSince is supplied,
+     * adds an OData `LastModified ge datetime'...'` clause to the $filter so
+     * the response is restricted to records updated since that cutoff
+     * (delta sync).
      */
     public static function search(
         string $endpoint,
@@ -101,7 +113,8 @@ class ODataQueryBuilder
         bool $filterMatchAll = false,
         int $top = 1000,
         int $skip = 0,
-        string $orderBy = 'UID'
+        string $orderBy = 'UID',
+        ?string $modifiedSince = null
     ): string {
         // Start with pagination
         $url = $endpoint . self::QUERY_PREFIX . "top={$top}"
@@ -127,7 +140,29 @@ class ODataQueryBuilder
             }
         }
 
+        $modifiedClause = self::buildLastModifiedClause($modifiedSince);
+        if ($modifiedClause !== '') {
+            $filters[] = $modifiedClause;
+        }
+
         return $url . implode(' and ', $filters);
+    }
+
+    /**
+     * Format an OData LastModified clause. Accepts an ISO-8601 datetime
+     * string (with or without timezone) and emits MYOB's preferred shape:
+     * `LastModified ge datetime'YYYY-MM-DDTHH:MM:SS'`. Returns '' when no
+     * cutoff was supplied.
+     */
+    private static function buildLastModifiedClause(?string $modifiedSince): string
+    {
+        if ($modifiedSince === null || $modifiedSince === '') {
+            return '';
+        }
+        // Strip any timezone suffix — MYOB rejects datetime'...' with Z/+00:00.
+        $iso = preg_replace('/(Z|[+-]\d{2}:?\d{2})$/', '', $modifiedSince);
+        $iso = preg_replace('/\.[0-9]+$/', '', $iso); // drop fractional seconds
+        return "LastModified ge datetime'" . urlencode($iso) . "'";
     }
 
     /**

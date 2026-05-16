@@ -52,10 +52,13 @@ class ErrorResponseHelper
             ];
         }
 
-        // Null field error
+        // Null field error — MYOB returns this when a required field was
+        // sent as null. Previously mis-mapped to "Model cannot be edited"
+        // which suggests an immutability problem rather than the actual
+        // validation error.
         if (strpos($response, 'may not be null') !== false) {
             return [
-                'message' => 'Model cannot be edited',
+                'message' => 'Parameter missing from request: ' . $response,
                 'status' => $status,
                 'exception' => $response,
                 'error_code' => $errorCode,

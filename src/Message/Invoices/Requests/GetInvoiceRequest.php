@@ -37,6 +37,7 @@ class GetInvoiceRequest extends AbstractMYOBRequest
     {
 
         $endpoint = 'Sale/Invoice/'.$this->getInvoiceType().'/';
+        $modifiedSince = $this->getLastModifiedSince();
 
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
@@ -53,12 +54,18 @@ class GetInvoiceRequest extends AbstractMYOBRequest
                     $this->getMatchAllFilters(),
                     'substringof',
                     $this->getPage(),
-                    $this->getSkip()
+                    $this->getSkip(),
+                    modifiedSince: $modifiedSince
                 );
             }
             else if ($this->getPage()) {
                 if ($this->getPage() !== "") {
-                    $endpoint = BuildEndpointHelper::paginate($endpoint, $this->getPage(), $this->getSkip());
+                    $endpoint = BuildEndpointHelper::paginate(
+                        $endpoint,
+                        $this->getPage(),
+                        $this->getSkip(),
+                        modifiedSince: $modifiedSince
+                    );
                 }
             }
         }

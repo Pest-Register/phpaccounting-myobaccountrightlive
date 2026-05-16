@@ -56,6 +56,62 @@ class AbstractMYOBResponse extends AbstractResponse
     }
 
     /**
+     * Return MYOB's request-trace id (typically `x-myobapi-tid` or `request-id`
+     * depending on the endpoint) from the response headers when present.
+     * Useful when escalating issues to MYOB support — they ask for this
+     * identifier to find the request in their logs.
+     *
+     * @return string|null
+     */
+    /**
+     * Read the Retry-After response header (case-insensitive). MYOB may
+     * return either a seconds count or an HTTP-date; we treat anything
+     * non-numeric as "unknown" and fall through to the default backoff.
+     */
+    private function extractRetryAfterSeconds(): ?int
+    {
+        if (! is_array($this->headers)) {
+            return null;
+        }
+        foreach ($this->headers as $name => $value) {
+            if (strcasecmp((string) $name, 'retry-after') !== 0) {
+                continue;
+            }
+            if (is_array($value)) {
+                $value = $value[0] ?? null;
+            }
+            if ($value === null || $value === '') {
+                continue;
+            }
+            return is_numeric($value) ? (int) $value : null;
+        }
+        return null;
+    }
+
+    public function getTraceId(): ?string
+    {
+        if (! is_array($this->headers) || empty($this->headers)) {
+            return null;
+        }
+
+        $candidates = ['x-myobapi-tid', 'request-id', 'x-correlation-id'];
+
+        foreach ($this->headers as $name => $value) {
+            $lower = strtolower((string) $name);
+            if (! in_array($lower, $candidates, true)) {
+                continue;
+            }
+            if (is_array($value)) {
+                $value = $value[0] ?? null;
+            }
+            if ($value !== null && $value !== '') {
+                return (string) $value;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Check Response for Error or Success
      * @return boolean
      */
@@ -83,11 +139,9 @@ class AbstractMYOBResponse extends AbstractResponse
                         }
                         return false; // Has errors but can't determine severity
                     }
-                    if (property_exists($this->data,'Items')) {
-                        if (count($this->data->Items) === 0) {
-                            return false;
-                        }
-                    }
+                    // Empty Items[] on a 2xx is a legitimate "no matching
+                    // results" — only treat as failure when we didn't already
+                    // confirm a successful HTTP status earlier.
                 } else {
                     if (array_key_exists('Errors', $this->data) && !empty($this->data['Errors'])) {
                         $firstError = $this->data['Errors'][0] ?? null;
@@ -95,11 +149,6 @@ class AbstractMYOBResponse extends AbstractResponse
                             return $firstError['Severity'] !== 'Error';
                         }
                         return false; // Has errors but can't determine severity
-                    }
-                    if (array_key_exists('Items', $this->data)) {
-                        if (count($this->data['Items']) === 0) {
-                            return false;
-                        }
                     }
                 }
             }
@@ -114,6 +163,22 @@ class AbstractMYOBResponse extends AbstractResponse
      */
     public function getErrorMessage()
     {
+        // Surface 429 as a structured rate-limit error so
+        // AccountingException::handle dispatches to RateLimitException and
+        // Mira's handleRateLimit honours Retry-After instead of falling back
+        // to the default 120s sleep.
+        if ($this->httpStatusCode === 429) {
+            return [
+                'message' => 'The API rate limit for your organisation/application pairing has been exceeded',
+                'exception' => 'Rate limit exceeded',
+                'rate_problem' => 'minute',
+                'retry' => $this->extractRetryAfterSeconds() ?? 60,
+                'error_code' => 429,
+                'status_code' => 429,
+                'detail' => null,
+            ];
+        }
+
         if ($this->data) {
             if (is_string($this->data)) {
                 $additionalDetails = '';

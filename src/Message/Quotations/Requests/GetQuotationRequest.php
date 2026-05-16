@@ -50,12 +50,18 @@ class GetQuotationRequest extends AbstractMYOBRequest
                     $this->getMatchAllFilters(),
                     'substringof',
                     $this->getPage(),
-                    $this->getSkip()
+                    $this->getSkip(),
+                    modifiedSince: $this->getLastModifiedSince()
                 );
             }
             else if ($this->getPage()) {
                 if ($this->getPage() !== "") {
-                    $endpoint = BuildEndpointHelper::paginate($endpoint, $this->getPage(), $this->getSkip());
+                    $endpoint = BuildEndpointHelper::paginate(
+                        $endpoint,
+                        $this->getPage(),
+                        $this->getSkip(),
+                        modifiedSince: $this->getLastModifiedSince()
+                    );
                 }
             }
         }

@@ -35,15 +35,19 @@ class BuildEndpointHelper
     }
 
     /**
-     * Paginate based on top and skip parameters
+     * Paginate based on top and skip parameters. Optional $modifiedSince
+     * restricts results to records updated at or after that ISO-8601 datetime
+     * (delta sync; defers to ODataQueryBuilder for the actual clause shape).
      */
-    public static function paginate(string $endpoint, int $top, int $skip = 0, string $orderBy = 'UID'): string
+    public static function paginate(string $endpoint, int $top, int $skip = 0, string $orderBy = 'UID', ?string $modifiedSince = null): string
     {
-        return ODataQueryBuilder::paginate($endpoint, $top, $skip, $orderBy);
+        return ODataQueryBuilder::paginate($endpoint, $top, $skip, $orderBy, $modifiedSince);
     }
 
     /**
-     * Search for model based on passed in search term and parameter
+     * Search for model based on passed in search term and parameter. Optional
+     * $modifiedSince restricts results to records updated at or after that
+     * ISO-8601 datetime (delta sync).
      */
     public static function search(
         string $endpoint,
@@ -54,7 +58,8 @@ class BuildEndpointHelper
         string $filterPrefix = '',
         int $page = 1000,
         int $skip = 0,
-        string $orderBy = 'UID'
+        string $orderBy = 'UID',
+        ?string $modifiedSince = null
     ): string {
         return ODataQueryBuilder::search(
             $endpoint,
@@ -64,7 +69,8 @@ class BuildEndpointHelper
             $filterMatchAll,
             $page,
             $skip,
-            $orderBy
+            $orderBy,
+            $modifiedSince
         );
     }
 

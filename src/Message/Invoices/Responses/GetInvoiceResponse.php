@@ -11,6 +11,12 @@ use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
  */
 class GetInvoiceResponse extends AbstractMYOBResponse
 {
+    /**
+     * Tolerance for floating-point currency comparisons. The package is
+     * standalone, so it can't read accounting.php — keep this in sync with
+     * config('accounting.php_float_check') on the Mira side.
+     */
+    private const FLOAT_TOLERANCE = 0.001;
 
     /**
      * @param $data
@@ -40,6 +46,8 @@ class GetInvoiceResponse extends AbstractMYOBResponse
                 case 'Closed':
                 case 'Credit':
                     return 'PAID';
+                case 'Voided':
+                    return 'DELETED';
             }
         }
         return null;
@@ -145,16 +153,12 @@ class GetInvoiceResponse extends AbstractMYOBResponse
             }
         }
 
+        // Always compute amount_paid when both totals are present — even when
+        // BalanceDueAmount is 0 (fully paid). The old `&& $invoice['BalanceDueAmount']`
+        // gate left amount_paid unset for fully paid invoices, which then
+        // surfaced as missing data downstream.
         if (array_key_exists('TotalAmount', $invoice) && array_key_exists('BalanceDueAmount', $invoice)) {
-            if ($invoice['TotalAmount'] && $invoice['BalanceDueAmount']) {
-                $amountPaid = floatval($invoice['TotalAmount']) - floatval($invoice['BalanceDueAmount']);
-                if ($amountPaid) {
-                    $newInvoice['amount_paid'] = $amountPaid;
-                } else {
-                    $newInvoice['amount_paid'] = 0.00;
-                }
-
-            }
+            $newInvoice['amount_paid'] = max(0, (float) $invoice['TotalAmount'] - (float) $invoice['BalanceDueAmount']);
         }
 
         if (array_key_exists('Terms', $invoice)) {
@@ -163,10 +167,17 @@ class GetInvoiceResponse extends AbstractMYOBResponse
             }
         }
 
-        if ($newInvoice['amount_due'] == 0) {
-            $newInvoice['status'] = 'PAID';
-        } else if ($newInvoice['amount_due'] > 0 && $newInvoice['amount_due'] != $newInvoice['total']) {
-            $newInvoice['status'] = 'PARTIAL';
+        // Float-tolerant status inference — direct `==` on currency values has
+        // bitten us when a $0.0001 rounding diff makes a fully-paid invoice
+        // show as OPEN. Skip when parseStatus already set DELETED (voided).
+        if ($newInvoice['status'] !== 'DELETED') {
+            $amountDue = (float) $newInvoice['amount_due'];
+            $total = (float) $newInvoice['total'];
+            if (abs($amountDue) < self::FLOAT_TOLERANCE) {
+                $newInvoice['status'] = 'PAID';
+            } elseif ($amountDue > self::FLOAT_TOLERANCE && abs($amountDue - $total) > self::FLOAT_TOLERANCE) {
+                $newInvoice['status'] = 'PARTIAL';
+            }
         }
 
         return $newInvoice;
