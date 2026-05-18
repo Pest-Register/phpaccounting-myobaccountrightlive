@@ -412,14 +412,19 @@ trait InvoiceRequestTrait
         if ($lines) {
             foreach($lines as $line) {
                 $newLine = [];
-                $newLine['Account'] = [];
 
                 $newLine['TaxCode'] = [];
                 $newLine['TaxCode']['UID'] = IndexSanityCheckHelper::indexSanityCheck('tax_id', $line);
 
-                if (array_key_exists('item_id', $line)) {
-                    $newLine['Item'] = [];
-                    $newLine['Item']['UID'] = IndexSanityCheckHelper::indexSanityCheck('item_id', $line);
+                // Only include Item.UID when the caller actually has an
+                // inventory link — MYOB parses Item.UID as System.Guid and
+                // rejects the entire request with
+                // "Error converting value {null} to type 'System.Guid'"
+                // when the key is present but the value is null. The Mira
+                // side always passes item_id (even when null) for symmetry,
+                // so the array_key_exists check below is not enough.
+                if (! empty($line['item_id'])) {
+                    $newLine['Item'] = ['UID' => $line['item_id']];
                 }
 
                 $newLine['UnitOfMeasure'] = IndexSanityCheckHelper::indexSanityCheck('unit', $line);
@@ -429,8 +434,10 @@ trait InvoiceRequestTrait
 
                 $newLine['UnitPrice'] = IndexSanityCheckHelper::indexSanityCheck('unit_amount', $line);
                 $newLine['Total'] = IndexSanityCheckHelper::indexSanityCheck('amount', $line);
-                if (IndexSanityCheckHelper::indexSanityCheck('account_id', $line)) {
-                    $newLine['Account']['UID'] = $line['account_id'];
+                // Same shape for Account — only include the object when there's
+                // a real UID, never as an empty {} that MYOB might also reject.
+                if (! empty($line['account_id'])) {
+                    $newLine['Account'] = ['UID' => $line['account_id']];
                 }
 
                 $newLine['DiscountPercent'] = IndexSanityCheckHelper::indexSanityCheck('discount_rate', $line);
