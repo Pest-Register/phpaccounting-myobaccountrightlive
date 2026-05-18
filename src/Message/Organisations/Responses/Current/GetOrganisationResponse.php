@@ -1,5 +1,5 @@
 <?php
-namespace PHPAccounting\\MyobAccountRightLive\\Message\\Organisations\\Responses\\Current;
+namespace PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\Current;
 
 use PHPAccounting\MyobAccountRightLive\Foundation\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;

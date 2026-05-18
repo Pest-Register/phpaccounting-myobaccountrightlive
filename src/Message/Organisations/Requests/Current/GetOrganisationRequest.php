@@ -1,8 +1,8 @@
 <?php
-namespace PHPAccounting\\MyobAccountRightLive\\Message\\Organisations\\Requests\\Current;
+namespace PHPAccounting\MyobAccountRightLive\Message\Organisations\Requests\Current;
 
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
-use PHPAccounting\\MyobAccountRightLive\\Message\\Organisations\\Responses\\Current\\GetOrganisationResponse;
+use PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\Current\GetOrganisationResponse;
 /**
  * Get Organisation(s)
  * @package PHPAccounting\MyobAccountRightLive\Message\Contacts\Requests\AccountRight

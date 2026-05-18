@@ -1,5 +1,5 @@
 <?php
-namespace PHPAccounting\\MyobAccountRightLive\\Message\\Organisations\\Responses\\Legacy;
+namespace PHPAccounting\MyobAccountRightLive\Message\Organisations\Responses\Legacy;
 
 use PHPAccounting\MyobAccountRightLive\Foundation\AbstractResponse;
 use PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface;
