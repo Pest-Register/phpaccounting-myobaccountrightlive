@@ -4,9 +4,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Responses;
 
 
-use Omnipay\Common\Message\AbstractResponse;
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBResponse;
 
 class DeletePaymentResponse extends AbstractMYOBResponse

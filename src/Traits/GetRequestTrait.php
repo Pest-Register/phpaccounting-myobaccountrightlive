@@ -129,4 +129,32 @@ trait GetRequestTrait
     public function getMatchAllFilters() {
         return $this->getParameter('match_all_filters');
     }
+
+    /**
+     * Set the LastModified cutoff for delta/incremental sync. Subsequent
+     * GET-list requests will only return records whose LastModified is at or
+     * after this value, via OData's `$filter=LastModified ge datetime'...'`
+     * clause. Accepts a DateTimeInterface or a string already formatted in
+     * MYOB's expected `Y-m-d\TH:i:s` shape.
+     *
+     * @param \DateTimeInterface|string|null $value
+     */
+    public function setLastModifiedSince($value) {
+        return $this->setParameter('last_modified_since', $value);
+    }
+
+    /**
+     * Get the LastModified cutoff as a MYOB-formatted ISO datetime string.
+     * Returns null when not set.
+     */
+    public function getLastModifiedSince(): ?string {
+        $value = $this->getParameter('last_modified_since');
+        if ($value === null || $value === '') {
+            return null;
+        }
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format('Y-m-d\TH:i:s');
+        }
+        return (string) $value;
+    }
 }

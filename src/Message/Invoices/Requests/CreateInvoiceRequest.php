@@ -18,7 +18,7 @@ class CreateInvoiceRequest extends AbstractMYOBRequest
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
      *
      * @return mixed
-     * @throws \Omnipay\Common\Exception\InvalidRequestException
+     * @throws \PHPAccounting\MyobAccountRightLive\Foundation\Exceptions\InvalidRequestException
      */
     public function getData()
     {
@@ -72,8 +72,8 @@ class CreateInvoiceRequest extends AbstractMYOBRequest
 
     public function getEndpoint()
     {
-
-        $endpoint = 'Sale/Invoice/Item?returnBody=true';
+        $invoiceType = $this->getInvoiceType() ?: 'Item';
+        $endpoint = 'Sale/Invoice/' . $invoiceType . '?returnBody=true';
         return $endpoint;
     }
 
@@ -82,8 +82,8 @@ class CreateInvoiceRequest extends AbstractMYOBRequest
         return 'POST';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new CreateInvoiceResponse($this, $data);
+        return $this->response = new CreateInvoiceResponse($this, $data, $headers, $statusCode);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Requests;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\ManualJournals\Responses\GetManualJournalResponse;
 
@@ -101,9 +101,9 @@ class GetManualJournalRequest extends AbstractMYOBRequest
         return 'GET';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new GetManualJournalResponse($this, $data);
+        return $this->response = new GetManualJournalResponse($this, $data, $headers, $statusCode);
     }
 
 }

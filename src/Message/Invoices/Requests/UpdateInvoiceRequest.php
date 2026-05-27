@@ -3,7 +3,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Requests\Traits\InvoiceRequestTrait;
 use PHPAccounting\MyobAccountRightLive\Message\Invoices\Responses\UpdateInvoiceResponse;
@@ -20,7 +20,7 @@ class UpdateInvoiceRequest extends AbstractMYOBRequest
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
      *
      * @return mixed
-     * @throws \Omnipay\Common\Exception\InvalidRequestException
+     * @throws \PHPAccounting\MyobAccountRightLive\Foundation\Exceptions\InvalidRequestException
      */
     public function getData()
     {
@@ -77,11 +77,11 @@ class UpdateInvoiceRequest extends AbstractMYOBRequest
 
     public function getEndpoint()
     {
-
-        $endpoint = 'Sale/Invoice/Item?returnBody=true';
+        $invoiceType = $this->getInvoiceType() ?: 'Item';
+        $endpoint = 'Sale/Invoice/' . $invoiceType . '?returnBody=true';
         if ($this->getAccountingID()) {
             if ($this->getAccountingID() !== "") {
-                $endpoint = BuildEndpointHelper::createForGUID('Sale/Invoice/Item', $this->getAccountingID());
+                $endpoint = BuildEndpointHelper::createForGUID('Sale/Invoice/' . $invoiceType, $this->getAccountingID());
             }
         }
         return $endpoint;
@@ -92,8 +92,8 @@ class UpdateInvoiceRequest extends AbstractMYOBRequest
         return 'PUT';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new UpdateInvoiceResponse($this, $data);
+        return $this->response = new UpdateInvoiceResponse($this, $data, $headers, $statusCode);
     }
 }

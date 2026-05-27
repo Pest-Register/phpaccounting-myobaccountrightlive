@@ -3,7 +3,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Traits\QuotationRequestTrait;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses\UpdateQuotationResponse;
@@ -20,7 +20,7 @@ class UpdateQuotationRequest extends AbstractMYOBRequest
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
      *
      * @return mixed
-     * @throws \Omnipay\Common\Exception\InvalidRequestException
+     * @throws \PHPAccounting\MyobAccountRightLive\Foundation\Exceptions\InvalidRequestException
      */
     public function getData()
     {
@@ -90,8 +90,8 @@ class UpdateQuotationRequest extends AbstractMYOBRequest
         return 'PUT';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new UpdateQuotationResponse($this, $data);
+        return $this->response = new UpdateQuotationResponse($this, $data, $headers, $statusCode);
     }
 }

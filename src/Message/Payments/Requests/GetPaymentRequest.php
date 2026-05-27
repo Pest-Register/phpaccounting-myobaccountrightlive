@@ -2,7 +2,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Payments\Requests;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Payments\Responses\GetPaymentResponse;
 use PHPAccounting\MyobAccountRightLive\Traits\GetRequestTrait;
@@ -85,8 +85,8 @@ class GetPaymentRequest extends AbstractMYOBRequest
         return 'GET';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new GetPaymentResponse($this, $data);
+        return $this->response = new GetPaymentResponse($this, $data, $headers, $statusCode);
     }
 }

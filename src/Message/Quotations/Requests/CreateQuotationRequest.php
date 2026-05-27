@@ -4,7 +4,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests;
 
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Traits\QuotationRequestTrait;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses\CreateQuotationResponse;
@@ -21,7 +21,7 @@ class CreateQuotationRequest extends AbstractMYOBRequest
      * gateway, but will usually be either an associative array, or a SimpleXMLElement.
      *
      * @return mixed
-     * @throws \Omnipay\Common\Exception\InvalidRequestException
+     * @throws \PHPAccounting\MyobAccountRightLive\Foundation\Exceptions\InvalidRequestException
      */
     public function getData()
     {
@@ -86,8 +86,8 @@ class CreateQuotationRequest extends AbstractMYOBRequest
         return 'POST';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new CreateQuotationResponse($this, $data);
+        return $this->response = new CreateQuotationResponse($this, $data, $headers, $statusCode);
     }
 }

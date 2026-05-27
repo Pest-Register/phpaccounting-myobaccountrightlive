@@ -1,7 +1,8 @@
 <?php
 namespace PHPAccounting\MyobAccountRightLive\Message;
 
-use Omnipay\Common\Message\AbstractRequest;
+use GuzzleHttp\Client;
+use PHPAccounting\MyobAccountRightLive\Foundation\AbstractRequest;
 
 abstract class AbstractMYOBRequest extends AbstractRequest
 {
@@ -13,6 +14,11 @@ abstract class AbstractMYOBRequest extends AbstractRequest
     protected $data = [];
     protected $accountRightVersion = 'v2';
     protected $essentialsVersion = 'v0';
+
+    /**
+     * Model type for response parsing
+     */
+    public string $model = '';
 
     /**
      * Get Access Token
@@ -115,6 +121,7 @@ abstract class AbstractMYOBRequest extends AbstractRequest
 
         $headers['x-myobapi-version'] = $this->essentialsVersion;
         $headers['Accept-Encoding'] = 'gzip,deflate';
+        $headers['Accept'] = 'application/json';
 
         if ($httpMethod === 'POST' || $httpMethod === 'PUT') {
             $headers['Content-Type'] = 'application/json';
@@ -162,15 +169,15 @@ abstract class AbstractMYOBRequest extends AbstractRequest
      * Send the request with specified data
      *
      * @param  mixed $data The data to send
-     * @return string
+     * @return mixed
      */
     public function sendData($data)
     {
         $endpoint = '';
+        $headers = [];
         if ($this->getProduct() == 'accountright_live') {
             $endpoint = 'https://api.myob.com/accountright/' . $this->getCompanyEndpoint();
             $headers = $this->getAccountRightLiveHeaders();
-            $body = $data ? json_encode($data) : null;
         }
         elseif ($this->getProduct() == 'old_essentials') {
             if ($this->getBusinessID() !== '') {
@@ -179,15 +186,26 @@ abstract class AbstractMYOBRequest extends AbstractRequest
                 $endpoint = 'https://api.myob.com/'. $this->getCountryCode().'essentials/';
             }
             $headers = $this->getOldEssentialsHeaders($this->getHttpMethod());
-            $body = $data ? json_encode($data) : null;
         }
+
+        $body = $data ? json_encode($data) : null;
+        $fullUrl = $endpoint . $this->getEndpoint();
 
         // Try with default HTTP client first (may use HTTP/2)
         // If we get a protocol error, fallback to HTTP/1.1 using Guzzle
         try {
-            $httpResponse = $this->httpClient->request($this->getHttpMethod(), $endpoint . $this->getEndpoint(), $headers, $body);
+            $httpClient = $this->getHttpClient();
+            $httpResponse = $httpClient->request($this->getHttpMethod(), $fullUrl, [
+                'headers' => $headers,
+                'body' => $body,
+            ]);
             $responseBody = $httpResponse->getBody()->getContents();
-            $this->createResponse(json_decode($responseBody, true), $httpResponse->getHeaders());
+            $statusCode = $httpResponse->getStatusCode();
+            $this->createResponse(
+                json_decode($responseBody, true),
+                $httpResponse->getHeaders(),
+                $statusCode
+            );
             return $this->response;
         } catch (\Exception $e) {
             // Check if this is an HTTP/2 protocol error
@@ -196,27 +214,41 @@ abstract class AbstractMYOBRequest extends AbstractRequest
                          || stripos($e->getMessage(), 'stream error') !== false
                          || stripos($e->getMessage(), 'stream closed') !== false;
 
-            // If it's not an HTTP/2 error, or Guzzle is not available, rethrow
-            if (!$isHttp2Error || !class_exists('\GuzzleHttp\Client')) {
+            // If it's not an HTTP/2 error, rethrow
+            if (!$isHttp2Error) {
                 throw $e;
             }
 
             // Retry with HTTP/1.1 using Guzzle
-            $guzzle = new \GuzzleHttp\Client([
+            $guzzle = new Client([
                 'timeout' => 60,
-                // Removed 'version' option; will set protocol_version in request options
                 'http_errors' => false,
             ]);
 
-            $guzzleResponse = $guzzle->request($this->getHttpMethod(), $endpoint . $this->getEndpoint(), [
+            $guzzleResponse = $guzzle->request($this->getHttpMethod(), $fullUrl, [
                 'headers' => $headers,
                 'body' => $body,
-                'protocol_version' => '1.1', // Force HTTP/1.1
+                'version' => '1.1', // Force HTTP/1.1
             ]);
 
             $responseData = json_decode($guzzleResponse->getBody()->getContents(), true);
-            $this->createResponse($responseData, $guzzleResponse->getHeaders());
+            $statusCode = $guzzleResponse->getStatusCode();
+            $this->createResponse(
+                $responseData,
+                $guzzleResponse->getHeaders(),
+                $statusCode
+            );
             return $this->response;
         }
     }
+
+    /**
+     * Create the response object
+     *
+     * @param mixed $data
+     * @param array $headers
+     * @param int|null $statusCode HTTP status code
+     * @return mixed
+     */
+    abstract protected function createResponse($data, $headers = [], ?int $statusCode = null);
 }

@@ -2,16 +2,9 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message;
 
-use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RequestInterface;
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\ErrorResponseHelper;
-
-/**
- * Created by IntelliJ IDEA.
- * User: Dylan
- * Date: 13/05/2019
- * Time: 3:33 PM
- */
+use PHPAccounting\MyobAccountRightLive\Foundation\AbstractResponse;
+use PHPAccounting\MyobAccountRightLive\Foundation\Contracts\RequestInterface;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\ErrorResponseHelper;
 
 class AbstractMYOBResponse extends AbstractResponse
 {
@@ -21,6 +14,12 @@ class AbstractMYOBResponse extends AbstractResponse
      * @var string
      */
     private string $modelType;
+
+    /**
+     * HTTP status code from response
+     * @var int|null
+     */
+    protected ?int $httpStatusCode = null;
 
     /**
      * Request id
@@ -33,17 +32,23 @@ class AbstractMYOBResponse extends AbstractResponse
      */
     protected $headers = [];
 
-    public function __construct(RequestInterface $request, $data, $headers = [])
+    public function __construct(RequestInterface $request, $data, $headers = [], ?int $statusCode = null)
     {
-        $this->request = $request;
         if (is_string($data)) {
-            $this->data = json_decode($data, true);
-        } else {
-            $this->data = $data;
+            $data = json_decode($data, true);
         }
-        $this->headers = $headers;
-        $this->modelType = $request->model;
         parent::__construct($request, $data);
+        $this->headers = $headers;
+        $this->httpStatusCode = $statusCode;
+        $this->modelType = $request->model ?? '';
+    }
+
+    /**
+     * Get the HTTP status code
+     */
+    public function getHttpStatusCode(): ?int
+    {
+        return $this->httpStatusCode;
     }
 
     public function getHeaders(){
@@ -51,32 +56,99 @@ class AbstractMYOBResponse extends AbstractResponse
     }
 
     /**
+     * Return MYOB's request-trace id (typically `x-myobapi-tid` or `request-id`
+     * depending on the endpoint) from the response headers when present.
+     * Useful when escalating issues to MYOB support — they ask for this
+     * identifier to find the request in their logs.
+     *
+     * @return string|null
+     */
+    /**
+     * Read the Retry-After response header (case-insensitive). MYOB may
+     * return either a seconds count or an HTTP-date; we treat anything
+     * non-numeric as "unknown" and fall through to the default backoff.
+     */
+    private function extractRetryAfterSeconds(): ?int
+    {
+        if (! is_array($this->headers)) {
+            return null;
+        }
+        foreach ($this->headers as $name => $value) {
+            if (strcasecmp((string) $name, 'retry-after') !== 0) {
+                continue;
+            }
+            if (is_array($value)) {
+                $value = $value[0] ?? null;
+            }
+            if ($value === null || $value === '') {
+                continue;
+            }
+            return is_numeric($value) ? (int) $value : null;
+        }
+        return null;
+    }
+
+    public function getTraceId(): ?string
+    {
+        if (! is_array($this->headers) || empty($this->headers)) {
+            return null;
+        }
+
+        $candidates = ['x-myobapi-tid', 'request-id', 'x-correlation-id'];
+
+        foreach ($this->headers as $name => $value) {
+            $lower = strtolower((string) $name);
+            if (! in_array($lower, $candidates, true)) {
+                continue;
+            }
+            if (is_array($value)) {
+                $value = $value[0] ?? null;
+            }
+            if ($value !== null && $value !== '') {
+                return (string) $value;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Check Response for Error or Success
      * @return boolean
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
+        // Check HTTP status code first (if available)
+        if ($this->httpStatusCode !== null && ($this->httpStatusCode < 200 || $this->httpStatusCode >= 300)) {
+            return false;
+        }
+
         if ($this->data) {
             if (is_string($this->data)) {
+                // String data could be an error message - check if it looks like JSON error
+                $decoded = json_decode($this->data, true);
+                if ($decoded && isset($decoded['Errors'])) {
+                    return false;
+                }
                 return true;
             } else {
                 if (is_object($this->data)) {
-                    if (property_exists($this->data, 'Errors')) {
-                        return !$this->data->Errors[0]->Severity == 'Error';
-                    }
-                    if (property_exists($this->data,'Items')) {
-                        if (count($this->data->Items) === 0) {
-                            return false;
+                    if (property_exists($this->data, 'Errors') && !empty($this->data->Errors)) {
+                        $firstError = $this->data->Errors[0] ?? null;
+                        if ($firstError && property_exists($firstError, 'Severity')) {
+                            return $firstError->Severity !== 'Error';
                         }
+                        return false; // Has errors but can't determine severity
                     }
+                    // Empty Items[] on a 2xx is a legitimate "no matching
+                    // results" — only treat as failure when we didn't already
+                    // confirm a successful HTTP status earlier.
                 } else {
-                    if (array_key_exists('Errors', $this->data)) {
-                        return !$this->data['Errors'][0]['Severity'] == 'Error';
-                    }
-                    if (array_key_exists('Items', $this->data)) {
-                        if (count($this->data['Items']) === 0) {
-                            return false;
+                    if (array_key_exists('Errors', $this->data) && !empty($this->data['Errors'])) {
+                        $firstError = $this->data['Errors'][0] ?? null;
+                        if ($firstError && isset($firstError['Severity'])) {
+                            return $firstError['Severity'] !== 'Error';
                         }
+                        return false; // Has errors but can't determine severity
                     }
                 }
             }
@@ -91,6 +163,22 @@ class AbstractMYOBResponse extends AbstractResponse
      */
     public function getErrorMessage()
     {
+        // Surface 429 as a structured rate-limit error so
+        // AccountingException::handle dispatches to RateLimitException and
+        // Mira's handleRateLimit honours Retry-After instead of falling back
+        // to the default 120s sleep.
+        if ($this->httpStatusCode === 429) {
+            return [
+                'message' => 'The API rate limit for your organisation/application pairing has been exceeded',
+                'exception' => 'Rate limit exceeded',
+                'rate_problem' => 'minute',
+                'retry' => $this->extractRetryAfterSeconds() ?? 60,
+                'error_code' => 429,
+                'status_code' => 429,
+                'detail' => null,
+            ];
+        }
+
         if ($this->data) {
             if (is_string($this->data)) {
                 $additionalDetails = '';

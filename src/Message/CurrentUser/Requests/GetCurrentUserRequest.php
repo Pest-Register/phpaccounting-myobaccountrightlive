@@ -25,8 +25,8 @@ class GetCurrentUserRequest extends AbstractMYOBRequest
         return 'GET';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new GetCurrentUserResponse($this, $data);
+        return $this->response = new GetCurrentUserResponse($this, $data, $headers, $statusCode);
     }
 }

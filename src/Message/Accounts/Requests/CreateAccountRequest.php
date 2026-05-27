@@ -27,6 +27,7 @@ class CreateAccountRequest extends AbstractMYOBRequest
         $this->issetParam('Description','description');
         $this->issetParam('IsHeader', 'is_header');
         $this->issetParam('RowVersion', 'sync_token');
+        $this->issetParam('Number', 'number');
 
         if($this->getAccountingParentID()) {
             $this->data['ParentAccount'] = [
@@ -59,8 +60,8 @@ class CreateAccountRequest extends AbstractMYOBRequest
         return 'POST';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new CreateAccountResponse($this, $data);
+        return $this->response = new CreateAccountResponse($this, $data, $headers, $statusCode);
     }
 }

@@ -4,7 +4,7 @@
 namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests;
 
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\BuildEndpointHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\Current\BuildEndpointHelper;
 use PHPAccounting\MyobAccountRightLive\Message\AbstractMYOBRequest;
 use PHPAccounting\MyobAccountRightLive\Message\Quotations\Responses\GetQuotationUIDsResponse;
 use PHPAccounting\MyobAccountRightLive\Traits\GetRequestTrait;
@@ -32,7 +32,12 @@ class GetQuotationUIDsRequest extends AbstractMYOBRequest
         } else {
             if ($this->getPage()) {
                 if ($this->getPage() !== "") {
-                    $endpoint = BuildEndpointHelper::paginate($endpoint, $this->getPage(), $this->getSkip());
+                    $endpoint = BuildEndpointHelper::paginate(
+                        $endpoint,
+                        $this->getPage(),
+                        $this->getSkip(),
+                        modifiedSince: $this->getLastModifiedSince()
+                    );
                 }
             }
         }
@@ -44,8 +49,8 @@ class GetQuotationUIDsRequest extends AbstractMYOBRequest
         return 'GET';
     }
 
-    protected function createResponse($data, $headers = [])
+    protected function createResponse($data, $headers = [], ?int $statusCode = null)
     {
-        return $this->response = new GetQuotationUIDsResponse($this, $data);
+        return $this->response = new GetQuotationUIDsResponse($this, $data, $headers, $statusCode);
     }
 }

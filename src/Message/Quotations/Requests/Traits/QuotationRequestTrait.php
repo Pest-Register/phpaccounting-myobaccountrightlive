@@ -2,7 +2,7 @@
 
 namespace PHPAccounting\MyobAccountRightLive\Message\Quotations\Requests\Traits;
 
-use PHPAccounting\MyobAccountRightLive\Helpers\NewEssentials\IndexSanityCheckHelper;
+use PHPAccounting\MyobAccountRightLive\Helpers\IndexSanityCheckHelper;
 
 trait QuotationRequestTrait
 {
@@ -332,14 +332,18 @@ trait QuotationRequestTrait
         if ($lines) {
             foreach($lines as $line) {
                 $newLine = [];
-                $newLine['Account'] = [];
 
                 $newLine['TaxCode'] = [];
                 $newLine['TaxCode']['UID'] = IndexSanityCheckHelper::indexSanityCheck('tax_id', $line);
 
-                if (array_key_exists('item_id', $line)) {
-                    $newLine['Item'] = [];
-                    $newLine['Item']['UID'] = IndexSanityCheckHelper::indexSanityCheck('item_id', $line);
+                // Only include Item.UID when the caller actually has an
+                // inventory link — MYOB parses Item.UID as System.Guid and
+                // rejects the entire request with
+                // "Error converting value {null} to type 'System.Guid'"
+                // when the key is present but the value is null. Same shape
+                // as the InvoiceRequestTrait fix.
+                if (! empty($line['item_id'])) {
+                    $newLine['Item'] = ['UID' => $line['item_id']];
                 }
 
                 $newLine['UnitOfMeasure'] = IndexSanityCheckHelper::indexSanityCheck('unit', $line);
@@ -348,7 +352,12 @@ trait QuotationRequestTrait
                 $newLine['ShipQuantity'] = IndexSanityCheckHelper::indexSanityCheck('quantity', $line);
                 $newLine['UnitPrice'] = IndexSanityCheckHelper::indexSanityCheck('unit_amount', $line);
                 $newLine['Total'] = IndexSanityCheckHelper::indexSanityCheck('amount', $line);
-                $newLine['Account']['UID'] = IndexSanityCheckHelper::indexSanityCheck('account_id', $line);
+                // Account.UID is also a System.Guid — null gets rejected with
+                // the same error. Skip the Account object entirely when there
+                // is no account_id rather than emitting Account.UID = null.
+                if (! empty($line['account_id'])) {
+                    $newLine['Account'] = ['UID' => $line['account_id']];
+                }
                 $newLine['DiscountPercent'] = IndexSanityCheckHelper::indexSanityCheck('discount_rate', $line);
                 array_push($data['Lines'], $newLine);
             }
