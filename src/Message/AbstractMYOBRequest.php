@@ -166,6 +166,26 @@ abstract class AbstractMYOBRequest extends AbstractRequest
     }
 
     /**
+     * Serialize dates as local wall time. json_encode(Carbon) converts to UTC,
+     * which lands any AU-timezone date a day behind in MYOB.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    public function normalizeDates($data)
+    {
+        if (is_array($data)) {
+            array_walk_recursive($data, function (&$value) {
+                if ($value instanceof \DateTimeInterface) {
+                    $value = $value->format('Y-m-d\TH:i:s');
+                }
+            });
+        }
+
+        return $data;
+    }
+
+    /**
      * Send the request with specified data
      *
      * @param  mixed $data The data to send
@@ -188,6 +208,7 @@ abstract class AbstractMYOBRequest extends AbstractRequest
             $headers = $this->getOldEssentialsHeaders($this->getHttpMethod());
         }
 
+        $data = $this->normalizeDates($data);
         $body = $data ? json_encode($data) : null;
         $fullUrl = $endpoint . $this->getEndpoint();
 
